@@ -1,8 +1,16 @@
 . shotgun
+ . custom item class
  . firing
  . cycling
-  . holding rmb or auto?
+  . holding rmb or auto (configurable)
  . auto-reloading while standing still
+ . first-person animation
+  . basic pose
+  . cycling/reloading animation
+ . third-person animation
+  . basic pose
+  . reloading animation
+ . melee damage & knockback
  . firing bullets
 . handmade
  . register items
@@ -17,6 +25,11 @@
  . loot table
   . found in broken state, needs repairing
    . smithing table?
+. saw'd-off
+ . 2 shell magazine
+ . usable from off-hand
+ . higher spread
+ . less damage and range
 . sounds
  . handmade
   . firing
@@ -27,6 +40,7 @@
   . cycling
   . loading
  . ejected shells hitting ground
+  . disablable in config
 . ammo types
  . register items
  . slug
@@ -50,6 +64,18 @@
   . misfire or jam the weapon
   . higher spread
   . less damage
+ . rubber round
+  . recipe: rubber, gunpowder
+   . rubber:
+    . slime, inc sac (, blaze powder?)
+  . 0 damage
+  . knockback
+  . inflicts slowness, nausea and weakness
+. enchants
+ . unbreaking & mending works by default
+ . brute - melee damage & knockback increase
+  . max level for handmade is 1
+  . max level for antique is 3
 . shotgun mob
  . rare spawn as pillager spatrol member
  . spawns at lv5 raid replacing one of mobs
