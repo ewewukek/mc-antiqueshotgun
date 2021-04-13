@@ -1,0 +1,72 @@
+. shotgun
+ . firing
+ . cycling
+  . holding rmb or auto?
+ . auto-reloading while standing still
+ . firing bullets
+. handmade
+ . register items
+ . multi-step crafting
+ . has a chance of misfire
+ . less ammo capacity
+ . slower cycling
+ . higher spread
+ . less damage and range 0.8-0.9
+. antique (Ol' Betsy)
+ . register items
+ . loot table
+  . found in broken state, needs repairing
+   . smithing table?
+. sounds
+ . handmade
+  . firing
+  . cycling
+  . loading
+ . antique
+  . firing
+  . cycling
+  . loading
+ . ejected shells hitting ground
+. ammo types
+ . register items
+ . slug
+  . recipe: (1) netherite scrap, (3) gunpowder, (2) iron gives 32 shots
+  . range: 20-25
+  . damage: 23-25
+  . no spread
+  . high velocity
+  . entity
+  . slower reloading
+ . buckshot
+  . range: 10-15
+  . recipe: gold(3), gunpowder(2), (possibly (1) flint too) gives 18 shots
+  . damage: 25 at point blank and 9 at max range
+  . entity (reuse slug texture?)
+ . handmade
+  . range: 4-6
+  . recipe: wood(1), paper(2), gunpowder(1) gives 10 shots
+  . buckshot only
+  . entity (reuse slug texture?)
+  . misfire or jam the weapon
+  . higher spread
+  . less damage
+. shotgun mob
+ . rare spawn as pillager spatrol member
+ . spawns at lv5 raid replacing one of mobs
+. backtools mod support
+. advancements
+. configuration
+ . bullet speed
+ . damage (12-16)
+ . spread
+ . range (16-25)
+ . slug
+ . buckshot
+  . pellet count
+ . handmade shell
+ . capacity (5-8)
+ . cycling rate
+ . auto-reload delay (.5-2)
+ . reload rate
+ . handmade shotgun
+ . antique
