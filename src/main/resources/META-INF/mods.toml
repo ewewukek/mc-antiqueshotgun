@@ -1,6 +1,6 @@
 modLoader="javafml"
 loaderVersion="[36,)"
-license=""
+license="MIT + CC BY-NC-ND 3.0"
 issueTrackerURL="https://github.com/ewewukek/mc-antiqueshotgun/issues"
 [[mods]]
 modId="antiqueshotgun"
