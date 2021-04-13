@@ -9,6 +9,12 @@
         "racked": 1
       },
       "model": "antiqueshotgun:item/antique_shotgun_racked"
+    },
+    {
+      "predicate": {
+        "damage": 0
+      },
+      "model": "antiqueshotgun:item/antique_shotgun_damaged"
     }
   ]
 }
