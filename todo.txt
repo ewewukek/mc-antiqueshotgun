@@ -1,9 +1,11 @@
 . shotgun
- . custom item class
+ ✔ custom item class
  . firing
  . cycling
   . holding rmb or auto (configurable)
  . auto-reloading while standing still
+  . ignoring off-hand slot
+  . don't reload if there is another shotgun of the same type in inventory
  . first-person animation
   ✔ basic pose
   . cycling/reloading animation
@@ -26,6 +28,11 @@
   . found in broken state, needs repairing
    . smithing table?
  . optional crafting
+  . antique_barrel
+   [nnF] n=netherite_scrap, N=netherite_ingot, F=flint_and_steel
+   [  N]
+  . antique_shotgun
+   [BGS] B=antique_barrel, G=gold_ingot, S=handmade_stock
 . saw'd-off
  ✔ register items
  . made by putting handmade in a stonecutter
@@ -49,7 +56,7 @@
 . ammo types
  ✔ register items
  . slug
-  . recipe: (1) netherite scrap, (3) gunpowder, (2) iron gives 32 shots
+  ✔ recipe
   . range: 20-25
   . damage: 23-25
   . no spread
@@ -57,22 +64,22 @@
   . entity
   . slower reloading
  . buckshot
+  ✔ recipe
   . range: 10-15
-  . recipe: gold(3), gunpowder(2), (possibly (1) flint too) gives 18 shots
   . damage: 25 at point blank and 9 at max range
   . entity (reuse slug texture?)
  . handmade
+  ✔ recipe
   . range: 4-6
-  . recipe: wood(1), paper(2), gunpowder(1) gives 10 shots
   . buckshot only
   . entity (reuse slug texture?)
   . misfire or jam the weapon
   . higher spread
   . less damage
  . rubber round
-  . recipe: rubber, gunpowder
-   . rubber:
-    . slime, inc sac (, blaze powder?)
+  ✔ rubber
+   ✔ obtained from slime via smelting
+  ✔ recipe
   . 0 damage
   . knockback
   . inflicts slowness, nausea and weakness
