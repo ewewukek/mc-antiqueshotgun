@@ -1,0 +1,14 @@
+modLoader="javafml"
+loaderVersion="[36,)"
+license=""
+issueTrackerURL="https://github.com/ewewukek/mc-antiqueshotgun/issues"
+[[mods]]
+modId="antiqueshotgun"
+version="${file.jarVersion}"
+displayName="Antique Shotgun"
+displayURL="https://github.com/ewewukek/mc-antiqueshotgun"
+credits=""
+authors="ewewukek, Redrix"
+description='''
+placeholder
+'''
