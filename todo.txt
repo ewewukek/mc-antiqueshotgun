@@ -5,7 +5,7 @@
   . holding rmb or auto (configurable)
  . auto-reloading while standing still
  . first-person animation
-  . basic pose
+  ✔ basic pose
   . cycling/reloading animation
  . third-person animation
   . basic pose
@@ -29,6 +29,7 @@
 . saw'd-off
  ✔ register items
  . made by putting handmade in a stonecutter
+  . should decrease durability by half
  . can't fire slugs or rubber
  . 2 shell magazine
  . usable from off-hand
