@@ -25,7 +25,11 @@
  . loot table
   . found in broken state, needs repairing
    . smithing table?
+ . optional crafting
 . saw'd-off
+ . register items
+ . made by putting handmade in a stonecutter
+ . can't fire slugs or rubber
  . 2 shell magazine
  . usable from off-hand
  . higher spread
@@ -77,8 +81,8 @@
   . max level for handmade is 1
   . max level for antique is 3
 . shotgun mob
- . rare spawn as pillager spatrol member
- . spawns at lv5 raid replacing one of mobs
+ . rare spawn as pillagers patrol member
+ . spawns at lv5 raid replacing one of the mobs
 . backtools mod support
 . advancements
 . configuration
