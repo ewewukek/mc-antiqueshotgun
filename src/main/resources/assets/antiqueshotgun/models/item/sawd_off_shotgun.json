@@ -1,0 +1,14 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "antiqueshotgun:item/sawd_off_shotgun"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "racked": 1
+      },
+      "model": "antiqueshotgun:item/sawd_off_shotgun_racked"
+    }
+  ]
+}
