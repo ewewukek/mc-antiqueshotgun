@@ -13,7 +13,7 @@
  . melee damage & knockback
  . firing bullets
 . handmade
- . register items
+ ✔ register items
  . multi-step crafting
  . has a chance of misfire
  . less ammo capacity
@@ -21,13 +21,13 @@
  . higher spread
  . less damage and range 0.8-0.9
 . antique (Ol' Betsy)
- . register items
+ ✔ register items
  . loot table
   . found in broken state, needs repairing
    . smithing table?
  . optional crafting
 . saw'd-off
- . register items
+ ✔ register items
  . made by putting handmade in a stonecutter
  . can't fire slugs or rubber
  . 2 shell magazine
@@ -46,7 +46,7 @@
  . ejected shells hitting ground
   . disablable in config
 . ammo types
- . register items
+ ✔ register items
  . slug
   . recipe: (1) netherite scrap, (3) gunpowder, (2) iron gives 32 shots
   . range: 20-25
