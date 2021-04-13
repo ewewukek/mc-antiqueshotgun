@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "antiqueshotgun:handmade_shotgun"
+  },
+  "result": "antiqueshotgun:sawd_off_shotgun",
+  "count": 1
+}

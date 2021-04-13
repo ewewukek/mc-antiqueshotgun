@@ -1,0 +1,18 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "ssP",
+    "  P"
+  ],
+  "key": {
+    "s": {
+      "item": "minecraft:stick"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "result": {
+    "item": "antiqueshotgun:handmade_stock"
+  }
+}

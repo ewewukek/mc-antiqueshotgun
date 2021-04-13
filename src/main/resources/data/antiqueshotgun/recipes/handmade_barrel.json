@@ -1,0 +1,21 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "III",
+    " if"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "i": {
+      "item": "minecraft:iron_nugget"
+    },
+    "f": {
+      "item": "minecraft:flint"
+    }
+  },
+  "result": {
+    "item": "antiqueshotgun:handmade_barrel"
+  }
+}
