@@ -1,5 +1,7 @@
 package ewewukek.antiqueshotgun;
 
+import java.util.Arrays;
+
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -43,7 +45,7 @@ public class ShotgunItem extends Item {
         if (isReady(stack)) {
             byte ammoType = getAmmoInChamber(stack);
             if (ammoType != AMMO_NONE) {
-                System.out.println("PEW!");
+                System.out.println("PEW! "+ammoType);
             } else {
                 System.out.println("click");
             }
@@ -70,7 +72,7 @@ public class ShotgunItem extends Item {
             } else if (isSlideBack(stack) && usingDuration > getCycleBackDuration() + getCycleForwardDuration()) {
                 setSlideBack(stack, false);
                 setReady(stack, true);
-                setAmmoInChamber(stack, AMMO_BUCKSHOT);
+                setAmmoInChamber(stack, extractAmmoFromMagazine(stack));
             }
         }
     }
@@ -105,6 +107,28 @@ public class ShotgunItem extends Item {
 
     public void setAmmoInChamber(ItemStack stack, byte ammoType) {
         stack.getOrCreateTag().putByte("chamber", ammoType);
+    }
 
+    public int getAmmoInMagazineCount(ItemStack stack) {
+        CompoundNBT tag = stack.getTag();
+        return tag != null ? tag.getByteArray("magazine").length : 0;
+    }
+
+    public byte extractAmmoFromMagazine(ItemStack stack) {
+        CompoundNBT tag = stack.getTag();
+        if (tag == null) return AMMO_NONE;
+        byte[] magazine = tag.getByteArray("magazine");
+        if (magazine.length == 0) return AMMO_NONE;
+        byte ammoType = magazine[magazine.length - 1];
+        tag.putByteArray("magazine", Arrays.copyOf(magazine, magazine.length - 1));
+        return ammoType;
+    }
+
+    public void addAmmoToMagazine(ItemStack stack, byte ammoType) {
+        CompoundNBT tag = stack.getOrCreateTag();
+        byte[] magazine = tag.getByteArray("magazine");
+        byte[] newMagazine = Arrays.copyOf(magazine, magazine.length + 1);
+        newMagazine[newMagazine.length - 1] = ammoType;
+        tag.putByteArray("magazine", newMagazine);
     }
 }
