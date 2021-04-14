@@ -98,6 +98,7 @@
 . shotgun mob
  . rare spawn as pillagers patrol member
  . spawns at lv5 raid replacing one of the mobs
+ . drops buckshot, emeralds and antique shotgun
 . backtools mod support
 . advancements
 . configuration
