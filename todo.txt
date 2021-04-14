@@ -55,6 +55,8 @@
   . disablable in config
 . ammo types
  ✔ register items
+ ✔ varying texture depending on stack sizie
+  ✔ predicate for stack size
  . slug
   ✔ recipe
   . range: 20-25
@@ -62,17 +64,20 @@
   . no spread
   . high velocity
   . entity
+   . reuse musket's texture
   . slower reloading
  . buckshot
   ✔ recipe
   . range: 10-15
   . damage: 25 at point blank and 9 at max range
-  . entity (reuse slug texture?)
+  . entity
+   . one pixel texture
  . handmade
   ✔ recipe
   . range: 4-6
   . buckshot only
-  . entity (reuse slug texture?)
+  . entity
+   . one pixel texture
   . misfire or jam the weapon
   . higher spread
   . less damage
@@ -82,6 +87,8 @@
   ✔ recipe
   . 0 damage
   . knockback
+  . entity
+   . darkened slug texture
   . inflicts slowness, nausea and weakness
 . enchants
  . unbreaking & mending works by default
