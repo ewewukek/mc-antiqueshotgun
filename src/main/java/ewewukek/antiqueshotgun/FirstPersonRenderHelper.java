@@ -19,7 +19,7 @@ public class FirstPersonRenderHelper {
 
         matrixStack.push();
 
-        matrixStack.translate(sign * 0.15f, -0.27f, -0.37f);
+        matrixStack.translate(sign * 0.31f, -0.29f, -0.41f);
 
         // compensate rotated model
         matrixStack.translate(0, 0.085f, 0);
