@@ -1,5 +1,5 @@
 {
-  "parent": "item/generated",
+  "parent": "antiqueshotgun:item/handmade_shotgun",
   "textures": {
     "layer0": "antiqueshotgun:item/handmade_shotgun_racked"
   }
