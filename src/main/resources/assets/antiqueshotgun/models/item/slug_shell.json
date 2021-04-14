@@ -2,5 +2,19 @@
   "parent": "item/generated",
   "textures": {
     "layer0": "antiqueshotgun:item/slug_shell"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "count": 2
+      },
+      "model": "antiqueshotgun:item/slug_shell_2"
+    },
+    {
+      "predicate": {
+        "count": 21
+      },
+      "model": "antiqueshotgun:item/slug_shell_3"
+    }
+  ]
 }
