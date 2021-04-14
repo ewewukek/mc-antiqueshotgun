@@ -1,6 +1,6 @@
 {
   "parent": "antiqueshotgun:item/antique_shotgun",
   "textures": {
-    "layer0": "antiqueshotgun:item/antique_shotgun_racked"
+    "layer0": "antiqueshotgun:item/antique_shotgun_slide_back"
   }
 }

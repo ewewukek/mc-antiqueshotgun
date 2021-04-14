@@ -28,9 +28,9 @@
   "overrides": [
     {
       "predicate": {
-        "racked": 1
+        "antiqueshotgun:slide_back": 1
       },
-      "model": "antiqueshotgun:item/handmade_shotgun_racked"
+      "model": "antiqueshotgun:item/handmade_shotgun_slide_back"
     }
   ]
 }
