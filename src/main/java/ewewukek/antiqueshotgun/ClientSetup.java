@@ -25,6 +25,13 @@ public class ClientSetup {
     @ObjectHolder(AntiqueShotgunMod.MODID + ":rubber_shell")
     public static Item RUBBER_SHELL;
 
+    @ObjectHolder(AntiqueShotgunMod.MODID + ":antique_shotgun")
+    public static Item ANTIQUE_SHOTGUN;
+    @ObjectHolder(AntiqueShotgunMod.MODID + ":handmade_shotgun")
+    public static Item HANDMADE_SHOTGUN;
+    @ObjectHolder(AntiqueShotgunMod.MODID + ":sawd_off_shotgun")
+    public static Item SAWD_OFF_SHOTGUN;
+
     public static void init(final FMLClientSetupEvent event) {
         IItemPropertyGetter countGetter = (stack, world, player) -> {
             return stack.getCount();
@@ -33,6 +40,12 @@ public class ClientSetup {
         ItemModelsProperties.registerProperty(BUCKSHOT_SHELL, new ResourceLocation("count"), countGetter);
         ItemModelsProperties.registerProperty(SLUG_SHELL, new ResourceLocation("count"), countGetter);
         ItemModelsProperties.registerProperty(RUBBER_SHELL, new ResourceLocation("count"), countGetter);
+        IItemPropertyGetter slideBackGetter = (stack, world, player) -> {
+            return ((ShotgunItem)stack.getItem()).isSlideBack(stack) ? 1 : 0;
+        };
+        ItemModelsProperties.registerProperty(ANTIQUE_SHOTGUN, new ResourceLocation(AntiqueShotgunMod.MODID, "slide_back"), slideBackGetter);
+        ItemModelsProperties.registerProperty(HANDMADE_SHOTGUN, new ResourceLocation(AntiqueShotgunMod.MODID, "slide_back"), slideBackGetter);
+        ItemModelsProperties.registerProperty(SAWD_OFF_SHOTGUN, new ResourceLocation(AntiqueShotgunMod.MODID, "slide_back"), slideBackGetter);
     }
 
     @SubscribeEvent
