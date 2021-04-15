@@ -1,11 +1,18 @@
 . shotgun
  ✔ custom item class
- . firing
- . cycling
+ ✔ firing
+ ✔ cycling
   . holding rmb or auto (configurable)
- . auto-reloading while standing still
+  . cyclining without need to hold use button
+ . reloading
+  . auto-reloading while standing still
+   . configurable
   . ignoring off-hand slot
   . don't reload if there is another shotgun of the same type in inventory
+  . reload button
+   . configurable
+    . reload while holding
+    . single key press reloads fully
  . first-person animation
   ✔ basic pose
   . cycling/reloading animation
@@ -43,14 +50,10 @@
  . higher spread
  . less damage and range
 . sounds
- . handmade
-  . firing
-  . cycling
-  . loading
- . antique
-  . firing
-  . cycling
-  . loading
+ ✔ firing
+  . slug version
+ ✔ cycling
+ ✔ loading
  . ejected shells hitting ground
   . disablable in config
 . ammo types
