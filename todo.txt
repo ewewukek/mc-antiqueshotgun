@@ -2,12 +2,12 @@
  ✔ custom item class
  ✔ firing
  ✔ cycling
-  . holding rmb or auto (configurable)
-  . cyclining without need to hold use button
+  ✔ insert a shell if empty
+  ✔ auto (no need to hold rmb)
+  . holding rmb (configurable)
  . reloading
-  . auto-reloading while standing still
-   . configurable
-  . ignoring off-hand slot
+  ✗ auto-reloading while standing still (it's annoying)
+  ✔ ignoring off-hand slot
   . don't reload if there is another shotgun of the same type in inventory
   . reload button
    . configurable
@@ -15,15 +15,17 @@
     . single key press reloads fully
  . first-person animation
   ✔ basic pose
-  . cycling/reloading animation
+  ✔ cycling animation
+  . reloading animation
  . third-person animation
   . basic pose
   . reloading animation
  . melee damage & knockback
+  . custom hit sound
  . firing bullets
 . handmade
  ✔ register items
- . multi-step crafting
+ ✔ multi-step crafting
  . has a chance of misfire
  . less ammo capacity
  . slower cycling
@@ -42,8 +44,8 @@
    [BGS] B=antique_barrel, G=gold_ingot, S=handmade_stock
 . saw'd-off
  ✔ register items
- . made by putting handmade in a stonecutter
-  . should decrease durability by half
+ ✔ made by putting handmade in a stonecutter
+  . decreases durability by half
  . can't fire slugs or rubber
  . 2 shell magazine
  . usable from off-hand
