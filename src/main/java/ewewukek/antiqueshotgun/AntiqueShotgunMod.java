@@ -2,16 +2,28 @@ package ewewukek.antiqueshotgun;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.ObjectHolder;
 
 @Mod(AntiqueShotgunMod.MODID)
 public class AntiqueShotgunMod {
     public static final String MODID = "antiqueshotgun";
+
+    @ObjectHolder(MODID + ":shotgun_fire")
+    public static SoundEvent SOUND_SHOTGUN_FIRE;
+    @ObjectHolder(MODID + ":shotgun_pump_back")
+    public static SoundEvent SOUND_SHOTGUN_PUMP_BACK;
+    @ObjectHolder(MODID + ":shotgun_pump_forward")
+    public static SoundEvent SOUND_SHOTGUN_PUMP_FORWARD;
+    @ObjectHolder(MODID + ":shotgun_inserting_shell")
+    public static SoundEvent SOUND_SHOTGUN_INSERTING_SHELL;
 
     public AntiqueShotgunMod() {
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
@@ -35,6 +47,16 @@ public class AntiqueShotgunMod {
                 new Item(new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(MODID, "handmade_shell"),
                 new Item(new Item.Properties().group(ItemGroup.MISC)).setRegistryName(MODID, "rubber"),
                 new Item(new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(MODID, "rubber_shell")
+            );
+        }
+
+        @SubscribeEvent
+        public static void onSoundRegistry(final RegistryEvent.Register<SoundEvent> event) {
+            event.getRegistry().registerAll(
+                new SoundEvent(new ResourceLocation(MODID, "shotgun_fire")).setRegistryName(MODID, "shotgun_fire"),
+                new SoundEvent(new ResourceLocation(MODID, "shotgun_pump_back")).setRegistryName(MODID, "shotgun_pump_back"),
+                new SoundEvent(new ResourceLocation(MODID, "shotgun_pump_forward")).setRegistryName(MODID, "shotgun_pump_forward"),
+                new SoundEvent(new ResourceLocation(MODID, "shotgun_inserting_shell")).setRegistryName(MODID, "shotgun_inserting_shell")
             );
         }
     }

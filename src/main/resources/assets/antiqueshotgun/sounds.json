@@ -1,0 +1,22 @@
+{
+  "shotgun_fire": {
+    "sounds": [
+      "antiqueshotgun:shotgun_fire"
+    ]
+  },
+  "shotgun_pump_back": {
+    "sounds": [
+      "antiqueshotgun:shotgun_pump_back"
+    ]
+  },
+  "shotgun_pump_forward": {
+    "sounds": [
+      "antiqueshotgun:shotgun_pump_forward"
+    ]
+  },
+  "shotgun_inserting_shell": {
+    "sounds": [
+      "antiqueshotgun:shotgun_inserting_shell"
+    ]
+  }
+}

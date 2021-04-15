@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
 public class ShotgunItem extends Item {
@@ -45,7 +46,7 @@ public class ShotgunItem extends Item {
         if (isReady(stack)) {
             byte ammoType = getAmmoInChamber(stack);
             if (ammoType != AMMO_NONE) {
-                System.out.println("PEW! "+ammoType);
+                player.playSound(AntiqueShotgunMod.SOUND_SHOTGUN_FIRE, 1.5f, 1);
             } else {
                 System.out.println("click");
             }
@@ -65,11 +66,18 @@ public class ShotgunItem extends Item {
     public void onUse(World world, LivingEntity entity, ItemStack stack, int timeLeft) {
         if (world.isRemote || !(entity instanceof PlayerEntity)) return;
 
+        PlayerEntity player = (PlayerEntity) entity;
+        double posX = player.getPosX();
+        double posY = player.getPosY();
+        double posZ = player.getPosZ();
+
         if (!isReady(stack)) {
             int usingDuration = getUseDuration(stack) - timeLeft;
             if (!isSlideBack(stack) && usingDuration > getCycleBackDuration()) {
+                world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_BACK, SoundCategory.PLAYERS, 0.5F, 1.0F);
                 setSlideBack(stack, true);
             } else if (isSlideBack(stack) && usingDuration > getCycleBackDuration() + getCycleForwardDuration()) {
+                world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_FORWARD, SoundCategory.PLAYERS, 0.5F, 1.0F);
                 setSlideBack(stack, false);
                 setReady(stack, true);
                 setAmmoInChamber(stack, extractAmmoFromMagazine(stack));
