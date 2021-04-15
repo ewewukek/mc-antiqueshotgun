@@ -26,6 +26,10 @@ public class ShotgunItem extends Item {
         return false;
     }
 
+    public int getMagazineCapacity() {
+        return 4;
+    }
+
     public int getCycleBackDelay() {
         return 8;
     }
@@ -75,16 +79,17 @@ public class ShotgunItem extends Item {
         double posY = player.getPosY();
         double posZ = player.getPosZ();
 
-        ItemStack ammoStack = findAmmo(player);
         long ticksFromLastAction = getTicksFromLastAction(stack, world);
+        boolean reload = false;
 
         if (getAmmoInChamber(stack) == AMMO_NONE) {
-            if (!isSlideBack(stack) && ticksFromLastAction >= getCycleBackDelay()) {
-                world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_BACK, SoundCategory.PLAYERS, 0.5F, 1.0F);
+            if (!isSlideBack(stack)) {
+                if (ticksFromLastAction >= getCycleBackDelay()) {
+                    world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_BACK, SoundCategory.PLAYERS, 0.5F, 1.0F);
 
-                setSlideBack(stack, true);
-                resetLastActionTime(stack, world);
-
+                    setSlideBack(stack, true);
+                    resetLastActionTime(stack, world);
+                }
             } else if (isSlideBack(stack)) {
                 if (getAmmoInMagazineCount(stack) > 0) {
                     if (ticksFromLastAction >= getCycleForwardDelay()) {
@@ -94,20 +99,29 @@ public class ShotgunItem extends Item {
                         setAmmoInChamber(stack, extractAmmoFromMagazine(stack));
                         resetLastActionTime(stack, world);
                     }
-                } else if (!ammoStack.isEmpty()) {
-                    if (!isReloading(stack)) {
-                        if (ticksFromLastAction >= getShellPreInsertDelay()) {
-                            world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_INSERTING_SHELL, SoundCategory.PLAYERS, 0.5F, 1.0F);
+                } else {
+                    reload = true;
+                }
+            }
+        } else if (getAmmoInMagazineCount(stack) < getMagazineCapacity()) {
+            reload = true;
+        }
 
-                            setReloading(stack, true);
-                            resetLastActionTime(stack, world);
-                        }
-                    } else {
-                        if (ticksFromLastAction >= getShellPostInsertDelay()) {
-                            addAmmoToMagazine(stack, consumeAmmoStack(ammoStack));
-                            setReloading(stack, false);
-                            resetLastActionTime(stack, world);
-                        }
+        if (reload) {
+            ItemStack ammoStack = findAmmo(player);
+            if (!ammoStack.isEmpty()) {
+                if (!isReloading(stack)) {
+                    if (ticksFromLastAction >= getShellPreInsertDelay()) {
+                        world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_INSERTING_SHELL, SoundCategory.PLAYERS, 0.5F, 1.0F);
+
+                        setReloading(stack, true);
+                        resetLastActionTime(stack, world);
+                    }
+                } else {
+                    if (ticksFromLastAction >= getShellPostInsertDelay()) {
+                        addAmmoToMagazine(stack, consumeAmmoStack(ammoStack));
+                        setReloading(stack, false);
+                        resetLastActionTime(stack, world);
                     }
                 }
             }
