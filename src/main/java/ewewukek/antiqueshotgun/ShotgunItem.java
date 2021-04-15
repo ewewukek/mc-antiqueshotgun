@@ -2,7 +2,6 @@ package ewewukek.antiqueshotgun;
 
 import java.util.Arrays;
 
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -70,11 +69,9 @@ public class ShotgunItem extends Item {
         return ActionResult.resultFail(stack);
     }
 
-    @Override
-    public void onUse(World world, LivingEntity entity, ItemStack stack, int timeLeft) {
-        if (world.isRemote || !(entity instanceof PlayerEntity)) return;
+    public void update(PlayerEntity player, ItemStack stack) {
+        World world = player.world;
 
-        PlayerEntity player = (PlayerEntity) entity;
         double posX = player.getPosX();
         double posY = player.getPosY();
         double posZ = player.getPosZ();

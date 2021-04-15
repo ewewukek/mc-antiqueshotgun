@@ -2,10 +2,13 @@ package ewewukek.antiqueshotgun;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
@@ -67,6 +70,17 @@ public class AntiqueShotgunMod {
                 new SoundEvent(new ResourceLocation(MODID, "shotgun_pump_forward")).setRegistryName(MODID, "shotgun_pump_forward"),
                 new SoundEvent(new ResourceLocation(MODID, "shotgun_inserting_shell")).setRegistryName(MODID, "shotgun_inserting_shell")
             );
+        }
+    }
+
+    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
+    public static class EventHandlers {
+        @SubscribeEvent
+        public static void onPlayerTick(final TickEvent.PlayerTickEvent event) {
+            ItemStack stack = event.player.getHeldItem(Hand.MAIN_HAND);
+            if (stack.getItem() instanceof ShotgunItem) {
+                ((ShotgunItem)stack.getItem()).update(event.player, stack);
+            }
         }
     }
 }
