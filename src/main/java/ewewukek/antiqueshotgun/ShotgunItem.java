@@ -35,6 +35,14 @@ public class ShotgunItem extends Item {
         return 6;
     }
 
+    public int getShellPreInsertDuration() {
+        return 6;
+    }
+
+    public int getShellPostInsertDuration() {
+        return 6;
+    }
+
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity player, Hand hand) {
         if (hand != Hand.MAIN_HAND && !canBeUsedFromOffhand()) {
@@ -53,7 +61,8 @@ public class ShotgunItem extends Item {
             return ActionResult.resultConsume(stack);
         }
 
-        if (getAmmoInMagazineCount(stack) > 0) {
+        ItemStack ammoStack = findAmmo(player);
+        if (getAmmoInMagazineCount(stack) > 0 || !ammoStack.isEmpty()) {
             player.setActiveHand(hand);
             return ActionResult.resultConsume(stack);
         }
@@ -79,12 +88,34 @@ public class ShotgunItem extends Item {
                 setSlideBack(stack, true);
                 resetLastActionTime(stack, world);
 
-            } else if (isSlideBack(stack) && ticksFromLastAction >= getCycleForwardDuration()) {
-                world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_FORWARD, SoundCategory.PLAYERS, 0.5F, 1.0F);
+            } else if (isSlideBack(stack)) {
+                if (getAmmoInMagazineCount(stack) > 0) {
+                    if (ticksFromLastAction >= getCycleForwardDuration()) {
+                        world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_FORWARD, SoundCategory.PLAYERS, 0.5F, 1.0F);
 
-                setSlideBack(stack, false);
-                setAmmoInChamber(stack, extractAmmoFromMagazine(stack));
-                resetLastActionTime(stack, world);
+                        setSlideBack(stack, false);
+                        setAmmoInChamber(stack, extractAmmoFromMagazine(stack));
+                        resetLastActionTime(stack, world);
+                    }
+                } else {
+                    if (!isReloading(stack)) {
+                        if (ticksFromLastAction >= getShellPreInsertDuration()) {
+                            world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_INSERTING_SHELL, SoundCategory.PLAYERS, 0.5F, 1.0F);
+
+                            setReloading(stack, true);
+                            resetLastActionTime(stack, world);
+                        }
+                    } else {
+                        if (ticksFromLastAction >= getShellPostInsertDuration()) {
+                            // add three for testing purposes
+                            addAmmoToMagazine(stack, AMMO_BUCKSHOT);
+                            addAmmoToMagazine(stack, AMMO_BUCKSHOT);
+                            addAmmoToMagazine(stack, AMMO_BUCKSHOT);
+                            setReloading(stack, false);
+                            resetLastActionTime(stack, world);
+                        }
+                    }
+                }
             }
         }
     }
@@ -92,6 +123,22 @@ public class ShotgunItem extends Item {
     @Override
     public int getUseDuration(ItemStack stack) {
         return 72000;
+    }
+
+    private boolean isAmmo(ItemStack stack) {
+        Item item = stack.getItem();
+        return item == AntiqueShotgunMod.HANDMADE_SHELL
+            || item == AntiqueShotgunMod.BUCKSHOT_SHELL
+            || item == AntiqueShotgunMod.SLUG_SHELL
+            || item == AntiqueShotgunMod.RUBBER_SHELL;
+    }
+
+    private ItemStack findAmmo(PlayerEntity player) {
+        for (int i = 0; i != player.inventory.mainInventory.size(); ++i) {
+            ItemStack itemstack = player.inventory.mainInventory.get(i);
+            if (isAmmo(itemstack)) return itemstack;
+        }
+        return ItemStack.EMPTY;
     }
 
     public long getTicksFromLastAction(ItemStack stack, World world) {
@@ -111,6 +158,16 @@ public class ShotgunItem extends Item {
 
     public void setSlideBack(ItemStack stack, boolean value) {
         stack.getOrCreateTag().putByte("slide_back", (byte) (value ? 1 : 0));
+    }
+
+    // synthetic state to add a delay between inserting and moving pump forward
+    public boolean isReloading(ItemStack stack) {
+        CompoundNBT tag = stack.getTag();
+        return tag != null && tag.getByte("reloading") != 0;
+    }
+
+    public void setReloading(ItemStack stack, boolean value) {
+        stack.getOrCreateTag().putByte("reloading", (byte) (value ? 1 : 0));
     }
 
     public byte getAmmoInChamber(ItemStack stack) {
