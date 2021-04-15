@@ -16,6 +16,15 @@ import net.minecraftforge.registries.ObjectHolder;
 public class AntiqueShotgunMod {
     public static final String MODID = "antiqueshotgun";
 
+    @ObjectHolder(MODID + ":handmade_shell")
+    public static Item HANDMADE_SHELL;
+    @ObjectHolder(MODID + ":buckshot_shell")
+    public static Item BUCKSHOT_SHELL;
+    @ObjectHolder(MODID + ":slug_shell")
+    public static Item SLUG_SHELL;
+    @ObjectHolder(MODID + ":rubber_shell")
+    public static Item RUBBER_SHELL;
+
     @ObjectHolder(MODID + ":shotgun_fire")
     public static SoundEvent SOUND_SHOTGUN_FIRE;
     @ObjectHolder(MODID + ":shotgun_pump_back")

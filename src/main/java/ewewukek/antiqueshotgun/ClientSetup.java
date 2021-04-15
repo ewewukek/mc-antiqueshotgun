@@ -15,16 +15,6 @@ import net.minecraftforge.registries.ObjectHolder;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
 public class ClientSetup {
-    // TODO: find a way to use registerGlobalProperty
-    @ObjectHolder(AntiqueShotgunMod.MODID + ":handmade_shell")
-    public static Item HANDMADE_SHELL;
-    @ObjectHolder(AntiqueShotgunMod.MODID + ":buckshot_shell")
-    public static Item BUCKSHOT_SHELL;
-    @ObjectHolder(AntiqueShotgunMod.MODID + ":slug_shell")
-    public static Item SLUG_SHELL;
-    @ObjectHolder(AntiqueShotgunMod.MODID + ":rubber_shell")
-    public static Item RUBBER_SHELL;
-
     @ObjectHolder(AntiqueShotgunMod.MODID + ":antique_shotgun")
     public static Item ANTIQUE_SHOTGUN;
     @ObjectHolder(AntiqueShotgunMod.MODID + ":handmade_shotgun")
@@ -33,13 +23,14 @@ public class ClientSetup {
     public static Item SAWD_OFF_SHOTGUN;
 
     public static void init(final FMLClientSetupEvent event) {
+        // TODO: find a way to use registerGlobalProperty
         IItemPropertyGetter countGetter = (stack, world, player) -> {
             return stack.getCount();
         };
-        ItemModelsProperties.registerProperty(HANDMADE_SHELL, new ResourceLocation("count"), countGetter);
-        ItemModelsProperties.registerProperty(BUCKSHOT_SHELL, new ResourceLocation("count"), countGetter);
-        ItemModelsProperties.registerProperty(SLUG_SHELL, new ResourceLocation("count"), countGetter);
-        ItemModelsProperties.registerProperty(RUBBER_SHELL, new ResourceLocation("count"), countGetter);
+        ItemModelsProperties.registerProperty(AntiqueShotgunMod.HANDMADE_SHELL, new ResourceLocation("count"), countGetter);
+        ItemModelsProperties.registerProperty(AntiqueShotgunMod.BUCKSHOT_SHELL, new ResourceLocation("count"), countGetter);
+        ItemModelsProperties.registerProperty(AntiqueShotgunMod.SLUG_SHELL, new ResourceLocation("count"), countGetter);
+        ItemModelsProperties.registerProperty(AntiqueShotgunMod.RUBBER_SHELL, new ResourceLocation("count"), countGetter);
         IItemPropertyGetter slideBackGetter = (stack, world, player) -> {
             return ((ShotgunItem)stack.getItem()).isSlideBack(stack) ? 1 : 0;
         };
