@@ -28,7 +28,7 @@ public class ShotgunItem extends Item {
     }
 
     public int getCycleBackDuration() {
-        return 6;
+        return 8;
     }
 
     public int getCycleForwardDuration() {
