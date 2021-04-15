@@ -46,7 +46,10 @@ public class ShotgunItem extends Item {
         byte ammoType = getAmmoInChamber(stack);
         if (ammoType != AMMO_NONE) {
             player.playSound(AntiqueShotgunMod.SOUND_SHOTGUN_FIRE, 1.5f, 1);
+
             setAmmoInChamber(stack, AMMO_NONE);
+            resetLastActionTime(stack, worldIn);
+
             return ActionResult.resultConsume(stack);
         }
 
@@ -67,15 +70,21 @@ public class ShotgunItem extends Item {
         double posY = player.getPosY();
         double posZ = player.getPosZ();
 
+        long ticksFromLastAction = getTicksFromLastAction(stack, world);
+
         if (getAmmoInChamber(stack) == AMMO_NONE) {
-            int usingDuration = getUseDuration(stack) - timeLeft;
-            if (!isSlideBack(stack) && usingDuration > getCycleBackDuration()) {
+            if (!isSlideBack(stack) && ticksFromLastAction >= getCycleBackDuration()) {
                 world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_BACK, SoundCategory.PLAYERS, 0.5F, 1.0F);
+
                 setSlideBack(stack, true);
-            } else if (isSlideBack(stack) && usingDuration > getCycleBackDuration() + getCycleForwardDuration()) {
+                resetLastActionTime(stack, world);
+
+            } else if (isSlideBack(stack) && ticksFromLastAction >= getCycleForwardDuration()) {
                 world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_FORWARD, SoundCategory.PLAYERS, 0.5F, 1.0F);
+
                 setSlideBack(stack, false);
                 setAmmoInChamber(stack, extractAmmoFromMagazine(stack));
+                resetLastActionTime(stack, world);
             }
         }
     }
@@ -83,6 +92,16 @@ public class ShotgunItem extends Item {
     @Override
     public int getUseDuration(ItemStack stack) {
         return 72000;
+    }
+
+    public long getTicksFromLastAction(ItemStack stack, World world) {
+        CompoundNBT tag = stack.getTag();
+        long lastActionTime = tag != null ? tag.getLong("last_action_time") : 0;
+        return world.getGameTime() - lastActionTime;
+    }
+
+    public void resetLastActionTime(ItemStack stack, World world) {
+        stack.getOrCreateTag().putLong("last_action_time", world.getGameTime());
     }
 
     public boolean isSlideBack(ItemStack stack) {
