@@ -43,23 +43,19 @@ public class ShotgunItem extends Item {
 
         ItemStack stack = player.getHeldItem(hand);
 
-        if (isReady(stack)) {
-            byte ammoType = getAmmoInChamber(stack);
-            if (ammoType != AMMO_NONE) {
-                player.playSound(AntiqueShotgunMod.SOUND_SHOTGUN_FIRE, 1.5f, 1);
-            } else {
-                System.out.println("click");
-            }
-
-            setReady(stack, false);
+        byte ammoType = getAmmoInChamber(stack);
+        if (ammoType != AMMO_NONE) {
+            player.playSound(AntiqueShotgunMod.SOUND_SHOTGUN_FIRE, 1.5f, 1);
             setAmmoInChamber(stack, AMMO_NONE);
-
             return ActionResult.resultConsume(stack);
+        }
 
-        } else {
+        if (getAmmoInMagazineCount(stack) > 0) {
             player.setActiveHand(hand);
             return ActionResult.resultConsume(stack);
         }
+
+        return ActionResult.resultFail(stack);
     }
 
     @Override
@@ -71,7 +67,7 @@ public class ShotgunItem extends Item {
         double posY = player.getPosY();
         double posZ = player.getPosZ();
 
-        if (!isReady(stack)) {
+        if (getAmmoInChamber(stack) == AMMO_NONE) {
             int usingDuration = getUseDuration(stack) - timeLeft;
             if (!isSlideBack(stack) && usingDuration > getCycleBackDuration()) {
                 world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_BACK, SoundCategory.PLAYERS, 0.5F, 1.0F);
@@ -79,7 +75,6 @@ public class ShotgunItem extends Item {
             } else if (isSlideBack(stack) && usingDuration > getCycleBackDuration() + getCycleForwardDuration()) {
                 world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_FORWARD, SoundCategory.PLAYERS, 0.5F, 1.0F);
                 setSlideBack(stack, false);
-                setReady(stack, true);
                 setAmmoInChamber(stack, extractAmmoFromMagazine(stack));
             }
         }
@@ -88,15 +83,6 @@ public class ShotgunItem extends Item {
     @Override
     public int getUseDuration(ItemStack stack) {
         return 72000;
-    }
-
-    public boolean isReady(ItemStack stack) {
-        CompoundNBT tag = stack.getTag();
-        return tag != null && tag.getByte("ready") != 0;
-    }
-
-    public void setReady(ItemStack stack, boolean value) {
-        stack.getOrCreateTag().putByte("ready", (byte) (value ? 1 : 0));
     }
 
     public boolean isSlideBack(ItemStack stack) {
