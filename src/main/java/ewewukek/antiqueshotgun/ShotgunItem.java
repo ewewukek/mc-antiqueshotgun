@@ -27,19 +27,19 @@ public class ShotgunItem extends Item {
         return false;
     }
 
-    public int getCycleBackDuration() {
+    public int getCycleBackDelay() {
         return 8;
     }
 
-    public int getCycleForwardDuration() {
+    public int getCycleForwardDelay() {
         return 6;
     }
 
-    public int getShellPreInsertDuration() {
+    public int getShellPreInsertDelay() {
         return 6;
     }
 
-    public int getShellPostInsertDuration() {
+    public int getShellPostInsertDelay() {
         return 6;
     }
 
@@ -82,7 +82,7 @@ public class ShotgunItem extends Item {
         long ticksFromLastAction = getTicksFromLastAction(stack, world);
 
         if (getAmmoInChamber(stack) == AMMO_NONE) {
-            if (!isSlideBack(stack) && ticksFromLastAction >= getCycleBackDuration()) {
+            if (!isSlideBack(stack) && ticksFromLastAction >= getCycleBackDelay()) {
                 world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_BACK, SoundCategory.PLAYERS, 0.5F, 1.0F);
 
                 setSlideBack(stack, true);
@@ -90,7 +90,7 @@ public class ShotgunItem extends Item {
 
             } else if (isSlideBack(stack)) {
                 if (getAmmoInMagazineCount(stack) > 0) {
-                    if (ticksFromLastAction >= getCycleForwardDuration()) {
+                    if (ticksFromLastAction >= getCycleForwardDelay()) {
                         world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_FORWARD, SoundCategory.PLAYERS, 0.5F, 1.0F);
 
                         setSlideBack(stack, false);
@@ -99,14 +99,14 @@ public class ShotgunItem extends Item {
                     }
                 } else {
                     if (!isReloading(stack)) {
-                        if (ticksFromLastAction >= getShellPreInsertDuration()) {
+                        if (ticksFromLastAction >= getShellPreInsertDelay()) {
                             world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_INSERTING_SHELL, SoundCategory.PLAYERS, 0.5F, 1.0F);
 
                             setReloading(stack, true);
                             resetLastActionTime(stack, world);
                         }
                     } else {
-                        if (ticksFromLastAction >= getShellPostInsertDuration()) {
+                        if (ticksFromLastAction >= getShellPostInsertDelay()) {
                             // add three for testing purposes
                             addAmmoToMagazine(stack, AMMO_BUCKSHOT);
                             addAmmoToMagazine(stack, AMMO_BUCKSHOT);
