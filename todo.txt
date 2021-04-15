@@ -13,6 +13,7 @@
    . configurable
     . reload while holding
     . single key press reloads fully
+     . pressing rmb interrupts reloading
  . first-person animation
   ✔ basic pose
   ✔ cycling animation
