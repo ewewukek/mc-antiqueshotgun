@@ -49,7 +49,6 @@ public class ShotgunItem extends Item {
         }
 
         ItemStack stack = player.getHeldItem(hand);
-
         byte ammoType = getAmmoInChamber(stack);
         if (ammoType != AMMO_NONE) {
             player.playSound(AntiqueShotgunMod.SOUND_SHOTGUN_FIRE, 1.5f, 1);
@@ -76,6 +75,7 @@ public class ShotgunItem extends Item {
         double posY = player.getPosY();
         double posZ = player.getPosZ();
 
+        ItemStack ammoStack = findAmmo(player);
         long ticksFromLastAction = getTicksFromLastAction(stack, world);
 
         if (getAmmoInChamber(stack) == AMMO_NONE) {
@@ -94,7 +94,7 @@ public class ShotgunItem extends Item {
                         setAmmoInChamber(stack, extractAmmoFromMagazine(stack));
                         resetLastActionTime(stack, world);
                     }
-                } else {
+                } else if (!ammoStack.isEmpty()) {
                     if (!isReloading(stack)) {
                         if (ticksFromLastAction >= getShellPreInsertDelay()) {
                             world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_INSERTING_SHELL, SoundCategory.PLAYERS, 0.5F, 1.0F);
@@ -104,10 +104,7 @@ public class ShotgunItem extends Item {
                         }
                     } else {
                         if (ticksFromLastAction >= getShellPostInsertDelay()) {
-                            // add three for testing purposes
-                            addAmmoToMagazine(stack, AMMO_BUCKSHOT);
-                            addAmmoToMagazine(stack, AMMO_BUCKSHOT);
-                            addAmmoToMagazine(stack, AMMO_BUCKSHOT);
+                            addAmmoToMagazine(stack, consumeAmmoStack(ammoStack));
                             setReloading(stack, false);
                             resetLastActionTime(stack, world);
                         }
@@ -120,6 +117,21 @@ public class ShotgunItem extends Item {
     @Override
     public int getUseDuration(ItemStack stack) {
         return 72000;
+    }
+
+    private static byte consumeAmmoStack(ItemStack ammoStack) {
+        Item ammoItem = ammoStack.getItem();
+        ammoStack.shrink(1);
+        if (ammoItem == AntiqueShotgunMod.HANDMADE_SHELL) {
+            return AMMO_HANDMADE;
+        } else if (ammoItem == AntiqueShotgunMod.BUCKSHOT_SHELL) {
+            return AMMO_BUCKSHOT;
+        } else if (ammoItem == AntiqueShotgunMod.SLUG_SHELL) {
+            return AMMO_SLUG;
+        } else if (ammoItem == AntiqueShotgunMod.RUBBER_SHELL) {
+            return AMMO_RUBBER;
+        }
+        return AMMO_NONE;
     }
 
     private boolean isAmmo(ItemStack stack) {
