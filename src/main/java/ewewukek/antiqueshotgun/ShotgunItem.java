@@ -30,20 +30,12 @@ public class ShotgunItem extends Item {
         return 4;
     }
 
-    public int getCycleBackDelay() {
-        return 8;
+    public int getReloadDuration() {
+        return 14;
     }
 
-    public int getCycleForwardDelay() {
-        return 6;
-    }
-
-    public int getShellPreInsertDelay() {
-        return 6;
-    }
-
-    public int getShellPostInsertDelay() {
-        return 6;
+    public int getShellInsertDuration() {
+        return 12;
     }
 
     @Override
@@ -55,84 +47,80 @@ public class ShotgunItem extends Item {
         ItemStack stack = player.getHeldItem(hand);
         if (isReloading(stack)) {
             setReloading(stack, false);
-            return ActionResult.resultFail(stack);
         }
 
+        long currentTime = worldIn.getGameTime();
         byte ammoType = getAmmoInChamber(stack);
-        if (ammoType != AMMO_NONE) {
+        if (hasTimerExpired(stack, currentTime) && ammoType != AMMO_NONE) {
             player.playSound(AntiqueShotgunMod.SOUND_SHOTGUN_FIRE, 1.5f, 1);
 
             setAmmoInChamber(stack, AMMO_NONE);
-            resetLastActionTime(stack, worldIn);
-
-            return ActionResult.resultConsume(stack);
+            setTimerExpiryTime(stack, currentTime + (long)(getReloadDuration() * 0.5));
         }
 
-        ItemStack ammoStack = findAmmo(player);
-        if (getAmmoInMagazineCount(stack) > 0 || !ammoStack.isEmpty()) {
-            player.setActiveHand(hand);
-            return ActionResult.resultConsume(stack);
-        }
-
-        return ActionResult.resultFail(stack);
+        return ActionResult.resultConsume(stack);
     }
 
     public void update(PlayerEntity player, ItemStack stack) {
         World world = player.world;
 
+        long currentTime = world.getGameTime();
+        if (!hasTimerExpired(stack, currentTime)) {
+            return;
+        }
+
         double posX = player.getPosX();
         double posY = player.getPosY();
         double posZ = player.getPosZ();
 
-        long ticksFromLastAction = getTicksFromLastAction(stack, world);
         boolean insertShell = false;
-        ItemStack ammoStack = findAmmo(player);
 
         if (getAmmoInChamber(stack) == AMMO_NONE) {
             if (!isSlideBack(stack)) {
-                if (ticksFromLastAction >= getCycleBackDelay()) {
-                    world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_BACK, SoundCategory.PLAYERS, 0.5F, 1.0F);
+                world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_BACK, SoundCategory.PLAYERS, 0.5F, 1.0F);
 
-                    setSlideBack(stack, true);
-                    resetLastActionTime(stack, world);
-                }
+                setSlideBack(stack, true);
+                setTimerExpiryTime(stack, currentTime + (long)(getReloadDuration() * 0.5));
+
+                return;
+
             } else if (isSlideBack(stack)) {
                 if (getAmmoInMagazineCount(stack) > 0) {
-                    if (ticksFromLastAction >= getCycleForwardDelay()) {
-                        world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_FORWARD, SoundCategory.PLAYERS, 0.5F, 1.0F);
+                    world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_FORWARD, SoundCategory.PLAYERS, 0.5F, 1.0F);
 
-                        setSlideBack(stack, false);
-                        setAmmoInChamber(stack, extractAmmoFromMagazine(stack));
-                        resetLastActionTime(stack, world);
-                    }
+                    setSlideBack(stack, false);
+                    setAmmoInChamber(stack, extractAmmoFromMagazine(stack));
+
+                    return;
+
                 } else {
                     insertShell = true;
                 }
             }
-        } else if (isReloading(stack)) {
+        }
+
+        ItemStack ammoStack = findAmmo(player);
+
+        if (isReloading(stack)) {
             if (getAmmoInMagazineCount(stack) < getMagazineCapacity() && !ammoStack.isEmpty()) {
                 insertShell = true;
+
             } else {
                 setReloading(stack, false);
             }
         }
 
-        if (insertShell) {
-            if (!ammoStack.isEmpty()) {
-                if (!isInsertingShell(stack)) {
-                    if (ticksFromLastAction >= getShellPreInsertDelay()) {
-                        world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_INSERTING_SHELL, SoundCategory.PLAYERS, 0.5F, 1.0F);
+        if (insertShell && !ammoStack.isEmpty()) {
+            if (!isInsertingShell(stack)) {
+                setInsertingShell(stack, true);
+                setTimerExpiryTime(stack, currentTime + (long)(getShellInsertDuration() * 0.35));
 
-                        setInsertingShell(stack, true);
-                        resetLastActionTime(stack, world);
-                    }
-                } else {
-                    if (ticksFromLastAction >= getShellPostInsertDelay()) {
-                        addAmmoToMagazine(stack, consumeAmmoStack(ammoStack));
-                        setInsertingShell(stack, false);
-                        resetLastActionTime(stack, world);
-                    }
-                }
+            } else {
+                world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_INSERTING_SHELL, SoundCategory.PLAYERS, 0.5F, 1.0F);
+
+                addAmmoToMagazine(stack, consumeAmmoStack(ammoStack));
+                setInsertingShell(stack, false);
+                setTimerExpiryTime(stack, currentTime + (long)(getShellInsertDuration() * 0.65));
             }
         }
     }
@@ -179,14 +167,14 @@ public class ShotgunItem extends Item {
         return ItemStack.EMPTY;
     }
 
-    public long getTicksFromLastAction(ItemStack stack, World world) {
+    public boolean hasTimerExpired(ItemStack stack, long currentTime) {
         CompoundNBT tag = stack.getTag();
-        long lastActionTime = tag != null ? tag.getLong("last_action_time") : 0;
-        return world.getGameTime() - lastActionTime;
+        long storedTime = tag != null ? tag.getLong("timer_expiry_time") : 0;
+        return currentTime > storedTime;
     }
 
-    public void resetLastActionTime(ItemStack stack, World world) {
-        stack.getOrCreateTag().putLong("last_action_time", world.getGameTime());
+    public void setTimerExpiryTime(ItemStack stack, long time) {
+        stack.getOrCreateTag().putLong("timer_expiry_time", time);
     }
 
     public boolean isSlideBack(ItemStack stack) {
@@ -198,7 +186,7 @@ public class ShotgunItem extends Item {
         stack.getOrCreateTag().putByte("slide_back", (byte) (value ? 1 : 0));
     }
 
-    // synthetic state to add a delay between inserting and moving pump forward
+    // synthetic state to add a delay before playing the shell insertion sound
     public boolean isInsertingShell(ItemStack stack) {
         CompoundNBT tag = stack.getTag();
         return tag != null && tag.getByte("inserting_shell") != 0;
