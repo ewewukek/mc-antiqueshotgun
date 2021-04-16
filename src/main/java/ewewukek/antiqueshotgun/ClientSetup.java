@@ -1,6 +1,9 @@
 package ewewukek.antiqueshotgun;
 
+import org.lwjgl.glfw.GLFW;
+
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemModelsProperties;
@@ -8,7 +11,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderHandEvent;
+import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.ObjectHolder;
@@ -22,6 +27,8 @@ public class ClientSetup {
     @ObjectHolder(AntiqueShotgunMod.MODID + ":sawd_off_shotgun")
     public static Item SAWD_OFF_SHOTGUN;
 
+    public static KeyBinding RELOAD_KEY = new KeyBinding("key.antiqueshotgun.reload", GLFW.GLFW_KEY_R, "key.antiqueshotgun.category");
+
     public static void init(final FMLClientSetupEvent event) {
         // TODO: find a way to use registerGlobalProperty
         IItemPropertyGetter countGetter = (stack, world, player) -> {
@@ -31,12 +38,15 @@ public class ClientSetup {
         ItemModelsProperties.registerProperty(AntiqueShotgunMod.BUCKSHOT_SHELL, new ResourceLocation("count"), countGetter);
         ItemModelsProperties.registerProperty(AntiqueShotgunMod.SLUG_SHELL, new ResourceLocation("count"), countGetter);
         ItemModelsProperties.registerProperty(AntiqueShotgunMod.RUBBER_SHELL, new ResourceLocation("count"), countGetter);
+
         IItemPropertyGetter slideBackGetter = (stack, world, player) -> {
             return ((ShotgunItem)stack.getItem()).isSlideBack(stack) ? 1 : 0;
         };
         ItemModelsProperties.registerProperty(ANTIQUE_SHOTGUN, new ResourceLocation(AntiqueShotgunMod.MODID, "slide_back"), slideBackGetter);
         ItemModelsProperties.registerProperty(HANDMADE_SHOTGUN, new ResourceLocation(AntiqueShotgunMod.MODID, "slide_back"), slideBackGetter);
         ItemModelsProperties.registerProperty(SAWD_OFF_SHOTGUN, new ResourceLocation(AntiqueShotgunMod.MODID, "slide_back"), slideBackGetter);
+
+        ClientRegistry.registerKeyBinding(RELOAD_KEY);
     }
 
     @SubscribeEvent
@@ -50,6 +60,13 @@ public class ClientSetup {
                 event.getSwingProgress(), event.getEquipProgress(), stack,
                 event.getMatrixStack(), event.getBuffers(), event.getLight());
             event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onClientTickEvent(final ClientTickEvent event) {
+        if (RELOAD_KEY.isPressed()) {
+            System.out.println("reload pressed");
         }
     }
 }
