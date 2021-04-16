@@ -1,8 +1,11 @@
 package ewewukek.antiqueshotgun;
 
+import java.util.function.Supplier;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -13,11 +16,22 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fml.network.NetworkRegistry;
+import net.minecraftforge.fml.network.simple.SimpleChannel;
 import net.minecraftforge.registries.ObjectHolder;
 
 @Mod(AntiqueShotgunMod.MODID)
 public class AntiqueShotgunMod {
     public static final String MODID = "antiqueshotgun";
+    public static final String PROTOCOL_VERSION = "1";
+
+    public static final SimpleChannel NETWORK_CHANNEL = NetworkRegistry.newSimpleChannel(
+        new ResourceLocation(MODID, "main"),
+        () -> PROTOCOL_VERSION,
+        PROTOCOL_VERSION::equals,
+        PROTOCOL_VERSION::equals
+    );
 
     @ObjectHolder(MODID + ":handmade_shell")
     public static Item HANDMADE_SHELL;
@@ -41,6 +55,7 @@ public class AntiqueShotgunMod {
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
         });
+        NETWORK_CHANNEL.registerMessage(1, ReloadKeyChangedPacket.class, ReloadKeyChangedPacket::encode, ReloadKeyChangedPacket::new, ReloadKeyChangedPacket::handle);
     }
 
     @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -80,6 +95,30 @@ public class AntiqueShotgunMod {
             ItemStack stack = event.player.getHeldItem(Hand.MAIN_HAND);
             if (stack.getItem() instanceof ShotgunItem) {
                 ((ShotgunItem)stack.getItem()).update(event.player, stack);
+            }
+        }
+    }
+
+    public static class ReloadKeyChangedPacket {
+        private boolean isDown;
+
+        ReloadKeyChangedPacket(boolean isDown) {
+            this.isDown = isDown;
+        }
+
+        ReloadKeyChangedPacket(PacketBuffer buf) {
+            isDown = buf.readByte() != 0;
+        }
+
+        void encode(PacketBuffer buf) {
+            buf.writeByte(isDown ? 1 : 0);
+        }
+
+        void handle(Supplier<NetworkEvent.Context> context) {
+            if (isDown) {
+                System.out.println("key pressed");
+            } else {
+                System.out.println("key released");
             }
         }
     }

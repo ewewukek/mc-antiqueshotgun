@@ -27,7 +27,8 @@ public class ClientSetup {
     @ObjectHolder(AntiqueShotgunMod.MODID + ":sawd_off_shotgun")
     public static Item SAWD_OFF_SHOTGUN;
 
-    public static KeyBinding RELOAD_KEY = new KeyBinding("key.antiqueshotgun.reload", GLFW.GLFW_KEY_R, "key.antiqueshotgun.category");
+    private static final KeyBinding reloadKey = new KeyBinding("key.antiqueshotgun.reload", GLFW.GLFW_KEY_R, "key.antiqueshotgun.category");
+    private static boolean lastReloadKeyIsDown;
 
     public static void init(final FMLClientSetupEvent event) {
         // TODO: find a way to use registerGlobalProperty
@@ -46,7 +47,7 @@ public class ClientSetup {
         ItemModelsProperties.registerProperty(HANDMADE_SHOTGUN, new ResourceLocation(AntiqueShotgunMod.MODID, "slide_back"), slideBackGetter);
         ItemModelsProperties.registerProperty(SAWD_OFF_SHOTGUN, new ResourceLocation(AntiqueShotgunMod.MODID, "slide_back"), slideBackGetter);
 
-        ClientRegistry.registerKeyBinding(RELOAD_KEY);
+        ClientRegistry.registerKeyBinding(reloadKey);
     }
 
     @SubscribeEvent
@@ -65,8 +66,10 @@ public class ClientSetup {
 
     @SubscribeEvent
     public static void onClientTickEvent(final ClientTickEvent event) {
-        if (RELOAD_KEY.isPressed()) {
-            System.out.println("reload pressed");
+        boolean reloadKeyIsDown = reloadKey.isKeyDown();
+        if (reloadKeyIsDown != lastReloadKeyIsDown) {
+            AntiqueShotgunMod.NETWORK_CHANNEL.sendToServer(new AntiqueShotgunMod.ReloadKeyChangedPacket(reloadKeyIsDown));
+            lastReloadKeyIsDown = reloadKeyIsDown;
         }
     }
 }
