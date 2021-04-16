@@ -2,6 +2,7 @@ package ewewukek.antiqueshotgun;
 
 import java.util.function.Supplier;
 
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -114,12 +115,15 @@ public class AntiqueShotgunMod {
             buf.writeByte(isDown ? 1 : 0);
         }
 
-        void handle(Supplier<NetworkEvent.Context> context) {
-            if (isDown) {
-                System.out.println("key pressed");
-            } else {
-                System.out.println("key released");
-            }
+        void handle(Supplier<NetworkEvent.Context> ctx) {
+            ctx.get().enqueueWork(() -> {
+                PlayerEntity player = ctx.get().getSender();
+                ItemStack stack = player.getHeldItem(Hand.MAIN_HAND);
+                if (stack.getItem() instanceof ShotgunItem) {
+                    ((ShotgunItem)stack.getItem()).reloadKeyUpdated(player, stack, isDown);
+                }
+            });
+            ctx.get().setPacketHandled(true);
         }
     }
 }

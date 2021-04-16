@@ -53,6 +53,11 @@ public class ShotgunItem extends Item {
         }
 
         ItemStack stack = player.getHeldItem(hand);
+        if (isReloading(stack)) {
+            setReloading(stack, false);
+            return ActionResult.resultFail(stack);
+        }
+
         byte ammoType = getAmmoInChamber(stack);
         if (ammoType != AMMO_NONE) {
             player.playSound(AntiqueShotgunMod.SOUND_SHOTGUN_FIRE, 1.5f, 1);
@@ -80,7 +85,8 @@ public class ShotgunItem extends Item {
         double posZ = player.getPosZ();
 
         long ticksFromLastAction = getTicksFromLastAction(stack, world);
-        boolean reload = false;
+        boolean insertShell = false;
+        ItemStack ammoStack = findAmmo(player);
 
         if (getAmmoInChamber(stack) == AMMO_NONE) {
             if (!isSlideBack(stack)) {
@@ -100,15 +106,18 @@ public class ShotgunItem extends Item {
                         resetLastActionTime(stack, world);
                     }
                 } else {
-                    reload = true;
+                    insertShell = true;
                 }
             }
-        } else if (getAmmoInMagazineCount(stack) < getMagazineCapacity()) {
-            reload = true;
+        } else if (isReloading(stack)) {
+            if (getAmmoInMagazineCount(stack) < getMagazineCapacity() && !ammoStack.isEmpty()) {
+                insertShell = true;
+            } else {
+                setReloading(stack, false);
+            }
         }
 
-        if (reload) {
-            ItemStack ammoStack = findAmmo(player);
+        if (insertShell) {
             if (!ammoStack.isEmpty()) {
                 if (!isInsertingShell(stack)) {
                     if (ticksFromLastAction >= getShellPreInsertDelay()) {
@@ -125,6 +134,12 @@ public class ShotgunItem extends Item {
                     }
                 }
             }
+        }
+    }
+
+    public void reloadKeyUpdated(PlayerEntity player, ItemStack stack, boolean isDown) {
+        if (isDown && !findAmmo(player).isEmpty()) {
+            setReloading(stack, true);
         }
     }
 
@@ -191,6 +206,15 @@ public class ShotgunItem extends Item {
 
     public void setInsertingShell(ItemStack stack, boolean value) {
         stack.getOrCreateTag().putByte("inserting_shell", (byte) (value ? 1 : 0));
+    }
+
+    public boolean isReloading(ItemStack stack) {
+        CompoundNBT tag = stack.getTag();
+        return tag != null && tag.getByte("reloading") != 0;
+    }
+
+    public void setReloading(ItemStack stack, boolean value) {
+        stack.getOrCreateTag().putByte("reloading", (byte) (value ? 1 : 0));
     }
 
     public byte getAmmoInChamber(ItemStack stack) {
