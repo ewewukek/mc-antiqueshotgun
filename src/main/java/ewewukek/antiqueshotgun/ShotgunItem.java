@@ -110,17 +110,17 @@ public class ShotgunItem extends Item {
         if (reload) {
             ItemStack ammoStack = findAmmo(player);
             if (!ammoStack.isEmpty()) {
-                if (!isReloading(stack)) {
+                if (!isInsertingShell(stack)) {
                     if (ticksFromLastAction >= getShellPreInsertDelay()) {
                         world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_INSERTING_SHELL, SoundCategory.PLAYERS, 0.5F, 1.0F);
 
-                        setReloading(stack, true);
+                        setInsertingShell(stack, true);
                         resetLastActionTime(stack, world);
                     }
                 } else {
                     if (ticksFromLastAction >= getShellPostInsertDelay()) {
                         addAmmoToMagazine(stack, consumeAmmoStack(ammoStack));
-                        setReloading(stack, false);
+                        setInsertingShell(stack, false);
                         resetLastActionTime(stack, world);
                     }
                 }
@@ -184,13 +184,13 @@ public class ShotgunItem extends Item {
     }
 
     // synthetic state to add a delay between inserting and moving pump forward
-    public boolean isReloading(ItemStack stack) {
+    public boolean isInsertingShell(ItemStack stack) {
         CompoundNBT tag = stack.getTag();
-        return tag != null && tag.getByte("reloading") != 0;
+        return tag != null && tag.getByte("inserting_shell") != 0;
     }
 
-    public void setReloading(ItemStack stack, boolean value) {
-        stack.getOrCreateTag().putByte("reloading", (byte) (value ? 1 : 0));
+    public void setInsertingShell(ItemStack stack, boolean value) {
+        stack.getOrCreateTag().putByte("inserting_shell", (byte) (value ? 1 : 0));
     }
 
     public byte getAmmoInChamber(ItemStack stack) {
