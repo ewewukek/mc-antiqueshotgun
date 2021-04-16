@@ -122,3 +122,4 @@
  . reload rate
  . handmade shotgun
  . antique
+ . send server config to a client
