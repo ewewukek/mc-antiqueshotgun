@@ -11,7 +11,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 
-version = '0.0.3'
+version = '0.0.4'
 group = 'ewewukek.antiqueshotgun'
 archivesBaseName = 'antiqueshotgun-1.16.5-forge'
 
