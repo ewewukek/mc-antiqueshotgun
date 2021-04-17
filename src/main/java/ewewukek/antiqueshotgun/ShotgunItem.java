@@ -57,7 +57,7 @@ public class ShotgunItem extends Item {
                 worldIn.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_FIRE, SoundCategory.PLAYERS, 1.5F, 1);
 
                 setAmmoInChamber(stack, AMMO_NONE);
-                setTimerExpiryTime(stack, currentTime + (long)(getReloadDuration() * 0.5));
+                setTimerExpiryTime(stack, currentTime + postFireDelay());
             }
         }
 
@@ -84,7 +84,7 @@ public class ShotgunItem extends Item {
                 world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_BACK, SoundCategory.PLAYERS, 0.5F, 1.0F);
 
                 setSlideBack(stack, true);
-                setTimerExpiryTime(stack, currentTime + (long)(getReloadDuration() * 0.5));
+                setTimerExpiryTime(stack, currentTime + midCycleDelay());
 
                 return;
 
@@ -94,6 +94,7 @@ public class ShotgunItem extends Item {
 
                     setSlideBack(stack, false);
                     setAmmoInChamber(stack, extractAmmoFromMagazine(stack));
+                    setTimerExpiryTime(stack, currentTime + postCycleDelay());
 
                     return;
 
@@ -117,14 +118,14 @@ public class ShotgunItem extends Item {
         if (insertShell && !ammoStack.isEmpty()) {
             if (!isInsertingShell(stack)) {
                 setInsertingShell(stack, true);
-                setTimerExpiryTime(stack, currentTime + (long)(getShellInsertDuration() * 0.35));
+                setTimerExpiryTime(stack, currentTime + shellPreInsertDelay());
 
             } else {
                 world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_INSERTING_SHELL, SoundCategory.PLAYERS, 0.5F, 1.0F);
 
                 addAmmoToMagazine(stack, consumeAmmoStack(ammoStack));
                 setInsertingShell(stack, false);
-                setTimerExpiryTime(stack, currentTime + (long)(getShellInsertDuration() * 0.65));
+                setTimerExpiryTime(stack, currentTime + shellPostInsertDelay());
             }
         }
     }
@@ -138,6 +139,27 @@ public class ShotgunItem extends Item {
     @Override
     public int getUseDuration(ItemStack stack) {
         return 72000;
+    }
+
+    // helper methods to ensure that sum of each stage delay equals reloading and shell adding durations
+    private int postFireDelay() {
+        return (getReloadDuration() - postCycleDelay()) / 2;
+    }
+
+    private int midCycleDelay() {
+        return getReloadDuration() - postFireDelay() - postCycleDelay();
+    }
+
+    private int postCycleDelay() {
+        return 2;
+    }
+
+    private int shellPreInsertDelay() {
+        return (int)(getShellInsertDuration() * 0.35);
+    }
+
+    private int shellPostInsertDelay() {
+        return getShellInsertDuration() - shellPreInsertDelay();
     }
 
     private static byte consumeAmmoStack(ItemStack ammoStack) {
