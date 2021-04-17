@@ -45,24 +45,28 @@ public class ShotgunItem extends Item {
         }
 
         ItemStack stack = player.getHeldItem(hand);
-        if (isReloading(stack)) {
-            setReloading(stack, false);
+
+        if (!worldIn.isRemote) {
+            if (isReloading(stack)) {
+                setReloading(stack, false);
+            }
+
+            long currentTime = worldIn.getGameTime();
+            byte ammoType = getAmmoInChamber(stack);
+            if (hasTimerExpired(stack, currentTime) && ammoType != AMMO_NONE) {
+                worldIn.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_FIRE, SoundCategory.PLAYERS, 1.5F, 1);
+
+                setAmmoInChamber(stack, AMMO_NONE);
+                setTimerExpiryTime(stack, currentTime + (long)(getReloadDuration() * 0.5));
+            }
         }
 
-        long currentTime = worldIn.getGameTime();
-        byte ammoType = getAmmoInChamber(stack);
-        if (hasTimerExpired(stack, currentTime) && ammoType != AMMO_NONE) {
-            player.playSound(AntiqueShotgunMod.SOUND_SHOTGUN_FIRE, 1.5f, 1);
-
-            setAmmoInChamber(stack, AMMO_NONE);
-            setTimerExpiryTime(stack, currentTime + (long)(getReloadDuration() * 0.5));
-        }
-
-        return ActionResult.resultConsume(stack);
+        return ActionResult.resultSuccess(stack);
     }
 
     public void update(PlayerEntity player, ItemStack stack) {
         World world = player.world;
+        if (world.isRemote) return;
 
         long currentTime = world.getGameTime();
         if (!hasTimerExpired(stack, currentTime)) {
