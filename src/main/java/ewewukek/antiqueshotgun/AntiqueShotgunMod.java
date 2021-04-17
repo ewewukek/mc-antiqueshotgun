@@ -93,9 +93,11 @@ public class AntiqueShotgunMod {
     public static class EventHandlers {
         @SubscribeEvent
         public static void onPlayerTick(final TickEvent.PlayerTickEvent event) {
-            ItemStack stack = event.player.getHeldItem(Hand.MAIN_HAND);
-            if (stack.getItem() instanceof ShotgunItem) {
-                ((ShotgunItem)stack.getItem()).update(event.player, stack);
+            if (event.phase == TickEvent.Phase.START) {
+                ItemStack stack = event.player.getHeldItem(Hand.MAIN_HAND);
+                if (stack.getItem() instanceof ShotgunItem) {
+                    ((ShotgunItem)stack.getItem()).update(event.player, stack);
+                }
             }
         }
     }
