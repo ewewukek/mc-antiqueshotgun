@@ -9,11 +9,11 @@
   ✗ auto-reloading while standing still (it's annoying)
   ✔ ignoring off-hand slot
   . don't reload if there is another shotgun of the same type in inventory
-  . reload button
-   . configurable
+  ✔ reload button
+   ✔ configurable
     . reload while holding
-    . single key press reloads fully
-     . pressing rmb interrupts reloading
+    ✔ single key press reloads fully
+     ✔ pressing rmb interrupts reloading
  . first-person animation
   ✔ basic pose
   ✔ cycling animation
@@ -24,6 +24,7 @@
  . melee damage & knockback
   . custom hit sound
  . firing bullets
+ . unloading in crafting table
 . handmade
  ✔ register items
  ✔ multi-step crafting
@@ -106,6 +107,7 @@
  . spawns at lv5 raid replacing one of the mobs
  . drops buckshot, emeralds and antique shotgun
 . backtools mod support
+. powershot mod support
 . advancements
 . configuration
  . bullet speed
@@ -122,4 +124,5 @@
  . reload rate
  . handmade shotgun
  . antique
+ . disable magazine (always use ammo from inventory)
  . send server config to a client
