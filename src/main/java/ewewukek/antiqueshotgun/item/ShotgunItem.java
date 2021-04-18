@@ -3,6 +3,7 @@ package ewewukek.antiqueshotgun.item;
 import java.util.Arrays;
 
 import ewewukek.antiqueshotgun.AntiqueShotgunMod;
+import ewewukek.antiqueshotgun.BulletEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -10,6 +11,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 public class ShotgunItem extends Item {
@@ -55,6 +57,7 @@ public class ShotgunItem extends Item {
             long currentTime = worldIn.getGameTime();
             byte ammoType = getAmmoInChamber(stack);
             if (hasTimerExpired(stack, currentTime) && ammoType != AMMO_NONE) {
+                fireBullets(worldIn, player, ammoType);
                 worldIn.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_FIRE, SoundCategory.PLAYERS, 1.5F, 1);
 
                 setAmmoInChamber(stack, AMMO_NONE);
@@ -140,6 +143,33 @@ public class ShotgunItem extends Item {
     @Override
     public int getUseDuration(ItemStack stack) {
         return 72000;
+    }
+
+    private void fireBullets(World world, PlayerEntity player, byte ammoType) {
+        final float deg2rad = 0.017453292f;
+        Vector3d front = new Vector3d(0, 0, 1).rotatePitch(-deg2rad * player.rotationPitch).rotateYaw(-deg2rad * player.rotationYaw);
+        Vector3d pos = new Vector3d(player.getPosX(), player.getPosY() + player.getEyeHeight(), player.getPosZ());
+
+/*
+        float angle = (float) Math.PI * 2 * random.nextFloat();
+        float gaussian = Math.abs((float) random.nextGaussian());
+        if (gaussian > 4) gaussian = 4;
+
+        front = front.rotatePitch(bulletStdDev * gaussian * MathHelper.sin(angle))
+                .rotateYaw(bulletStdDev * gaussian * MathHelper.cos(angle));
+
+        Vector3d motion = front.scale(bulletSpeed);
+
+        Vector3d playerMotion = player.getMotion();
+        motion.add(playerMotion.x, player.isOnGround() ? 0 : playerMotion.y, playerMotion.z);
+ */
+        BulletEntity bullet = new BulletEntity(world);
+        bullet.setShooter(player);
+        bullet.setPosition(pos.x, pos.y, pos.z);
+//        bullet.setMotion(motion);
+
+        world.addEntity(bullet);
+
     }
 
     // helper methods to ensure that sum of each stage delay equals reloading and shell adding durations

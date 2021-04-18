@@ -5,6 +5,8 @@ import java.util.function.Supplier;
 import ewewukek.antiqueshotgun.item.AntiqueShotgunItem;
 import ewewukek.antiqueshotgun.item.HandmadeShotgunItem;
 import ewewukek.antiqueshotgun.item.ShotgunItem;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -55,6 +57,9 @@ public class AntiqueShotgunMod {
     @ObjectHolder(MODID + ":shotgun_inserting_shell")
     public static SoundEvent SOUND_SHOTGUN_INSERTING_SHELL;
 
+    @ObjectHolder(MODID + ":bullet")
+    public static EntityType<BulletEntity> BULLET_ENTITY_TYPE;
+
     public AntiqueShotgunMod() {
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
@@ -78,6 +83,16 @@ public class AntiqueShotgunMod {
                 new Item(new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(MODID, "handmade_shell"),
                 new Item(new Item.Properties().group(ItemGroup.MISC)).setRegistryName(MODID, "rubber"),
                 new Item(new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(MODID, "rubber_shell")
+            );
+        }
+
+        @SubscribeEvent
+        public static void onEntityRegistry(final RegistryEvent.Register<EntityType<?>> event) {
+            event.getRegistry().register(
+                EntityType.Builder.<BulletEntity>create(EntityClassification.MISC)
+                    .setCustomClientFactory(BulletEntity::new).size(0.25f, 0.25f)
+                    .setTrackingRange(64).setUpdateInterval(5).setShouldReceiveVelocityUpdates(false)
+                    .build(MODID + ":bullet").setRegistryName(MODID, "bullet")
             );
         }
 
