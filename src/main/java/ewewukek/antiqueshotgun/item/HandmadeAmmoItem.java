@@ -6,7 +6,7 @@ public class HandmadeAmmoItem extends AmmoItem {
     }
 
     public static int pelletCount = 9;
-    public static float spreadStdDev = 2;
+    public static float spreadStdDev = (float)Math.toRadians(2);
     public static float speed = 20;
     public static float range = 15;
     public static float damage = 20;

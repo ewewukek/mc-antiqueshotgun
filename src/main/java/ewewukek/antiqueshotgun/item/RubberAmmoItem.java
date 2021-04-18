@@ -5,7 +5,7 @@ public class RubberAmmoItem extends AmmoItem {
         super(properties);
     }
 
-    public static float spreadStdDev = 0.5f;
+    public static float spreadStdDev = (float)Math.toRadians(0.5);
     public static float speed = 10;
     public static float range = 20;
     public static float damage = 1;
