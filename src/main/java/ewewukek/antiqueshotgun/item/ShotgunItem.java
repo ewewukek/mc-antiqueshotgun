@@ -12,6 +12,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
@@ -133,28 +134,28 @@ public abstract class ShotgunItem extends Item {
         final float deg2rad = 0.017453292f;
         Vector3d front = new Vector3d(0, 0, 1).rotatePitch(-deg2rad * player.rotationPitch).rotateYaw(-deg2rad * player.rotationYaw);
         Vector3d pos = new Vector3d(player.getPosX(), player.getPosY() + player.getEyeHeight(), player.getPosZ());
-
-/*
-        float angle = (float) Math.PI * 2 * random.nextFloat();
-        float gaussian = Math.abs((float) random.nextGaussian());
-        if (gaussian > 4) gaussian = 4;
-
-        front = front.rotatePitch(bulletStdDev * gaussian * MathHelper.sin(angle))
-                .rotateYaw(bulletStdDev * gaussian * MathHelper.cos(angle));
-
-        Vector3d motion = front.scale(bulletSpeed);
-
         Vector3d playerMotion = player.getMotion();
-        motion.add(playerMotion.x, player.isOnGround() ? 0 : playerMotion.y, playerMotion.z);
- */
-        BulletEntity bullet = new BulletEntity(world);
-        bullet.ammoType = ammoType;
-        bullet.setShooter(player);
-        bullet.setPosition(pos.x, pos.y, pos.z);
-//        bullet.setMotion(motion);
 
-        world.addEntity(bullet);
+        AmmoItem ammoItem = ammoType.toItem();
+        for (int i = 0; i < ammoItem.pelletCount(); ++i) {
+            float angle = (float) Math.PI * 2 * random.nextFloat();
+            float gaussian = Math.abs((float) random.nextGaussian());
+            if (gaussian > 4) gaussian = 4;
 
+            Vector3d motion = front.rotatePitch(ammoItem.spreadStdDev() * gaussian * MathHelper.sin(angle))
+                .rotateYaw(ammoItem.spreadStdDev() * gaussian * MathHelper.cos(angle))
+                .scale(ammoItem.speed());
+
+            motion.add(playerMotion.x, player.isOnGround() ? 0 : playerMotion.y, playerMotion.z);
+
+            BulletEntity bullet = new BulletEntity(world);
+            bullet.ammoType = ammoType;
+            bullet.setShooter(player);
+            bullet.setPosition(pos.x, pos.y, pos.z);
+            bullet.setMotion(motion);
+
+            world.addEntity(bullet);
+        }
     }
 
     // helper methods to ensure that sum of each stage delay equals reloading and shell adding durations
