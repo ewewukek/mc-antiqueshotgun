@@ -2,6 +2,7 @@ package ewewukek.antiqueshotgun;
 
 import java.util.function.Supplier;
 
+import ewewukek.antiqueshotgun.item.AmmoItem;
 import ewewukek.antiqueshotgun.item.AntiqueShotgunItem;
 import ewewukek.antiqueshotgun.item.BuckshotAmmoItem;
 import ewewukek.antiqueshotgun.item.HandmadeAmmoItem;
@@ -45,13 +46,13 @@ public class AntiqueShotgunMod {
     );
 
     @ObjectHolder(MODID + ":handmade_shell")
-    public static Item HANDMADE_SHELL;
+    public static AmmoItem HANDMADE_SHELL;
     @ObjectHolder(MODID + ":buckshot_shell")
-    public static Item BUCKSHOT_SHELL;
+    public static AmmoItem BUCKSHOT_SHELL;
     @ObjectHolder(MODID + ":slug_shell")
-    public static Item SLUG_SHELL;
+    public static AmmoItem SLUG_SHELL;
     @ObjectHolder(MODID + ":rubber_shell")
-    public static Item RUBBER_SHELL;
+    public static AmmoItem RUBBER_SHELL;
 
     @ObjectHolder(MODID + ":shotgun_fire")
     public static SoundEvent SOUND_SHOTGUN_FIRE;

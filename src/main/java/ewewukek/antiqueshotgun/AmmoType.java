@@ -1,5 +1,6 @@
 package ewewukek.antiqueshotgun;
 
+import ewewukek.antiqueshotgun.item.AmmoItem;
 import net.minecraft.item.Item;
 
 public enum AmmoType {
@@ -21,6 +22,21 @@ public enum AmmoType {
             return 4;
         default:
             return 0;
+        }
+    }
+
+    public AmmoItem toItem() {
+        switch(this) {
+        case HANDMADE:
+            return AntiqueShotgunMod.HANDMADE_SHELL;
+        case BUCKSHOT:
+            return AntiqueShotgunMod.BUCKSHOT_SHELL;
+        case SLUG:
+            return AntiqueShotgunMod.SLUG_SHELL;
+        case RUBBER:
+            return AntiqueShotgunMod.RUBBER_SHELL;
+        default:
+            return null;
         }
     }
 
