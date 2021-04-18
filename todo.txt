@@ -124,5 +124,6 @@
  . reload rate
  . handmade shotgun
  . antique
+ . disable auto reload on empty magazine
  . disable magazine (always use ammo from inventory)
  . send server config to a client
