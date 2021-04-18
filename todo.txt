@@ -23,14 +23,14 @@
   . reloading animation
  . melee damage & knockback
   . custom hit sound
- . firing bullets
+ ✔ firing bullets
  . unloading in crafting table
 . handmade
  ✔ register items
  ✔ multi-step crafting
  . has a chance of misfire
- . less ammo capacity
- . slower cycling
+ ✔ less ammo capacity
+ ✔ slower cycling
  . higher spread
  . less damage and range 0.8-0.9
 . antique (Ol' Betsy)
@@ -49,8 +49,8 @@
  ✔ made by putting handmade in a stonecutter
   . decreases durability by half
  . can't fire slugs or rubber
- . 2 shell magazine
- . usable from off-hand
+ ✔ 2 shell magazine
+ ✔ usable from off-hand
  . higher spread
  . less damage and range
 . sounds
@@ -66,36 +66,26 @@
   ✔ predicate for stack size
  . slug
   ✔ recipe
-  . range: 20-25
-  . damage: 23-25
-  . no spread
-  . high velocity
-  . entity
-   . reuse musket's texture
+  ✔ range/damage/no spread/high velocity
+  ✔ entity
   . slower reloading
  . buckshot
   ✔ recipe
-  . range: 10-15
-  . damage: 25 at point blank and 9 at max range
-  . entity
-   . one pixel texture
+  ✔ range/damage/spread
+  ✔ entity
  . handmade
   ✔ recipe
-  . range: 4-6
-  . buckshot only
-  . entity
-   . one pixel texture
+  ✔ range/damage/spread
+  ✔ buckshot
+  ✔ entity
   . misfire or jam the weapon
-  . higher spread
-  . less damage
  . rubber round
   ✔ rubber
    ✔ obtained from slime via smelting
   ✔ recipe
-  . 0 damage
+  ✔ 0 damage
+  ✔ entity
   . knockback
-  . entity
-   . darkened slug texture
   . inflicts slowness, nausea and weakness
 . enchants
  . unbreaking & mending works by default
