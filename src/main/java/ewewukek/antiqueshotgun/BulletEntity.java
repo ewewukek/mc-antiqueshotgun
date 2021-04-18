@@ -14,6 +14,7 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
     static final short LIFETIME = 30;
 
     public short ticksLeft;
+    public Vector3d origin;
     public AmmoType ammoType;
 
     public BulletEntity(World world) {
@@ -27,7 +28,10 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
 
     @Override
     public void tick() {
-        if (--ticksLeft <= 0) {
+        if (origin == null) origin = getPositionVec();
+        double distanceTravelled = getPositionVec().subtract(origin).length();
+
+        if (--ticksLeft <= 0 || distanceTravelled > ammoType.toItem().range()) {
             remove();
             return;
         }
@@ -40,14 +44,25 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
     protected void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
         ammoType = AmmoType.fromByte(compound.getByte("type"));
-        // TODO: read origin vector
+        CompoundNBT originTag = compound.getCompound("origin");
+        if (originTag != null) {
+            origin = new Vector3d(
+                originTag.getFloat("x"),
+                originTag.getFloat("y"),
+                originTag.getFloat("z")
+            );
+        }
     }
 
     @Override
     protected void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
         compound.putByte("type", ammoType.toByte());
-        // TODO: write origin vector
+        CompoundNBT originTag = new CompoundNBT();
+        originTag.putFloat("x", (float)origin.x);
+        originTag.putFloat("y", (float)origin.y);
+        originTag.putFloat("z", (float)origin.z);
+        compound.put("origin", originTag);
     }
 
 // Forge {
