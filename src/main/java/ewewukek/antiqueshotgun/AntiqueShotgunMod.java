@@ -2,6 +2,9 @@ package ewewukek.antiqueshotgun;
 
 import java.util.function.Supplier;
 
+import ewewukek.antiqueshotgun.item.AntiqueShotgunItem;
+import ewewukek.antiqueshotgun.item.HandmadeShotgunItem;
+import ewewukek.antiqueshotgun.item.ShotgunItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;

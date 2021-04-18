@@ -2,6 +2,7 @@ package ewewukek.antiqueshotgun;
 
 import org.lwjgl.glfw.GLFW;
 
+import ewewukek.antiqueshotgun.item.ShotgunItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.IItemPropertyGetter;

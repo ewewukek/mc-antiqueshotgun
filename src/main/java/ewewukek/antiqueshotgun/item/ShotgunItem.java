@@ -1,7 +1,8 @@
-package ewewukek.antiqueshotgun;
+package ewewukek.antiqueshotgun.item;
 
 import java.util.Arrays;
 
+import ewewukek.antiqueshotgun.AntiqueShotgunMod;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

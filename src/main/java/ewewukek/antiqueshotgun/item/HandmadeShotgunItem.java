@@ -1,4 +1,4 @@
-package ewewukek.antiqueshotgun;
+package ewewukek.antiqueshotgun.item;
 
 import net.minecraft.item.Item;
 
