@@ -4,6 +4,7 @@ import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
@@ -11,6 +12,9 @@ import net.minecraftforge.fml.network.FMLPlayMessages;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSpawnData {
+    static final double GRAVITY = 0.05;
+    static final double AIR_FRICTION = 0.99;
+    static final double WATER_FRICTION = 0.6;
     static final short LIFETIME = 30;
 
     public short ticksLeft;
@@ -35,6 +39,35 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
             remove();
             return;
         }
+
+        Vector3d motion = getMotion();
+        double posX = getPosX() + motion.x;
+        double posY = getPosY() + motion.y;
+        double posZ = getPosZ() + motion.z;
+
+        motion = motion.subtract(0, GRAVITY, 0);
+
+        double friction = AIR_FRICTION;
+        if (isInWater()) {
+            final int count = 4;
+            for (int i = 0; i != count; ++i) {
+                double t = (i + 1.0) / count;
+                world.addParticle(
+                    ParticleTypes.BUBBLE,
+                    posX - motion.x * t,
+                    posY - motion.y * t,
+                    posZ - motion.z * t,
+                    motion.x,
+                    motion.y,
+                    motion.z
+                );
+            }
+            friction = WATER_FRICTION;
+        }
+
+        setMotion(motion.scale(friction));
+        setPosition(posX, posY, posZ);
+        doBlockCollisions();
     }
 
     @Override
