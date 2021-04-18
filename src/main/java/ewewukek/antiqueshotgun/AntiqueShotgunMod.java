@@ -3,8 +3,12 @@ package ewewukek.antiqueshotgun;
 import java.util.function.Supplier;
 
 import ewewukek.antiqueshotgun.item.AntiqueShotgunItem;
+import ewewukek.antiqueshotgun.item.BuckshotAmmoItem;
+import ewewukek.antiqueshotgun.item.HandmadeAmmoItem;
 import ewewukek.antiqueshotgun.item.HandmadeShotgunItem;
+import ewewukek.antiqueshotgun.item.RubberAmmoItem;
 import ewewukek.antiqueshotgun.item.ShotgunItem;
+import ewewukek.antiqueshotgun.item.SlugAmmoItem;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -78,11 +82,11 @@ public class AntiqueShotgunMod {
                 new Item(new Item.Properties().group(ItemGroup.MISC)).setRegistryName(MODID, "handmade_barrel"),
                 new Item(new Item.Properties().group(ItemGroup.MISC)).setRegistryName(MODID, "handmade_stock"),
                 new ShotgunItem(new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(MODID, "sawd_off_shotgun"),
-                new Item(new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(MODID, "buckshot_shell"),
-                new Item(new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(MODID, "slug_shell"),
-                new Item(new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(MODID, "handmade_shell"),
+                new BuckshotAmmoItem(new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(MODID, "buckshot_shell"),
+                new SlugAmmoItem(new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(MODID, "slug_shell"),
+                new HandmadeAmmoItem(new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(MODID, "handmade_shell"),
                 new Item(new Item.Properties().group(ItemGroup.MISC)).setRegistryName(MODID, "rubber"),
-                new Item(new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(MODID, "rubber_shell")
+                new RubberAmmoItem(new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(MODID, "rubber_shell")
             );
         }
 
