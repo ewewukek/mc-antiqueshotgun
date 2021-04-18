@@ -159,6 +159,7 @@ public class ShotgunItem extends Item {
         motion.add(playerMotion.x, player.isOnGround() ? 0 : playerMotion.y, playerMotion.z);
  */
         BulletEntity bullet = new BulletEntity(world);
+        bullet.ammoType = ammoType;
         bullet.setShooter(player);
         bullet.setPosition(pos.x, pos.y, pos.z);
 //        bullet.setMotion(motion);

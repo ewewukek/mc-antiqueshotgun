@@ -14,6 +14,7 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
     static final short LIFETIME = 30;
 
     public short ticksLeft;
+    public AmmoType ammoType;
 
     public BulletEntity(World world) {
         super(AntiqueShotgunMod.BULLET_ENTITY_TYPE, world);
@@ -38,12 +39,14 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
     @Override
     protected void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
+        ammoType = AmmoType.fromByte(compound.getByte("type"));
         // TODO: read origin vector
     }
 
     @Override
     protected void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
+        compound.putByte("type", ammoType.toByte());
         // TODO: write origin vector
     }
 
@@ -55,6 +58,7 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
 
     @Override
     public void writeSpawnData(PacketBuffer data) {
+        data.writeByte(ammoType.toByte());
         Vector3d motion = getMotion();
         data.writeFloat((float)motion.x);
         data.writeFloat((float)motion.y);
@@ -63,6 +67,7 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
 
     @Override
     public void readSpawnData(PacketBuffer data) {
+        ammoType = AmmoType.fromByte(data.readByte());
         Vector3d motion = new Vector3d(data.readFloat(), data.readFloat(), data.readFloat());
         setMotion(motion);
     }

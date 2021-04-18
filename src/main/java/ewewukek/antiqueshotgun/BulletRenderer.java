@@ -17,7 +17,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class BulletRenderer extends EntityRenderer<BulletEntity> {
-    public static final ResourceLocation TEXTURE = new ResourceLocation(AntiqueShotgunMod.MODID + ":textures/entity/slug.png");
+    public static final ResourceLocation PELLET_TEXTURE = new ResourceLocation(AntiqueShotgunMod.MODID + ":textures/entity/pellet.png");
+    public static final ResourceLocation SLUG_TEXTURE = new ResourceLocation(AntiqueShotgunMod.MODID + ":textures/entity/slug.png");
+    public static final ResourceLocation RUBBER_BULLET_TEXTURE = new ResourceLocation(AntiqueShotgunMod.MODID + ":textures/entity/rubber_bullet.png");
 
     public BulletRenderer(EntityRendererManager manager) {
         super(manager);
@@ -25,7 +27,14 @@ public class BulletRenderer extends EntityRenderer<BulletEntity> {
 
     @Override
     public ResourceLocation getEntityTexture(BulletEntity bullet) {
-        return TEXTURE;
+        switch (bullet.ammoType) {
+        case SLUG:
+            return SLUG_TEXTURE;
+        case RUBBER:
+            return RUBBER_BULLET_TEXTURE;
+        default:
+            return PELLET_TEXTURE;
+        }
     }
 
     @Override
