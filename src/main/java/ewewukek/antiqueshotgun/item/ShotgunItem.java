@@ -15,26 +15,15 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
-public class ShotgunItem extends Item {
+public abstract class ShotgunItem extends Item {
     public ShotgunItem(Properties properties) {
         super(properties);
     }
 
-    public boolean canBeUsedFromOffhand() {
-        return false;
-    }
-
-    public int getMagazineCapacity() {
-        return 4;
-    }
-
-    public int getReloadDuration() {
-        return 14;
-    }
-
-    public int getShellInsertDuration() {
-        return 12;
-    }
+    public abstract boolean canBeUsedFromOffhand();
+    public abstract int getMagazineCapacity();
+    public abstract int getReloadDuration();
+    public abstract int getShellInsertDuration();
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity player, Hand hand) {
