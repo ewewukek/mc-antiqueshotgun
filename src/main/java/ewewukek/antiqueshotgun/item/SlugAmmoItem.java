@@ -5,7 +5,7 @@ public class SlugAmmoItem extends AmmoItem {
         super(properties);
     }
 
-    public static float spreadStdDev = (float)Math.toRadians(0.5);
+    public static float spreadStdDev = 0;
     public static float speed = 20;
     public static float range = 25;
     public static float damage = 25;
