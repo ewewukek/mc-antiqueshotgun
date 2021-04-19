@@ -1,12 +1,27 @@
 package ewewukek.antiqueshotgun;
 
+import java.util.Optional;
+import java.util.function.Predicate;
+
+import ewewukek.antiqueshotgun.item.AmmoItem;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.IndirectEntityDamageSource;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceContext;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.FMLPlayMessages;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -32,6 +47,11 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
 
     @Override
     public void tick() {
+        if (!world.isRemote && processCollision()) {
+            remove();
+            return;
+        }
+
         if (origin == null) origin = getPositionVec();
         double distanceTravelled = getPositionVec().subtract(origin).length();
 
@@ -68,6 +88,94 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
         setMotion(motion.scale(friction));
         setPosition(posX, posY, posZ);
         doBlockCollisions();
+    }
+
+    public DamageSource getDamageSource(BulletEntity bullet, Entity attacker) {
+        return (new IndirectEntityDamageSource("shotgun", bullet, attacker)).setProjectile();
+    }
+
+    private boolean processCollision() {
+        Vector3d from = getPositionVec();
+        // TODO: apply range restriction
+        Vector3d to = from.add(getMotion());
+
+        BlockRayTraceResult collision = world.rayTraceBlocks(
+            new RayTraceContext(from, to, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
+
+        // prevents hitting entities behind an obstacle
+        if (collision.getType() != RayTraceResult.Type.MISS) {
+            to = collision.getHitVec();
+        }
+
+        Entity target = closestEntityOnPath(from, to);
+        if (target != null) {
+            if (target instanceof PlayerEntity) {
+                Entity shooter = func_234616_v_();
+                if (shooter instanceof PlayerEntity && !((PlayerEntity)shooter).canAttackPlayer((PlayerEntity)target)) {
+
+                    target = null;
+                }
+            }
+            if (target != null) {
+                hitEntity(target);
+                return true;
+            }
+        }
+
+        if (collision.getType() != RayTraceResult.Type.BLOCK) return false;
+
+        BlockState blockstate = world.getBlockState(collision.getPos());
+        blockstate.onProjectileCollision(world, blockstate, collision, this);
+
+        AmmoItem ammoItem = ammoType.toItem();
+        int impactParticleCount = (int)(0.5f * ammoItem.damage() / ammoItem.pelletCount());
+        ((ServerWorld)world).spawnParticle(
+            new BlockParticleData(ParticleTypes.BLOCK, blockstate),
+            to.x, to.y, to.z,
+            impactParticleCount + 1,
+            0, 0, 0, 0.01
+        );
+
+        return true;
+    }
+
+    private void hitEntity(Entity target) {
+        Entity shooter = func_234616_v_();
+        DamageSource damagesource = getDamageSource(this, shooter != null ? shooter : this);
+
+        AmmoItem ammoItem = ammoType.toItem();
+        float damage = ammoItem.damage() / ammoItem.pelletCount();
+
+        target.attackEntityFrom(damagesource, damage);
+    }
+
+    private Predicate<Entity> getTargetPredicate() {
+        Entity shooter = func_234616_v_();
+        return (entity) -> {
+            return !entity.isSpectator() && entity.isAlive() && entity.canBeCollidedWith() && entity != shooter;
+        };
+    }
+
+    private Entity closestEntityOnPath(Vector3d start, Vector3d end) {
+        Vector3d motion = getMotion();
+
+        Entity result = null;
+        double result_dist = 0;
+
+        AxisAlignedBB aabbSelection = getBoundingBox().expand(motion).grow(0.5);
+        for (Entity entity : world.getEntitiesInAABBexcluding(this, aabbSelection, getTargetPredicate())) {
+            AxisAlignedBB aabb = entity.getBoundingBox();
+            Optional<Vector3d> optional = aabb.rayTrace(start, end);
+            if (optional.isPresent()) {
+                double dist = start.squareDistanceTo(optional.get());
+                if (dist < result_dist || result == null) {
+                    result = entity;
+                    result_dist = dist;
+                }
+            }
+        }
+
+        return result;
     }
 
     @Override
