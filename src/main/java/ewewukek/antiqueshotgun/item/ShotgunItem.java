@@ -150,6 +150,7 @@ public abstract class ShotgunItem extends Item {
 
             BulletEntity bullet = new BulletEntity(world);
             bullet.ammoType = ammoType;
+            bullet.distanceLeft = ammoItem.range();
             bullet.setShooter(player);
             bullet.setPosition(pos.x, pos.y, pos.z);
             bullet.setMotion(motion);

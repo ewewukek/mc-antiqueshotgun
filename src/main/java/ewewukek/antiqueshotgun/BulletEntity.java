@@ -33,7 +33,7 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
     static final short LIFETIME = 30;
 
     public short ticksLeft;
-    public Vector3d origin;
+    public double distanceLeft;
     public AmmoType ammoType;
 
     public BulletEntity(World world) {
@@ -52,15 +52,14 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
             return;
         }
 
-        if (origin == null) origin = getPositionVec();
-        double distanceTravelled = getPositionVec().subtract(origin).length();
+        Vector3d motion = getMotion();
 
-        if (--ticksLeft <= 0 || distanceTravelled > ammoType.toItem().range()) {
+        distanceLeft -= motion.length();
+        if (--ticksLeft <= 0 || distanceLeft <= 0) {
             remove();
             return;
         }
 
-        Vector3d motion = getMotion();
         double posX = getPosX() + motion.x;
         double posY = getPosY() + motion.y;
         double posZ = getPosZ() + motion.z;
@@ -185,25 +184,14 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
     protected void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
         ammoType = AmmoType.fromByte(compound.getByte("type"));
-        CompoundNBT originTag = compound.getCompound("origin");
-        if (originTag != null) {
-            origin = new Vector3d(
-                originTag.getFloat("x"),
-                originTag.getFloat("y"),
-                originTag.getFloat("z")
-            );
-        }
+        distanceLeft = compound.getFloat("distanceLeft");
     }
 
     @Override
     protected void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
         compound.putByte("type", ammoType.toByte());
-        CompoundNBT originTag = new CompoundNBT();
-        originTag.putFloat("x", (float)origin.x);
-        originTag.putFloat("y", (float)origin.y);
-        originTag.putFloat("z", (float)origin.z);
-        compound.put("origin", originTag);
+        compound.putFloat("distanceLeft", (float)distanceLeft);
     }
 
 // Forge {
@@ -224,6 +212,7 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
     @Override
     public void readSpawnData(PacketBuffer data) {
         ammoType = AmmoType.fromByte(data.readByte());
+        distanceLeft = ammoType.toItem().range();
         Vector3d motion = new Vector3d(data.readFloat(), data.readFloat(), data.readFloat());
         setMotion(motion);
     }
