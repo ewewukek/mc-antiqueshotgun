@@ -94,9 +94,12 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
     }
 
     private boolean processCollision() {
+        Vector3d motion = getMotion();
+        if (motion.length() > distanceLeft) {
+            motion = motion.normalize().scale(distanceLeft);
+        }
         Vector3d from = getPositionVec();
-        // TODO: apply range restriction
-        Vector3d to = from.add(getMotion());
+        Vector3d to = from.add(motion);
 
         BlockRayTraceResult collision = world.rayTraceBlocks(
             new RayTraceContext(from, to, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
