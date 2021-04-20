@@ -69,7 +69,7 @@
   ✔ range/damage/no spread/high velocity
   ✔ entity
   . slower reloading
- . buckshot
+ ✔ buckshot
   ✔ recipe
   ✔ range/damage/spread
   ✔ entity
@@ -100,20 +100,20 @@
 . powershot mod support
 . advancements
 . configuration
- . bullet speed
- . damage (12-16)
- . spread
- . range (16-25)
- . slug
- . buckshot
-  . pellet count
- . handmade shell
- . capacity (5-8)
- . cycling rate
- . auto-reload delay (.5-2)
- . reload rate
- . handmade shotgun
- . antique
+ ✔ bullet speed
+ ✔ damage
+ ✔ spread
+ ✔ range
+ ✔ slug
+ ✔ buckshot
+  ✔ pellet count
+ ✔ handmade shell
+ ✔ magazine capacity
+ ✔ cycling rate
+ ✗ auto-reload delay
+ ✔ reload rate
+ ✔ handmade shotgun
+ ✔ antique
  . disable auto reload on empty magazine
  . disable magazine (always use ammo from inventory)
  . send server config to a client
