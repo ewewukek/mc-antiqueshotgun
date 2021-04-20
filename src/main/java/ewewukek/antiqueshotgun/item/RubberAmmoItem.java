@@ -5,10 +5,10 @@ public class RubberAmmoItem extends AmmoItem {
         super(properties);
     }
 
-    public static float spreadStdDev = (float)Math.toRadians(0.5);
-    public static float speed = 10;
-    public static float range = 20;
-    public static float damage = 1;
+    public static float spreadStdDev;
+    public static float speed;
+    public static float range;
+    public static float damage;
 
     @Override
     public int pelletCount() {

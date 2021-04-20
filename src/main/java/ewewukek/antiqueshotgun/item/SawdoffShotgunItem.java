@@ -7,7 +7,7 @@ public class SawdoffShotgunItem extends HandmadeShotgunItem {
         super(properties.defaultMaxDamage(100));
     }
 
-    public static int magazineCapacity = 1;
+    public static int magazineCapacity;
 
     @Override
     public boolean canBeUsedFromOffhand() {

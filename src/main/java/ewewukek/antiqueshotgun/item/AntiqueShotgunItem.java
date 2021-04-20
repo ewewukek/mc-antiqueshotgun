@@ -7,9 +7,9 @@ public class AntiqueShotgunItem extends ShotgunItem {
         super(properties.defaultMaxDamage(2000));
     }
 
-    public static int magazineCapacity = 7;
-    public static int reloadDuration = 12;
-    public static int shellInsertDuration = 10;
+    public static int magazineCapacity;
+    public static int reloadDuration;
+    public static int shellInsertDuration;
 
     @Override
     public boolean canBeUsedFromOffhand() {

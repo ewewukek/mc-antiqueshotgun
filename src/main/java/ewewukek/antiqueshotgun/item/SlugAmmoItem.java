@@ -5,10 +5,10 @@ public class SlugAmmoItem extends AmmoItem {
         super(properties);
     }
 
-    public static float spreadStdDev = 0;
-    public static float speed = 20;
-    public static float range = 25;
-    public static float damage = 25;
+    public static float spreadStdDev;
+    public static float speed;
+    public static float range;
+    public static float damage;
 
     @Override
     public int pelletCount() {

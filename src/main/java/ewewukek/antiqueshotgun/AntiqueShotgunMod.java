@@ -1,5 +1,7 @@
 package ewewukek.antiqueshotgun;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.function.Supplier;
 
 import ewewukek.antiqueshotgun.item.AmmoItem;
@@ -18,10 +20,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.profiler.IProfiler;
+import net.minecraft.resources.IFutureReloadListener;
+import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.Unit;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -131,6 +138,21 @@ public class AntiqueShotgunMod {
             if (event.side == LogicalSide.SERVER && event.phase == TickEvent.Phase.END) {
                 DamageQueue.apply();
             }
+        }
+
+        @SubscribeEvent
+        public static void onAddReloadListenerEvent(final AddReloadListenerEvent event) {
+            event.addListener(new IFutureReloadListener() {
+                @Override
+                public CompletableFuture<Void> reload(IStage stage, IResourceManager resourceManager,
+                    IProfiler preparationsProfiler, IProfiler reloadProfiler, Executor backgroundExecutor,
+                    Executor gameExecutor) {
+
+                    return stage.markCompleteAwaitingOthers(Unit.INSTANCE).thenRunAsync(() -> {
+                        Config.reload();
+                    }, gameExecutor);
+                }
+            });
         }
     }
 
