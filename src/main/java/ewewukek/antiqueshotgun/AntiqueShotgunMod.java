@@ -26,6 +26,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -122,6 +123,13 @@ public class AntiqueShotgunMod {
                 if (stack.getItem() instanceof ShotgunItem) {
                     ((ShotgunItem)stack.getItem()).update(event.player, stack);
                 }
+            }
+        }
+
+        @SubscribeEvent
+        public static void onWorldTick(final TickEvent.WorldTickEvent event) {
+            if (event.side == LogicalSide.SERVER && event.phase == TickEvent.Phase.END) {
+                DamageQueue.apply();
             }
         }
     }

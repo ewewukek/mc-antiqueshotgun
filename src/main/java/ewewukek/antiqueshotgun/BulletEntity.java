@@ -148,7 +148,11 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
         AmmoItem ammoItem = ammoType.toItem();
         float damage = ammoItem.damage() / ammoItem.pelletCount();
 
-        target.attackEntityFrom(damagesource, damage);
+        if (ammoItem.pelletCount() == 1) {
+            target.attackEntityFrom(damagesource, damage);
+        } else {
+            DamageQueue.add(target, damagesource, damage);
+        }
     }
 
     private Predicate<Entity> getTargetPredicate() {
