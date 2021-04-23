@@ -45,7 +45,7 @@ public class ElderHunterModel<T extends ElderHunterEntity> extends EntityModel<T
 
         arms_folded = new ModelRenderer(this);
         arms_folded.setRotationPoint(0.0F, 2.0F, 0.0F);
-        setRotationAngle(arms_folded, -0.9163F, 0.0F, 0.0F);
+        arms_folded.rotateAngleX = -0.9163F;
         arms_folded.setTextureOffset(48, 14).addBox(-4.0F, 2.0F, -2.0F, 8.0F, 4.0F, 4.0F, 0.0F, false);
         arms_folded.setTextureOffset(48, 59).addBox(-8.0F, -2.0F, -2.0F, 4.0F, 8.0F, 4.0F, 0.0F, false);
 
@@ -72,27 +72,22 @@ public class ElderHunterModel<T extends ElderHunterEntity> extends EntityModel<T
     }
 
     @Override
-    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks,
-        float netHeadYaw, float headPitch) {
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        final float deg2rad = (float)(Math.PI / 180);
+        this.head.rotateAngleY = netHeadYaw * deg2rad;
+        this.head.rotateAngleX = headPitch * deg2rad;
     }
 
     @Override
-    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn,
-        float red, float green, float blue, float alpha) {
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         head.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
         nose.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
         body.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
-//        arms_folded.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+        arms_folded.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
         right_arm.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
         left_arm.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
         right_leg.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
         left_leg.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
-    }
-
-    public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-        modelRenderer.rotateAngleX = x;
-        modelRenderer.rotateAngleY = y;
-        modelRenderer.rotateAngleZ = z;
     }
 
     @Override
