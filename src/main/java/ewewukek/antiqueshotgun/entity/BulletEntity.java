@@ -1,8 +1,11 @@
-package ewewukek.antiqueshotgun;
+package ewewukek.antiqueshotgun.entity;
 
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import ewewukek.antiqueshotgun.AmmoType;
+import ewewukek.antiqueshotgun.AntiqueShotgunMod;
+import ewewukek.antiqueshotgun.DamageQueue;
 import ewewukek.antiqueshotgun.item.AmmoItem;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;

@@ -1,8 +1,8 @@
-package ewewukek.antiqueshotgun;
+package ewewukek.antiqueshotgun.client;
 
 import org.lwjgl.glfw.GLFW;
 
-import ewewukek.antiqueshotgun.client.ElderHunterRenderer;
+import ewewukek.antiqueshotgun.AntiqueShotgunMod;
 import ewewukek.antiqueshotgun.item.ShotgunItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;

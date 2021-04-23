@@ -4,6 +4,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Supplier;
 
+import ewewukek.antiqueshotgun.client.ClientSetup;
+import ewewukek.antiqueshotgun.entity.BulletEntity;
 import ewewukek.antiqueshotgun.entity.ElderHunterEntity;
 import ewewukek.antiqueshotgun.item.AmmoItem;
 import ewewukek.antiqueshotgun.item.AntiqueShotgunItem;
@@ -174,7 +176,7 @@ public class AntiqueShotgunMod {
     public static class ReloadKeyChangedPacket {
         private boolean isDown;
 
-        ReloadKeyChangedPacket(boolean isDown) {
+        public ReloadKeyChangedPacket(boolean isDown) {
             this.isDown = isDown;
         }
 

@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import ewewukek.antiqueshotgun.AmmoType;
 import ewewukek.antiqueshotgun.AntiqueShotgunMod;
-import ewewukek.antiqueshotgun.BulletEntity;
+import ewewukek.antiqueshotgun.entity.BulletEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

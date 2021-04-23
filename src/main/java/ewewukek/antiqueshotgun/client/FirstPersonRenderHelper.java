@@ -1,4 +1,4 @@
-package ewewukek.antiqueshotgun;
+package ewewukek.antiqueshotgun.client;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
