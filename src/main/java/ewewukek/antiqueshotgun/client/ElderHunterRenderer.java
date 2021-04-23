@@ -5,7 +5,10 @@ import ewewukek.antiqueshotgun.entity.ElderHunterEntity;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class ElderHunterRenderer<T extends ElderHunterEntity> extends MobRenderer<T, ElderHunterModel<T>> {
     public static final ResourceLocation TEXTURE = new ResourceLocation(AntiqueShotgunMod.MODID + ":textures/entity/elder_hunter.png");
 

@@ -6,7 +6,10 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import ewewukek.antiqueshotgun.entity.ElderHunterEntity;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class ElderHunterModel<T extends ElderHunterEntity> extends EntityModel<T> {
     private final ModelRenderer head;
     private final ModelRenderer nose;
