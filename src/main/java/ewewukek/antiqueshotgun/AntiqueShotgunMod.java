@@ -4,6 +4,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Supplier;
 
+import ewewukek.antiqueshotgun.entity.ElderHunterEntity;
 import ewewukek.antiqueshotgun.item.AmmoItem;
 import ewewukek.antiqueshotgun.item.AntiqueShotgunItem;
 import ewewukek.antiqueshotgun.item.BuckshotAmmoItem;
@@ -31,6 +32,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.LogicalSide;
@@ -74,6 +76,9 @@ public class AntiqueShotgunMod {
     @ObjectHolder(MODID + ":bullet")
     public static EntityType<BulletEntity> BULLET_ENTITY_TYPE;
 
+    @ObjectHolder(MODID + ":elder_hunter")
+    public static EntityType<ElderHunterEntity> ELDER_HUNTER_ENTITY_TYPE;
+
     public AntiqueShotgunMod() {
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
@@ -102,12 +107,22 @@ public class AntiqueShotgunMod {
 
         @SubscribeEvent
         public static void onEntityRegistry(final RegistryEvent.Register<EntityType<?>> event) {
-            event.getRegistry().register(
+            event.getRegistry().registerAll(
                 EntityType.Builder.<BulletEntity>create(EntityClassification.MISC)
                     .setCustomClientFactory(BulletEntity::new).size(0.25f, 0.25f)
                     .setTrackingRange(64).setUpdateInterval(5).setShouldReceiveVelocityUpdates(false)
-                    .build(MODID + ":bullet").setRegistryName(MODID, "bullet")
+                    .build(MODID + ":bullet").setRegistryName(MODID, "bullet"),
+
+                EntityType.Builder.<ElderHunterEntity>create(ElderHunterEntity::new, EntityClassification.MONSTER)
+                    .setTrackingRange(8).setUpdateInterval(5)
+                    .size(0.6f, 1.95f).setShouldReceiveVelocityUpdates(true)
+                    .build(MODID + ":elder_hunter").setRegistryName(MODID, "elder_hunter")
             );
+        }
+
+        @SubscribeEvent
+        public static void onEntityAttributeCreation(final EntityAttributeCreationEvent event) {
+            event.put(ELDER_HUNTER_ENTITY_TYPE, ElderHunterEntity.createEntityAttributes());
         }
 
         @SubscribeEvent

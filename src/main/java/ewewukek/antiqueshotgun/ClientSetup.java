@@ -2,6 +2,7 @@ package ewewukek.antiqueshotgun;
 
 import org.lwjgl.glfw.GLFW;
 
+import ewewukek.antiqueshotgun.client.ElderHunterRenderer;
 import ewewukek.antiqueshotgun.item.ShotgunItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
@@ -50,6 +51,7 @@ public class ClientSetup {
         ItemModelsProperties.registerProperty(SAWD_OFF_SHOTGUN, new ResourceLocation(AntiqueShotgunMod.MODID, "slide_back"), slideBackGetter);
 
         RenderingRegistry.registerEntityRenderingHandler(AntiqueShotgunMod.BULLET_ENTITY_TYPE, BulletRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(AntiqueShotgunMod.ELDER_HUNTER_ENTITY_TYPE, ElderHunterRenderer::new);
 
         ClientRegistry.registerKeyBinding(reloadKey);
     }
