@@ -55,20 +55,20 @@ public class ElderHunterModel<T extends ElderHunterEntity> extends EntityModel<T
         mirrored.setTextureOffset(32, 59).addBox(4.0F, -24.0F, -2.0F, 4.0F, 8.0F, 4.0F, 0.0F, false);
 
         right_arm = new ModelRenderer(this);
-        right_arm.setRotationPoint(5.0F, 2.0F, 0.0F);
-        right_arm.setTextureOffset(48, 43).addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, 0.0F, false);
+        right_arm.setRotationPoint(-5.0F, 2.0F, 0.0F);
+        right_arm.setTextureOffset(32, 43).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, 0.0F, false);
 
         left_arm = new ModelRenderer(this);
-        left_arm.setRotationPoint(-5.0F, 2.0F, 0.0F);
-        left_arm.setTextureOffset(32, 43).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, 0.0F, false);
+        left_arm.setRotationPoint(5.0F, 2.0F, 0.0F);
+        left_arm.setTextureOffset(48, 43).addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, 0.0F, false);
 
         right_leg = new ModelRenderer(this);
-        right_leg.setRotationPoint(2.0F, 12.0F, 0.0F);
-        right_leg.setTextureOffset(16, 52).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, 0.0F, false);
+        right_leg.setRotationPoint(-2.0F, 12.0F, 0.0F);
+        right_leg.setTextureOffset(0, 52).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, 0.0F, false);
 
         left_leg = new ModelRenderer(this);
-        left_leg.setRotationPoint(-2.0F, 12.0F, 0.0F);
-        left_leg.setTextureOffset(0, 52).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, 0.0F, false);
+        left_leg.setRotationPoint(2.0F, 12.0F, 0.0F);
+        left_leg.setTextureOffset(16, 52).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, 0.0F, false);
     }
 
     @Override
