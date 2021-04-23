@@ -57,6 +57,13 @@ public class AntiqueShotgunMod {
         PROTOCOL_VERSION::equals
     );
 
+    @ObjectHolder(AntiqueShotgunMod.MODID + ":antique_shotgun")
+    public static Item ANTIQUE_SHOTGUN;
+    @ObjectHolder(AntiqueShotgunMod.MODID + ":handmade_shotgun")
+    public static Item HANDMADE_SHOTGUN;
+    @ObjectHolder(AntiqueShotgunMod.MODID + ":sawd_off_shotgun")
+    public static Item SAWD_OFF_SHOTGUN;
+
     @ObjectHolder(MODID + ":handmade_shell")
     public static AmmoItem HANDMADE_SHELL;
     @ObjectHolder(MODID + ":buckshot_shell")

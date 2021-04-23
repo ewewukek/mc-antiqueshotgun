@@ -7,7 +7,6 @@ import ewewukek.antiqueshotgun.item.ShotgunItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.IItemPropertyGetter;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -19,17 +18,9 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.registries.ObjectHolder;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
 public class ClientSetup {
-    @ObjectHolder(AntiqueShotgunMod.MODID + ":antique_shotgun")
-    public static Item ANTIQUE_SHOTGUN;
-    @ObjectHolder(AntiqueShotgunMod.MODID + ":handmade_shotgun")
-    public static Item HANDMADE_SHOTGUN;
-    @ObjectHolder(AntiqueShotgunMod.MODID + ":sawd_off_shotgun")
-    public static Item SAWD_OFF_SHOTGUN;
-
     private static final KeyBinding reloadKey = new KeyBinding("key.antiqueshotgun.reload", GLFW.GLFW_KEY_R, "key.antiqueshotgun.category");
     private static boolean lastReloadKeyIsDown;
 
@@ -46,9 +37,9 @@ public class ClientSetup {
         IItemPropertyGetter slideBackGetter = (stack, world, player) -> {
             return ((ShotgunItem)stack.getItem()).isSlideBack(stack) ? 1 : 0;
         };
-        ItemModelsProperties.registerProperty(ANTIQUE_SHOTGUN, new ResourceLocation(AntiqueShotgunMod.MODID, "slide_back"), slideBackGetter);
-        ItemModelsProperties.registerProperty(HANDMADE_SHOTGUN, new ResourceLocation(AntiqueShotgunMod.MODID, "slide_back"), slideBackGetter);
-        ItemModelsProperties.registerProperty(SAWD_OFF_SHOTGUN, new ResourceLocation(AntiqueShotgunMod.MODID, "slide_back"), slideBackGetter);
+        ItemModelsProperties.registerProperty(AntiqueShotgunMod.ANTIQUE_SHOTGUN, new ResourceLocation(AntiqueShotgunMod.MODID, "slide_back"), slideBackGetter);
+        ItemModelsProperties.registerProperty(AntiqueShotgunMod.HANDMADE_SHOTGUN, new ResourceLocation(AntiqueShotgunMod.MODID, "slide_back"), slideBackGetter);
+        ItemModelsProperties.registerProperty(AntiqueShotgunMod.SAWD_OFF_SHOTGUN, new ResourceLocation(AntiqueShotgunMod.MODID, "slide_back"), slideBackGetter);
 
         RenderingRegistry.registerEntityRenderingHandler(AntiqueShotgunMod.BULLET_ENTITY_TYPE, BulletRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(AntiqueShotgunMod.ELDER_HUNTER_ENTITY_TYPE, ElderHunterRenderer::new);
