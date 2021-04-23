@@ -5,12 +5,15 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import ewewukek.antiqueshotgun.entity.ElderHunterEntity;
 import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.model.IHasArm;
+import net.minecraft.client.renderer.entity.model.IHasHead;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.util.HandSide;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ElderHunterModel<T extends ElderHunterEntity> extends EntityModel<T> {
+public class ElderHunterModel<T extends ElderHunterEntity> extends EntityModel<T> implements IHasArm, IHasHead {
     private final ModelRenderer head;
     private final ModelRenderer nose;
     private final ModelRenderer body;
@@ -90,5 +93,16 @@ public class ElderHunterModel<T extends ElderHunterEntity> extends EntityModel<T
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;
+    }
+
+    @Override
+    public void translateHand(HandSide sideIn, MatrixStack matrixStackIn) {
+        ModelRenderer model = sideIn == HandSide.RIGHT ? right_arm : left_arm;
+        model.translateRotate(matrixStackIn);
+    }
+
+    @Override
+    public ModelRenderer getModelHead() {
+        return head;
     }
 }
