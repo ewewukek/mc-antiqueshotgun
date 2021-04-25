@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.entity.model.IHasArm;
 import net.minecraft.client.renderer.entity.model.IHasHead;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.HandSide;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -74,8 +75,37 @@ public class ElderHunterModel<T extends ElderHunterEntity> extends EntityModel<T
     @Override
     public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         final float deg2rad = (float)(Math.PI / 180);
-        this.head.rotateAngleY = netHeadYaw * deg2rad;
-        this.head.rotateAngleX = headPitch * deg2rad;
+        head.rotateAngleY = netHeadYaw * deg2rad;
+        head.rotateAngleX = headPitch * deg2rad;
+
+        if (isSitting) {
+            right_arm.rotateAngleX = -36 * deg2rad;
+            right_arm.rotateAngleY = 0;
+            right_arm.rotateAngleZ = 0;
+            left_arm.rotateAngleX = -36 * deg2rad;
+            left_arm.rotateAngleY = 0;
+            left_arm.rotateAngleZ = 0;
+            right_leg.rotateAngleX = -81 * deg2rad;
+            right_leg.rotateAngleY = 18 * deg2rad;
+            right_leg.rotateAngleZ = 4.5f * deg2rad;
+            left_leg.rotateAngleX = -81 * deg2rad;
+            left_leg.rotateAngleY = -18 * deg2rad;
+            left_leg.rotateAngleZ = -4.5f * deg2rad;
+        } else {
+            float swingMult = MathHelper.cos(limbSwing * 0.6662f);
+            right_arm.rotateAngleX = -swingMult * limbSwingAmount;
+            right_arm.rotateAngleY = 0;
+            right_arm.rotateAngleZ = 0;
+            left_arm.rotateAngleX = swingMult * limbSwingAmount;
+            left_arm.rotateAngleY = 0;
+            left_arm.rotateAngleZ = 0;
+            right_leg.rotateAngleX = swingMult * 0.7f * limbSwingAmount;
+            right_leg.rotateAngleY = 0;
+            right_leg.rotateAngleZ = 0;
+            left_leg.rotateAngleX = -swingMult * 0.7f * limbSwingAmount;
+            left_leg.rotateAngleY = 0;
+            left_leg.rotateAngleZ = 0;
+        }
     }
 
     @Override

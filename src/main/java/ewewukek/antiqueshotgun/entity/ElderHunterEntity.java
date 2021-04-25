@@ -6,6 +6,8 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.MoveTowardsTargetGoal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.monster.AbstractIllagerEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,6 +24,8 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
 
     @Override
     public void registerGoals() {
+        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+        goalSelector.addGoal(2, new MoveTowardsTargetGoal(this, 0.5f, 10));
         goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 3, 1));
         goalSelector.addGoal(10, new LookAtGoal(this, MobEntity.class, 8));
     }
