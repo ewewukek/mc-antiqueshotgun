@@ -29,13 +29,15 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
 
     @Override
     public void registerGoals() {
+        super.registerGoals();
+
         goalSelector.addGoal(0, new SwimGoal(this));
 
         final float findRange = 16;
         final float attackRange = 8;
 
         goalSelector.addGoal(1, new AbstractRaiderEntity.FindTargetGoal(this, findRange));
-        goalSelector.addGoal(3, new MoveTowardsTargetGoal(this, 0.5f, attackRange));
+        goalSelector.addGoal(2, new MoveTowardsTargetGoal(this, 0.5f, attackRange));
 
         goalSelector.addGoal(8, new WaterAvoidingRandomWalkingGoal(this, 0.6D));
         goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, findRange, 1));
