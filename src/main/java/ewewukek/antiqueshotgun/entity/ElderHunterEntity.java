@@ -5,11 +5,16 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MoveTowardsTargetGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.monster.AbstractIllagerEntity;
+import net.minecraft.entity.monster.AbstractRaiderEntity;
 import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
@@ -24,10 +29,21 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
 
     @Override
     public void registerGoals() {
+        goalSelector.addGoal(0, new SwimGoal(this));
+
+        final float findRange = 16;
+        final float attackRange = 8;
+
+        goalSelector.addGoal(1, new AbstractRaiderEntity.FindTargetGoal(this, findRange));
+        goalSelector.addGoal(3, new MoveTowardsTargetGoal(this, 0.5f, attackRange));
+
+        goalSelector.addGoal(8, new WaterAvoidingRandomWalkingGoal(this, 0.6D));
+        goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, findRange, 1));
+        goalSelector.addGoal(10, new LookAtGoal(this, MobEntity.class, findRange));
+
+        targetSelector.addGoal(1, (new HurtByTargetGoal(this, AbstractRaiderEntity.class)).setCallsForHelp());
         targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
-        goalSelector.addGoal(2, new MoveTowardsTargetGoal(this, 0.5f, 10));
-        goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 3, 1));
-        goalSelector.addGoal(10, new LookAtGoal(this, MobEntity.class, 8));
+        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolemEntity.class, true));
     }
 
     public static AttributeModifierMap createEntityAttributes() {
