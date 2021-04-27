@@ -124,7 +124,13 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
         ShotgunItem.setTimerExpiryTime(stack, world.getGameTime() + postFireDelay());
     }
 
-    public void reloadWeapon() {
+    @Override
+    public void tick() {
+        update();
+        super.tick();
+    }
+
+    private void update() {
         ItemStack stack = getItemStackFromSlot(EquipmentSlotType.MAINHAND);
         if (ShotgunItem.getAmmoInChamber(stack) != AmmoType.NONE) return;
 

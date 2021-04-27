@@ -57,9 +57,5 @@ public class ShotgunAttackGoal extends Goal {
                 fireTime = 0;
             }
         }
-
-        if (!shooter.isWeaponReady()) {
-            shooter.reloadWeapon();
-        }
     }
 }
