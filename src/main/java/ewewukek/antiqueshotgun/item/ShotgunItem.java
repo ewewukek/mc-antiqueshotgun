@@ -186,11 +186,11 @@ public abstract class ShotgunItem extends Item {
         return ammoType;
     }
 
-    private boolean isAmmo(ItemStack stack) {
+    private static boolean isAmmo(ItemStack stack) {
         return AmmoType.fromItem(stack.getItem()) != AmmoType.NONE;
     }
 
-    private ItemStack findAmmo(PlayerEntity player) {
+    private static ItemStack findAmmo(PlayerEntity player) {
         for (int i = 0; i != player.inventory.mainInventory.size(); ++i) {
             ItemStack itemstack = player.inventory.mainInventory.get(i);
             if (isAmmo(itemstack)) return itemstack;
@@ -198,59 +198,59 @@ public abstract class ShotgunItem extends Item {
         return ItemStack.EMPTY;
     }
 
-    public boolean hasTimerExpired(ItemStack stack, long currentTime) {
+    public static boolean hasTimerExpired(ItemStack stack, long currentTime) {
         CompoundNBT tag = stack.getTag();
         long storedTime = tag != null ? tag.getLong("timer_expiry_time") : 0;
         return currentTime > storedTime;
     }
 
-    public void setTimerExpiryTime(ItemStack stack, long time) {
+    public static void setTimerExpiryTime(ItemStack stack, long time) {
         stack.getOrCreateTag().putLong("timer_expiry_time", time);
     }
 
-    public boolean isSlideBack(ItemStack stack) {
+    public static boolean isSlideBack(ItemStack stack) {
         CompoundNBT tag = stack.getTag();
         return tag != null && tag.getByte("slide_back") != 0;
     }
 
-    public void setSlideBack(ItemStack stack, boolean value) {
+    public static void setSlideBack(ItemStack stack, boolean value) {
         stack.getOrCreateTag().putByte("slide_back", (byte) (value ? 1 : 0));
     }
 
     // synthetic state to add a delay before playing the shell insertion sound
-    public boolean isInsertingShell(ItemStack stack) {
+    public static boolean isInsertingShell(ItemStack stack) {
         CompoundNBT tag = stack.getTag();
         return tag != null && tag.getByte("inserting_shell") != 0;
     }
 
-    public void setInsertingShell(ItemStack stack, boolean value) {
+    public static void setInsertingShell(ItemStack stack, boolean value) {
         stack.getOrCreateTag().putByte("inserting_shell", (byte) (value ? 1 : 0));
     }
 
-    public boolean isReloading(ItemStack stack) {
+    public static boolean isReloading(ItemStack stack) {
         CompoundNBT tag = stack.getTag();
         return tag != null && tag.getByte("reloading") != 0;
     }
 
-    public void setReloading(ItemStack stack, boolean value) {
+    public static void setReloading(ItemStack stack, boolean value) {
         stack.getOrCreateTag().putByte("reloading", (byte) (value ? 1 : 0));
     }
 
-    public AmmoType getAmmoInChamber(ItemStack stack) {
+    public static AmmoType getAmmoInChamber(ItemStack stack) {
         CompoundNBT tag = stack.getTag();
         return AmmoType.fromByte(tag != null ? tag.getByte("chamber") : 0);
     }
 
-    public void setAmmoInChamber(ItemStack stack, AmmoType ammoType) {
+    public static void setAmmoInChamber(ItemStack stack, AmmoType ammoType) {
         stack.getOrCreateTag().putByte("chamber", ammoType.toByte());
     }
 
-    public int getAmmoInMagazineCount(ItemStack stack) {
+    public static int getAmmoInMagazineCount(ItemStack stack) {
         CompoundNBT tag = stack.getTag();
         return tag != null ? tag.getByteArray("magazine").length : 0;
     }
 
-    public AmmoType extractAmmoFromMagazine(ItemStack stack) {
+    public static AmmoType extractAmmoFromMagazine(ItemStack stack) {
         CompoundNBT tag = stack.getTag();
         if (tag == null) return AmmoType.NONE;
         byte[] magazine = tag.getByteArray("magazine");
@@ -260,7 +260,7 @@ public abstract class ShotgunItem extends Item {
         return ammoType;
     }
 
-    public void addAmmoToMagazine(ItemStack stack, AmmoType ammoType) {
+    public static void addAmmoToMagazine(ItemStack stack, AmmoType ammoType) {
         CompoundNBT tag = stack.getOrCreateTag();
         byte[] magazine = tag.getByteArray("magazine");
         byte[] newMagazine = Arrays.copyOf(magazine, magazine.length + 1);
