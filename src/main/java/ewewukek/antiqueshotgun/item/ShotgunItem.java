@@ -5,6 +5,7 @@ import java.util.Arrays;
 import ewewukek.antiqueshotgun.AmmoType;
 import ewewukek.antiqueshotgun.AntiqueShotgunMod;
 import ewewukek.antiqueshotgun.entity.BulletEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -42,7 +43,9 @@ public abstract class ShotgunItem extends Item {
             long currentTime = worldIn.getGameTime();
             AmmoType ammoType = getAmmoInChamber(stack);
             if (hasTimerExpired(stack, currentTime) && ammoType != AmmoType.NONE) {
-                fireBullets(worldIn, player, ammoType);
+                final float deg2rad = 0.017453292f;
+                Vector3d direction = new Vector3d(0, 0, 1).rotatePitch(-deg2rad * player.rotationPitch).rotateYaw(-deg2rad * player.rotationYaw);
+                fireBullets(worldIn, player, direction, ammoType);
                 worldIn.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_FIRE, SoundCategory.PLAYERS, 1.5F, 1);
 
                 setAmmoInChamber(stack, AmmoType.NONE);
@@ -130,11 +133,10 @@ public abstract class ShotgunItem extends Item {
         return 72000;
     }
 
-    private void fireBullets(World world, PlayerEntity player, AmmoType ammoType) {
-        final float deg2rad = 0.017453292f;
-        Vector3d front = new Vector3d(0, 0, 1).rotatePitch(-deg2rad * player.rotationPitch).rotateYaw(-deg2rad * player.rotationYaw);
-        Vector3d pos = new Vector3d(player.getPosX(), player.getPosY() + player.getEyeHeight(), player.getPosZ());
-        Vector3d playerMotion = player.getMotion();
+    public void fireBullets(World world, LivingEntity shooter, Vector3d direction, AmmoType ammoType) {
+        direction = direction.normalize();
+        Vector3d pos = new Vector3d(shooter.getPosX(), shooter.getPosY() + shooter.getEyeHeight(), shooter.getPosZ());
+        Vector3d playerMotion = shooter.getMotion();
 
         AmmoItem ammoItem = ammoType.toItem();
         for (int i = 0; i < ammoItem.pelletCount(); ++i) {
@@ -142,16 +144,16 @@ public abstract class ShotgunItem extends Item {
             float gaussian = Math.abs((float) random.nextGaussian());
             if (gaussian > 4) gaussian = 4;
 
-            Vector3d motion = front.rotatePitch(ammoItem.spreadStdDev() * gaussian * MathHelper.sin(angle))
+            Vector3d motion = direction.rotatePitch(ammoItem.spreadStdDev() * gaussian * MathHelper.sin(angle))
                 .rotateYaw(ammoItem.spreadStdDev() * gaussian * MathHelper.cos(angle))
                 .scale(ammoItem.speed());
 
-            motion.add(playerMotion.x, player.isOnGround() ? 0 : playerMotion.y, playerMotion.z);
+            motion.add(playerMotion.x, shooter.isOnGround() ? 0 : playerMotion.y, playerMotion.z);
 
             BulletEntity bullet = new BulletEntity(world);
             bullet.ammoType = ammoType;
             bullet.distanceLeft = ammoItem.range();
-            bullet.setShooter(player);
+            bullet.setShooter(shooter);
             bullet.setPosition(pos.x, pos.y, pos.z);
             bullet.setMotion(motion);
 
