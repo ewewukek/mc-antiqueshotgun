@@ -30,10 +30,10 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 public class ElderHunterEntity extends AbstractIllagerEntity {
-    public static int aimDuration = 20;
-    public static int reloadDuration = 14;
-    public static int shellInsertDuration = 12;
-    public static int magazineCapacity = 3;
+    public static int aimDuration;
+    public static int reloadDuration;
+    public static int shellInsertDuration;
+    public static int magazineCapacity;
 
     public ElderHunterEntity(EntityType<? extends ElderHunterEntity> type, World worldIn) {
         super(type, worldIn);

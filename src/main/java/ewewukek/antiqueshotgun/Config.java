@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import ewewukek.antiqueshotgun.entity.ElderHunterEntity;
 import ewewukek.antiqueshotgun.item.AntiqueShotgunItem;
 import ewewukek.antiqueshotgun.item.BuckshotAmmoItem;
 import ewewukek.antiqueshotgun.item.HandmadeAmmoItem;
@@ -64,6 +65,11 @@ public class Config {
         RubberAmmoItem.range = instance.rubber_shell.range;
         RubberAmmoItem.damage = instance.rubber_shell.damage;
 
+        ElderHunterEntity.magazineCapacity = instance.elder_hunter.magazineCapacity;
+        ElderHunterEntity.aimDuration = instance.elder_hunter.aimDuration;
+        ElderHunterEntity.reloadDuration = instance.elder_hunter.reloadDuration;
+        ElderHunterEntity.shellInsertDuration = instance.elder_hunter.shellInsertDuration;
+
         System.out.println("reload complete");
     }
 
@@ -101,6 +107,8 @@ public class Config {
     private BuckshotShell buckshot_shell = new BuckshotShell();
     private SlugShell slug_shell = new SlugShell();
     private RubberShell rubber_shell = new RubberShell();
+
+    private ElderHunter elder_hunter = new ElderHunter();
 
     private static class AntiqueShotgun {
         public int magazineCapacity = 7;
@@ -146,5 +154,12 @@ public class Config {
         public float speed = 200;
         public float range = 20;
         public float damage = 1;
+    }
+
+    public static class ElderHunter {
+        public int magazineCapacity = 3;
+        public int aimDuration = 20;
+        public int reloadDuration = 14;
+        public int shellInsertDuration = 12;
     }
 }
