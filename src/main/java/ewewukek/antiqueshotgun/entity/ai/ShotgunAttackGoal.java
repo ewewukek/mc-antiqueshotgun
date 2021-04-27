@@ -9,8 +9,6 @@ import net.minecraft.entity.ai.goal.Goal;
 public class ShotgunAttackGoal extends Goal {
     private ElderHunterEntity shooter;
     private int aimTime;
-    private boolean fire;
-    private int fireTime;
 
     public ShotgunAttackGoal(ElderHunterEntity shooter) {
         this.shooter = shooter;
@@ -26,6 +24,7 @@ public class ShotgunAttackGoal extends Goal {
     @Override
     public void resetTask() {
         super.resetTask();
+        aimTime = 0;
         shooter.setAggroed(false);
         shooter.setAttackTarget(null);
     }
@@ -42,20 +41,12 @@ public class ShotgunAttackGoal extends Goal {
             if (shooter.isWeaponReady()) {
                 aimTime++;
                 if (aimTime > ElderHunterEntity.aimDuration) {
-                    fire = true;
+                    shooter.fireWeapon(target);
+                    aimTime = 0;
                 }
             }
         } else {
             aimTime = 0;
-        }
-
-        if (fire) {
-            fireTime++;
-            if (fireTime > ElderHunterEntity.fireDelay) {
-                shooter.fireWeapon(target);
-                fire = false;
-                fireTime = 0;
-            }
         }
     }
 }
