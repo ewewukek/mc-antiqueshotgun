@@ -36,7 +36,12 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
 
     public ElderHunterEntity(EntityType<? extends ElderHunterEntity> type, World worldIn) {
         super(type, worldIn);
-        setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(AntiqueShotgunMod.ANTIQUE_SHOTGUN));
+        ItemStack stack = new ItemStack(AntiqueShotgunMod.ANTIQUE_SHOTGUN);
+        ShotgunItem shotgun = (ShotgunItem)stack.getItem();
+        for (int i = 0; i < shotgun.getMagazineCapacity(); ++i) {
+            ShotgunItem.addAmmoToMagazine(stack, AmmoType.BUCKSHOT);
+        }
+        setItemStackToSlot(EquipmentSlotType.MAINHAND, stack);
     }
 
     @Override
