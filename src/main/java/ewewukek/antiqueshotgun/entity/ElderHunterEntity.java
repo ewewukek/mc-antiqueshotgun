@@ -169,6 +169,7 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
                 }
             } else {
                 ShotgunItem.setReloading(stack, false);
+                if (getAttackTarget() == null) setAggroed(false);
             }
         }
     }

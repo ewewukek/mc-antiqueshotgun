@@ -25,7 +25,6 @@ public class ShotgunAttackGoal extends Goal {
     public void resetTask() {
         super.resetTask();
         aimTime = 0;
-        shooter.setAggroed(false);
         shooter.setAttackTarget(null);
     }
 
