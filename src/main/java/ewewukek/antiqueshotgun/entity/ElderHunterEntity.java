@@ -1,7 +1,11 @@
 package ewewukek.antiqueshotgun.entity;
 
+import ewewukek.antiqueshotgun.AmmoType;
 import ewewukek.antiqueshotgun.AntiqueShotgunMod;
+import ewewukek.antiqueshotgun.entity.ai.ShotgunAttackGoal;
+import ewewukek.antiqueshotgun.item.ShotgunItem;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -19,10 +23,17 @@ import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 public class ElderHunterEntity extends AbstractIllagerEntity {
+    public static int aimDuration = 10;
+    public static int fireDelay = 10;
+    public static int reloadDuration = 14;
+    public static int shellInsertDuration = 12;
+
     public ElderHunterEntity(EntityType<? extends ElderHunterEntity> type, World worldIn) {
         super(type, worldIn);
         setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(AntiqueShotgunMod.ANTIQUE_SHOTGUN));
@@ -38,6 +49,7 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
         final float attackRange = 8;
 
         goalSelector.addGoal(1, new AbstractRaiderEntity.FindTargetGoal(this, findRange));
+        goalSelector.addGoal(2, new ShotgunAttackGoal(this));
         goalSelector.addGoal(2, new MoveTowardsTargetGoal(this, 0.5f, attackRange));
 
         goalSelector.addGoal(8, new WaterAvoidingRandomWalkingGoal(this, 0.6D));
@@ -66,5 +78,95 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
     @Override
     public SoundEvent getRaidLossSound() {
         return null;
+    }
+
+    public boolean isWeaponReady() {
+        ItemStack stack = getItemStackFromSlot(EquipmentSlotType.MAINHAND);
+
+        return ShotgunItem.getAmmoInChamber(stack) != AmmoType.NONE
+            && ShotgunItem.hasTimerExpired(stack, world.getGameTime());
+    }
+
+    public void fireWeapon(LivingEntity target) {
+        ItemStack stack = getItemStackFromSlot(EquipmentSlotType.MAINHAND);
+
+        Vector3d direction = new Vector3d(
+            target.getPosX() - getPosX(),
+            target.getBoundingBox().minY + target.getHeight() * 0.7f - getPosY() - getEyeHeight(),
+            target.getPosZ() - getPosZ()
+        );
+        AmmoType ammoType = ShotgunItem.getAmmoInChamber(stack);
+
+        ((ShotgunItem)stack.getItem()).fireBullets(world, this, direction, ammoType);
+        world.playSound(null, getPosX(), getPosY(), getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_FIRE, SoundCategory.HOSTILE, 1.5F, 1);
+
+        ShotgunItem.setAmmoInChamber(stack, AmmoType.NONE);
+        ShotgunItem.setTimerExpiryTime(stack, world.getGameTime() + postFireDelay());
+    }
+
+    public void reloadWeapon() {
+        ItemStack stack = getItemStackFromSlot(EquipmentSlotType.MAINHAND);
+        if (ShotgunItem.getAmmoInChamber(stack) != AmmoType.NONE) return;
+
+        long currentTime = world.getGameTime();
+        if (!ShotgunItem.hasTimerExpired(stack, currentTime)) return;
+
+        if (!ShotgunItem.isReloading(stack)) {
+            if (!ShotgunItem.isSlideBack(stack)) {
+                world.playSound(null, getPosX(), getPosY(), getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_BACK, SoundCategory.HOSTILE, 0.5F, 1.0F);
+
+                ShotgunItem.setSlideBack(stack, true);
+                ShotgunItem.setTimerExpiryTime(stack, currentTime + midCycleDelay());
+
+            } else {
+                world.playSound(null, getPosX(), getPosY(), getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_FORWARD, SoundCategory.HOSTILE, 0.5F, 1.0F);
+
+                ShotgunItem.setSlideBack(stack, false);
+                ShotgunItem.setAmmoInChamber(stack, ShotgunItem.extractAmmoFromMagazine(stack));
+                ShotgunItem.setTimerExpiryTime(stack, currentTime + postCycleDelay());
+
+                if (ShotgunItem.getAmmoInMagazineCount(stack) == 0) {
+                    ShotgunItem.setReloading(stack, true);
+                }
+            }
+        } else {
+            int magazineCapacity = ((ShotgunItem)stack.getItem()).getMagazineCapacity();
+            if (ShotgunItem.getAmmoInMagazineCount(stack) < magazineCapacity) {
+                if (!ShotgunItem.isInsertingShell(stack)) {
+                    ShotgunItem.setInsertingShell(stack, true);
+                    ShotgunItem.setTimerExpiryTime(stack, currentTime + shellPreInsertDelay());
+
+                } else {
+                    world.playSound(null, getPosX(), getPosY(), getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_INSERTING_SHELL, SoundCategory.HOSTILE, 0.5F, 1.0F);
+
+                    ShotgunItem.addAmmoToMagazine(stack, AmmoType.BUCKSHOT);
+                    ShotgunItem.setInsertingShell(stack, false);
+                    ShotgunItem.setTimerExpiryTime(stack, currentTime + shellPostInsertDelay());
+                }
+            } else {
+                ShotgunItem.setReloading(stack, false);
+            }
+        }
+    }
+
+    // helper methods to ensure that sum of each stage delay equals reloading and shell adding durations
+    private static int postFireDelay() {
+        return (reloadDuration - postCycleDelay()) / 2;
+    }
+
+    private static int midCycleDelay() {
+        return reloadDuration - postFireDelay() - postCycleDelay();
+    }
+
+    private static int postCycleDelay() {
+        return 2;
+    }
+
+    private static int shellPreInsertDelay() {
+        return (int)(shellInsertDuration * 0.35);
+    }
+
+    private static int shellPostInsertDelay() {
+        return shellInsertDuration - shellPreInsertDelay();
     }
 }
