@@ -30,6 +30,12 @@ public class ShotgunAttackGoal extends Goal {
     }
 
     @Override
+    public void startExecuting() {
+        super.startExecuting();
+        shooter.setAggroed(true);
+    }
+
+    @Override
     public void tick() {
         LivingEntity target = shooter.getAttackTarget();
         if (target == null || !target.isAlive()) return;
