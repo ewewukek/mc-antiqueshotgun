@@ -34,12 +34,12 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
     public static int fireDelay = 10;
     public static int reloadDuration = 14;
     public static int shellInsertDuration = 12;
+    public static int magazineCapacity = 3;
 
     public ElderHunterEntity(EntityType<? extends ElderHunterEntity> type, World worldIn) {
         super(type, worldIn);
         ItemStack stack = new ItemStack(AntiqueShotgunMod.ANTIQUE_SHOTGUN);
-        ShotgunItem shotgun = (ShotgunItem)stack.getItem();
-        for (int i = 0; i < shotgun.getMagazineCapacity(); ++i) {
+        for (int i = 0; i < magazineCapacity; ++i) {
             ShotgunItem.addAmmoToMagazine(stack, AmmoType.BUCKSHOT);
         }
         setItemStackToSlot(EquipmentSlotType.MAINHAND, stack);
@@ -150,7 +150,6 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
                 }
             }
         } else {
-            int magazineCapacity = ((ShotgunItem)stack.getItem()).getMagazineCapacity();
             if (ShotgunItem.getAmmoInMagazineCount(stack) < magazineCapacity) {
                 if (!ShotgunItem.isInsertingShell(stack)) {
                     ShotgunItem.setInsertingShell(stack, true);
