@@ -23,6 +23,7 @@ import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.vector.Vector3d;
@@ -83,6 +84,20 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
     @Override
     public SoundEvent getRaidLossSound() {
         return null;
+    }
+
+    @Override
+    public void writeAdditional(CompoundNBT compound) {
+        super.writeAdditional(compound);
+        ItemStack stack = getItemStackFromSlot(EquipmentSlotType.MAINHAND);
+        compound.put("weapon", stack.write(new CompoundNBT()));
+    }
+
+    @Override
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
+        ItemStack stack = ItemStack.read(compound.getCompound("weapon"));
+        if (!stack.isEmpty()) setItemStackToSlot(EquipmentSlotType.MAINHAND, stack);
     }
 
     public boolean isWeaponReady() {
