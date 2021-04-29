@@ -53,7 +53,7 @@ public abstract class ShotgunItem extends Item {
             }
         }
 
-        return ActionResult.resultSuccess(stack);
+        return ActionResult.resultFail(stack);
     }
 
     public void update(PlayerEntity player, ItemStack stack) {
