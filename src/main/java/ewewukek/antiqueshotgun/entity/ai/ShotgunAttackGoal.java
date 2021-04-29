@@ -47,25 +47,27 @@ public class ShotgunAttackGoal extends Goal {
         boolean seesEnemy = shooter.getEntitySenses().canSee(target);
         boolean inAttackRange = shooter.getDistanceSq(target) < attackRange * attackRange;
 
-        if (!isAiming && seesEnemy && inAttackRange && shooter.isWeaponReady()) {
-            shooter.getNavigator().clearPath();
-            aimTime = 0;
-            isAiming = true;
-        }
-
-        if (isAiming) {
-            if (seesEnemy) {
-                shooter.getLookController().setLookPositionWithEntity(target, 30, 30);
+        if (seesEnemy) {
+            shooter.getLookController().setLookPositionWithEntity(target, 30, 30);
+            if (isAiming) {
                 aimTime++;
                 if (aimTime > ElderHunterEntity.aimDuration) {
                     shooter.fireWeapon(target);
                     isAiming = false;
                 }
-            } else {
-                isAiming = false;
             }
         } else {
-            shooter.getNavigator().tryMoveToEntityLiving(target, shooter.isWeaponReady() ? speed : speed * 0.5f);
+            isAiming = false;
+        }
+
+        if (!isAiming) {
+            if (seesEnemy && inAttackRange && shooter.isWeaponReady()) {
+                shooter.getNavigator().clearPath();
+                aimTime = 0;
+                isAiming = true;
+            } else {
+                shooter.getNavigator().tryMoveToEntityLiving(target, shooter.isWeaponReady() ? speed : speed * 0.5f);
+            }
         }
     }
 }
