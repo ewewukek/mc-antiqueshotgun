@@ -123,7 +123,7 @@ public class AntiqueShotgunMod {
                     .build(MODID + ":bullet").setRegistryName(MODID, "bullet"),
 
                 EntityType.Builder.<ElderHunterEntity>create(ElderHunterEntity::new, EntityClassification.MONSTER)
-                    .setTrackingRange(8).setUpdateInterval(5)
+                    .setTrackingRange(8).setUpdateInterval(3)
                     .size(0.6f, 1.95f).setShouldReceiveVelocityUpdates(true)
                     .build(MODID + ":elder_hunter").setRegistryName(MODID, "elder_hunter")
             );
