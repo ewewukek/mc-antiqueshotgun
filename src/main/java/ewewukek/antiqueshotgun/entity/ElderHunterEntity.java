@@ -11,7 +11,6 @@ import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
-import net.minecraft.entity.ai.goal.MoveTowardsTargetGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
@@ -51,11 +50,10 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
         goalSelector.addGoal(0, new SwimGoal(this));
 
         final float findRange = 16;
-        final float attackRange = 8;
+        final float attackRange = 12;
 
         goalSelector.addGoal(1, new AbstractRaiderEntity.FindTargetGoal(this, findRange));
-        goalSelector.addGoal(2, new ShotgunAttackGoal(this));
-        goalSelector.addGoal(2, new MoveTowardsTargetGoal(this, 0.5f, attackRange));
+        goalSelector.addGoal(2, new ShotgunAttackGoal(this, 1, attackRange));
 
         goalSelector.addGoal(8, new WaterAvoidingRandomWalkingGoal(this, 0.6D));
         goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, findRange, 1));

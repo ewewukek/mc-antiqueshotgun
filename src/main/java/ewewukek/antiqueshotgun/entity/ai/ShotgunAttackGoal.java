@@ -9,9 +9,14 @@ import net.minecraft.entity.ai.goal.Goal;
 public class ShotgunAttackGoal extends Goal {
     private ElderHunterEntity shooter;
     private int aimTime;
+    private float speed;
+    private float attackRange;
+    private boolean isAiming;
 
-    public ShotgunAttackGoal(ElderHunterEntity shooter) {
+    public ShotgunAttackGoal(ElderHunterEntity shooter, float speed, float attackRange) {
         this.shooter = shooter;
+        this.speed = speed;
+        this.attackRange = attackRange;
         setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
@@ -40,18 +45,27 @@ public class ShotgunAttackGoal extends Goal {
         if (target == null || !target.isAlive()) return;
 
         boolean seesEnemy = shooter.getEntitySenses().canSee(target);
+        boolean inAttackRange = shooter.getDistanceSq(target) < attackRange * attackRange;
 
-        if (seesEnemy) {
-            shooter.getLookController().setLookPositionWithEntity(target, 30, 30);
-            if (shooter.isWeaponReady()) {
+        if (!isAiming && seesEnemy && inAttackRange && shooter.isWeaponReady()) {
+            shooter.getNavigator().clearPath();
+            aimTime = 0;
+            isAiming = true;
+        }
+
+        if (isAiming) {
+            if (seesEnemy) {
+                shooter.getLookController().setLookPositionWithEntity(target, 30, 30);
                 aimTime++;
                 if (aimTime > ElderHunterEntity.aimDuration) {
                     shooter.fireWeapon(target);
-                    aimTime = 0;
+                    isAiming = false;
                 }
+            } else {
+                isAiming = false;
             }
         } else {
-            aimTime = 0;
+            shooter.getNavigator().tryMoveToEntityLiving(target, shooter.isWeaponReady() ? speed : speed * 0.5f);
         }
     }
 }
