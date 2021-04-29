@@ -134,7 +134,11 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
         long currentTime = world.getGameTime();
         if (!ShotgunItem.hasTimerExpired(stack, currentTime)) return;
 
-        if (!ShotgunItem.isReloading(stack)) {
+        boolean isReloading = getAttackTarget() != null
+            ? ShotgunItem.isReloading(stack)
+            : ShotgunItem.getAmmoInMagazineCount(stack) < magazineCapacity;
+
+        if (!isReloading) {
             if (!ShotgunItem.isSlideBack(stack)) {
                 world.playSound(null, getPosX(), getPosY(), getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_BACK, SoundCategory.HOSTILE, 0.5F, 1.0F);
 
@@ -151,6 +155,9 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
                 if (ShotgunItem.getAmmoInMagazineCount(stack) == 0) {
                     ShotgunItem.setReloading(stack, true);
                 }
+                if (getAttackTarget() == null) {
+                    setAggroed(false);
+                }
             }
         } else {
             if (ShotgunItem.getAmmoInMagazineCount(stack) < magazineCapacity) {
@@ -164,10 +171,11 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
                     ShotgunItem.addAmmoToMagazine(stack, AmmoType.BUCKSHOT);
                     ShotgunItem.setInsertingShell(stack, false);
                     ShotgunItem.setTimerExpiryTime(stack, currentTime + shellPostInsertDelay());
+
+                    if (ShotgunItem.getAmmoInMagazineCount(stack) == magazineCapacity) {
+                        ShotgunItem.setReloading(stack, false);
+                    }
                 }
-            } else {
-                ShotgunItem.setReloading(stack, false);
-                if (getAttackTarget() == null) setAggroed(false);
             }
         }
     }
