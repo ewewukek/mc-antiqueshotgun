@@ -112,9 +112,9 @@ public class ElderHunterModel<T extends ElderHunterEntity> extends EntityModel<T
             left_arm.showModel = true;
             arms_folded.showModel = false;
             right_arm.rotateAngleX = head.rotateAngleX - 1.5f;
-            right_arm.rotateAngleY = head.rotateAngleY - 0.6f;
+            right_arm.rotateAngleY = head.rotateAngleY;
             left_arm.rotateAngleX = head.rotateAngleX - 90 * deg2rad + 0.1f;
-            left_arm.rotateAngleY = head.rotateAngleY + 0.3f;
+            left_arm.rotateAngleY = head.rotateAngleY + 0.9f;
         } else {
             right_arm.showModel = true;
             left_arm.showModel = true;
