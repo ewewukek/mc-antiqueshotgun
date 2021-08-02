@@ -94,7 +94,7 @@
   . max level for antique is 3
 . shotgun mob
  . rare spawn as pillagers patrol member
- . spawns at lv5 raid replacing one of the mobs
+ ✔ spawns at lv5 raid replacing one of the mobs
  . drops buckshot, emeralds and antique shotgun
 . backtools mod support
 . powershot mod support

@@ -16,8 +16,11 @@ import ewewukek.antiqueshotgun.item.RubberAmmoItem;
 import ewewukek.antiqueshotgun.item.SawdoffShotgunItem;
 import ewewukek.antiqueshotgun.item.ShotgunItem;
 import ewewukek.antiqueshotgun.item.SlugAmmoItem;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.monster.EvokerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -30,11 +33,14 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.Unit;
+import net.minecraft.world.IServerWorld;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.LogicalSide;
@@ -177,6 +183,23 @@ public class AntiqueShotgunMod {
                     }, gameExecutor);
                 }
             });
+        }
+
+        @SubscribeEvent
+        public static void onEntityJoin(final EntityJoinWorldEvent event) {
+            World world = event.getWorld();
+            Entity entity = event.getEntity();
+            if (entity.getType() == EntityType.EVOKER) {
+                EvokerEntity evoker = (EvokerEntity)entity;
+                if (evoker.isRaidActive() && world.rand.nextFloat() < ElderHunterEntity.raidSpawnChance) {
+                    ElderHunterEntity hunter = ELDER_HUNTER_ENTITY_TYPE.create(world);
+                    hunter.setPosition(evoker.getPosition().getX(), evoker.getPosition().getY(), evoker.getPosition().getZ());
+                    hunter.onInitialSpawn((IServerWorld)world, world.getDifficultyForLocation(evoker.getPosition()), SpawnReason.EVENT, null, null);
+                    hunter.setOnGround(true);
+                    world.addEntity(hunter);
+                    event.setCanceled(true);
+                }
+            }
         }
     }
 
