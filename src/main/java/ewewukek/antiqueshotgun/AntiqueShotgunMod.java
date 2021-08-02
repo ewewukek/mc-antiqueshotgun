@@ -23,6 +23,7 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.monster.EvokerEntity;
+import net.minecraft.entity.monster.PillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -187,6 +188,8 @@ public class AntiqueShotgunMod {
             });
         }
 
+        private static long lastPatrolSpawnTime = 0;
+
         @SubscribeEvent
         public static void onEntityJoin(final EntityJoinWorldEvent event) {
             World world = event.getWorld();
@@ -206,6 +209,21 @@ public class AntiqueShotgunMod {
                     hunter.setOnGround(true);
                     world.addEntity(hunter);
                     event.setCanceled(true);
+                }
+            }
+
+            if (entity.getType() == EntityType.PILLAGER) {
+                PillagerEntity pillager = (PillagerEntity)entity;
+                if (pillager.isLeader() && lastPatrolSpawnTime != world.getGameTime()) {
+                    lastPatrolSpawnTime = world.getGameTime();
+                    if (world.rand.nextFloat() < ElderHunterEntity.patrolSpawnChance) {
+                        ElderHunterEntity hunter = ELDER_HUNTER_ENTITY_TYPE.create(world);
+                        hunter.setPosition(pillager.getPosition().getX(), pillager.getPosition().getY(), pillager.getPosition().getZ());
+                        hunter.onInitialSpawn((IServerWorld)world, world.getDifficultyForLocation(pillager.getPosition()), SpawnReason.PATROL, null, null);
+                        hunter.setOnGround(true);
+                        world.addEntity(hunter);
+                        event.setCanceled(true);
+                    }
                 }
             }
         }

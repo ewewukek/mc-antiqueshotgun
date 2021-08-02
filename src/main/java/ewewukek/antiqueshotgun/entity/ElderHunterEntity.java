@@ -34,6 +34,7 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
     public static int shellInsertDuration;
     public static int magazineCapacity;
     public static float raidSpawnChance;
+    public static float patrolSpawnChance;
 
     public ElderHunterEntity(EntityType<? extends ElderHunterEntity> type, World worldIn) {
         super(type, worldIn);

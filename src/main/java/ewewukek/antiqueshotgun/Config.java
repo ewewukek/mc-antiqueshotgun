@@ -70,6 +70,7 @@ public class Config {
         ElderHunterEntity.reloadDuration = instance.elder_hunter.reloadDuration;
         ElderHunterEntity.shellInsertDuration = instance.elder_hunter.shellInsertDuration;
         ElderHunterEntity.raidSpawnChance = instance.elder_hunter.raidSpawnChance;
+        ElderHunterEntity.patrolSpawnChance = instance.elder_hunter.patrolSpawnChance;
 
         System.out.println("reload complete");
     }
@@ -163,5 +164,6 @@ public class Config {
         public int reloadDuration = 14;
         public int shellInsertDuration = 12;
         public float raidSpawnChance = 0.1f;
+        public float patrolSpawnChance = 0.05f;
     }
 }
