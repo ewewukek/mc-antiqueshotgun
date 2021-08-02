@@ -20,6 +20,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.goal.AvoidEntityGoal;
+import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.monster.EvokerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -189,6 +191,12 @@ public class AntiqueShotgunMod {
         public static void onEntityJoin(final EntityJoinWorldEvent event) {
             World world = event.getWorld();
             Entity entity = event.getEntity();
+
+            if (entity.getType() == EntityType.VILLAGER) {
+                VillagerEntity villager = (VillagerEntity)entity;
+                villager.goalSelector.addGoal(1, new AvoidEntityGoal<>(villager, ElderHunterEntity.class, 16, 0.7, 0.7));
+            }
+
             if (entity.getType() == EntityType.EVOKER) {
                 EvokerEntity evoker = (EvokerEntity)entity;
                 if (evoker.isRaidActive() && world.rand.nextFloat() < ElderHunterEntity.raidSpawnChance) {
