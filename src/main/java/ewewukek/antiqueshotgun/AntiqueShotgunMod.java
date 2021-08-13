@@ -36,8 +36,10 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.Unit;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.raid.Raid;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -203,11 +205,14 @@ public class AntiqueShotgunMod {
             if (entity.getType() == EntityType.EVOKER) {
                 EvokerEntity evoker = (EvokerEntity)entity;
                 if (evoker.isRaidActive() && world.rand.nextFloat() < ElderHunterEntity.raidSpawnChance) {
+                    Raid raid = evoker.getRaid();
+                    int wave = evoker.getWave();
+                    BlockPos pos = evoker.getPosition().add(0, -1, 0); // compensate +1 from joinRaid
+                    raid.leaveRaid(evoker, true);
+
                     ElderHunterEntity hunter = ELDER_HUNTER_ENTITY_TYPE.create(world);
-                    hunter.setPosition(evoker.getPosition().getX(), evoker.getPosition().getY(), evoker.getPosition().getZ());
-                    hunter.onInitialSpawn((IServerWorld)world, world.getDifficultyForLocation(evoker.getPosition()), SpawnReason.EVENT, null, null);
-                    hunter.setOnGround(true);
-                    world.addEntity(hunter);
+                    raid.joinRaid(wave, hunter, pos, false);
+
                     event.setCanceled(true);
                 }
             }
