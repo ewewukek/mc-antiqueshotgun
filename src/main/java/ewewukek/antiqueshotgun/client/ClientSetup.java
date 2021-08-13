@@ -35,7 +35,7 @@ public class ClientSetup {
         ItemModelsProperties.registerProperty(AntiqueShotgunMod.RUBBER_SHELL, new ResourceLocation("count"), countGetter);
 
         IItemPropertyGetter slideBackGetter = (stack, world, player) -> {
-            return ((ShotgunItem)stack.getItem()).isSlideBack(stack) ? 1 : 0;
+            return ShotgunItem.isSlideBack(stack) ? 1 : 0;
         };
         ItemModelsProperties.registerProperty(AntiqueShotgunMod.ANTIQUE_SHOTGUN, new ResourceLocation(AntiqueShotgunMod.MODID, "slide_back"), slideBackGetter);
         ItemModelsProperties.registerProperty(AntiqueShotgunMod.HANDMADE_SHOTGUN, new ResourceLocation(AntiqueShotgunMod.MODID, "slide_back"), slideBackGetter);
