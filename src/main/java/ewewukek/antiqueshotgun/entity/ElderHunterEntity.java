@@ -33,6 +33,7 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
     public static int reloadDuration;
     public static int shellInsertDuration;
     public static int magazineCapacity;
+    public static float shotgunDropChance;
     public static float raidSpawnChance;
     public static float patrolSpawnChance;
 
@@ -43,6 +44,7 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
             ShotgunItem.addAmmoToMagazine(stack, AmmoType.BUCKSHOT);
         }
         setItemStackToSlot(EquipmentSlotType.MAINHAND, stack);
+        setDropChance(EquipmentSlotType.MAINHAND, shotgunDropChance);
     }
 
     @Override
