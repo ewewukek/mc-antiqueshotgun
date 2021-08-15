@@ -23,6 +23,7 @@ public abstract class ShotgunItem extends Item {
         super(properties);
     }
 
+    public static boolean enableMagazine;
     public static boolean insertOneIfEmpty;
 
     public abstract boolean canBeUsedFromOffhand();
@@ -70,10 +71,19 @@ public abstract class ShotgunItem extends Item {
         }
 
         ItemStack ammoStack = findAmmo(player);
-        boolean canReload = getAmmoInMagazineCount(stack) < getMagazineCapacity() && !ammoStack.isEmpty();
         boolean chamberEmpty = getAmmoInChamber(stack) == AmmoType.NONE;
-        boolean magazineEmpty = getAmmoInMagazineCount(stack) == 0;
-        boolean isReloading = canReload && (KeyState.isReloadKeyDown(player) || insertOneIfEmpty && chamberEmpty && magazineEmpty);
+        boolean magazineEmpty;
+        boolean isReloading;
+
+        if (enableMagazine) {
+            magazineEmpty = getAmmoInMagazineCount(stack) == 0;
+            boolean canReload = getAmmoInMagazineCount(stack) < getMagazineCapacity() && !ammoStack.isEmpty();
+            isReloading = canReload && (KeyState.isReloadKeyDown(player) || insertOneIfEmpty && chamberEmpty && magazineEmpty);
+
+        } else {
+            magazineEmpty = ammoStack.isEmpty();
+            isReloading = false;
+        }
 
         double posX = player.getPosX();
         double posY = player.getPosY();
@@ -93,8 +103,19 @@ public abstract class ShotgunItem extends Item {
             } else {
                 world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_FORWARD, SoundCategory.PLAYERS, 0.5F, 1.0F);
 
+                AmmoType ammoType;
+                if (enableMagazine) {
+                    ammoType = extractAmmoFromMagazine(stack);
+
+                } else {
+                    ammoType = ammoTypeFromStack(ammoStack);
+                    if (!player.abilities.isCreativeMode) {
+                        ammoStack.shrink(1);
+                    }
+                }
+
                 setSlideBack(stack, false);
-                setAmmoInChamber(stack, extractAmmoFromMagazine(stack));
+                setAmmoInChamber(stack, ammoType);
                 setTimerExpiryTime(stack, currentTime + postCycleDelay());
 
                 return;

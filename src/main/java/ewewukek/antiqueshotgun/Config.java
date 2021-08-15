@@ -34,6 +34,7 @@ public class Config {
     public static void reload() {
         load();
 
+        ShotgunItem.enableMagazine = instance.common.enableMagazine;
         ShotgunItem.insertOneIfEmpty = instance.common.insertOneIfEmpty;
 
         AntiqueShotgunItem.magazineCapacity = instance.antique_shotgun.magazineCapacity;
@@ -119,6 +120,7 @@ public class Config {
     private ElderHunter elder_hunter = new ElderHunter();
 
     private static class Common {
+        public boolean enableMagazine = true;
         public boolean insertOneIfEmpty = false;
     }
 
