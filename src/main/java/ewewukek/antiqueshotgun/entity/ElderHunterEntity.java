@@ -4,6 +4,8 @@ import ewewukek.antiqueshotgun.AmmoType;
 import ewewukek.antiqueshotgun.AntiqueShotgunMod;
 import ewewukek.antiqueshotgun.entity.ai.ShotgunAttackGoal;
 import ewewukek.antiqueshotgun.item.ShotgunItem;
+import net.minecraft.entity.CreatureAttribute;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
@@ -83,6 +85,17 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
 
     @Override
     public void applyWaveBonus(int wave, boolean p_213660_2_) {
+    }
+
+    @Override
+    public boolean isOnSameTeam(Entity entityIn) {
+        if (super.isOnSameTeam(entityIn)) {
+            return true;
+        }
+        if (entityIn instanceof LivingEntity && ((LivingEntity)entityIn).getCreatureAttribute() == CreatureAttribute.ILLAGER) {
+            return getTeam() == null && entityIn.getTeam() == null;
+        }
+        return false;
     }
 
     @Override
