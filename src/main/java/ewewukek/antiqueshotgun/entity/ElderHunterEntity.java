@@ -23,8 +23,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
@@ -84,8 +86,23 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
     }
 
     @Override
+    protected SoundEvent getAmbientSound() {
+        return SoundEvents.ENTITY_PILLAGER_AMBIENT;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.ENTITY_PILLAGER_DEATH;
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return SoundEvents.ENTITY_PILLAGER_HURT;
+    }
+
+    @Override
     public SoundEvent getRaidLossSound() {
-        return null;
+        return SoundEvents.ENTITY_PILLAGER_CELEBRATE;
     }
 
     @Override
