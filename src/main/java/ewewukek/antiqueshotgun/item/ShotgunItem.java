@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import ewewukek.antiqueshotgun.AmmoType;
 import ewewukek.antiqueshotgun.AntiqueShotgunMod;
+import ewewukek.antiqueshotgun.KeyState;
 import ewewukek.antiqueshotgun.entity.BulletEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -65,6 +66,16 @@ public abstract class ShotgunItem extends Item {
             return;
         }
 
+        if (KeyState.isReloadKeyDown(player)) {
+            if (!isReloading(stack) && !findAmmo(player).isEmpty()) {
+                setReloading(stack, true);
+            }
+        } else {
+            if (isReloading(stack) && !isInsertingShell(stack)) {
+                setReloading(stack, false);
+            }
+        }
+
         double posX = player.getPosX();
         double posY = player.getPosY();
         double posZ = player.getPosZ();
@@ -119,12 +130,6 @@ public abstract class ShotgunItem extends Item {
                 setInsertingShell(stack, false);
                 setTimerExpiryTime(stack, currentTime + shellPostInsertDelay());
             }
-        }
-    }
-
-    public void reloadKeyUpdated(PlayerEntity player, ItemStack stack, boolean isDown) {
-        if (isDown && !findAmmo(player).isEmpty()) {
-            setReloading(stack, true);
         }
     }
 

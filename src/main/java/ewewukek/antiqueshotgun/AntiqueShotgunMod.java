@@ -252,10 +252,7 @@ public class AntiqueShotgunMod {
         void handle(Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(() -> {
                 PlayerEntity player = ctx.get().getSender();
-                ItemStack stack = player.getHeldItem(Hand.MAIN_HAND);
-                if (stack.getItem() instanceof ShotgunItem) {
-                    ((ShotgunItem)stack.getItem()).reloadKeyUpdated(player, stack, isDown);
-                }
+                KeyState.setReloadKeyDown(player, isDown);
             });
             ctx.get().setPacketHandled(true);
         }
