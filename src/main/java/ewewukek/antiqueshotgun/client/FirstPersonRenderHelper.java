@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.HandSide;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -22,7 +23,16 @@ public class FirstPersonRenderHelper {
 
         matrixStack.push();
 
-        matrixStack.translate(sign * 0.31f, -0.29f, -0.41f);
+        if (swingProgress > 0) {
+            float swingSharp = MathHelper.sin(MathHelper.sqrt(swingProgress) * (float)Math.PI);
+            float swingNormal = MathHelper.sin(swingProgress * (float)Math.PI);
+            matrixStack.translate(sign * (-0.05f * swingNormal), -0.05f * swingNormal, -0.4f * swingSharp);
+            matrixStack.translate(sign * 0.31f, -0.26f, -0.41f);
+            matrixStack.rotate(Vector3f.XP.rotationDegrees(180 + sign * (20 - 20 * swingSharp)));
+
+        } else {
+            matrixStack.translate(sign * 0.31f, -0.29f, -0.41f);
+        }
 
         // compensate rotated model
         matrixStack.translate(0, 0.085f, 0);
