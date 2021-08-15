@@ -109,7 +109,10 @@ public abstract class ShotgunItem extends Item {
             } else {
                 world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_INSERTING_SHELL, SoundCategory.PLAYERS, 0.5F, 1.0F);
 
-                addAmmoToMagazine(stack, consumeAmmoStack(ammoStack));
+                addAmmoToMagazine(stack, ammoTypeFromStack(ammoStack));
+                if (!player.abilities.isCreativeMode) {
+                    ammoStack.shrink(1);
+                }
                 setInsertingShell(stack, false);
                 setTimerExpiryTime(stack, currentTime + shellPostInsertDelay());
             }
@@ -170,9 +173,8 @@ public abstract class ShotgunItem extends Item {
         return getShellInsertDuration() - shellPreInsertDelay();
     }
 
-    private static AmmoType consumeAmmoStack(ItemStack ammoStack) {
+    private static AmmoType ammoTypeFromStack(ItemStack ammoStack) {
         AmmoType ammoType = AmmoType.fromItem(ammoStack.getItem());
-        ammoStack.shrink(1);
         return ammoType;
     }
 
