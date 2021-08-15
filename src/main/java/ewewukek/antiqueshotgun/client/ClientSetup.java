@@ -9,6 +9,7 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderHandEvent;
@@ -52,12 +53,15 @@ public class ClientSetup {
         ItemStack stack = event.getItemStack();
         if (!stack.isEmpty() && stack.getItem() instanceof ShotgunItem) {
             Minecraft mc = Minecraft.getInstance();
-            FirstPersonRenderHelper.renderFirstPersonShotgun(
-                mc.getFirstPersonRenderer(), mc.player,
-                event.getHand(), event.getPartialTicks(), event.getInterpolatedPitch(),
-                event.getSwingProgress(), event.getEquipProgress(), stack,
-                event.getMatrixStack(), event.getBuffers(), event.getLight());
-            event.setCanceled(true);
+            ShotgunItem shotgun = (ShotgunItem)stack.getItem();
+            if (event.getHand() == Hand.MAIN_HAND || shotgun.canBeUsedFromOffhand(mc.player)) {
+                FirstPersonRenderHelper.renderFirstPersonShotgun(
+                    mc.getFirstPersonRenderer(), mc.player,
+                    event.getHand(), event.getPartialTicks(), event.getInterpolatedPitch(),
+                    event.getSwingProgress(), event.getEquipProgress(), stack,
+                    event.getMatrixStack(), event.getBuffers(), event.getLight());
+                event.setCanceled(true);
+            }
         }
     }
 
