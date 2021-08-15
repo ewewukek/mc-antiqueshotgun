@@ -3,8 +3,9 @@
  ✔ firing
  ✔ cycling
   ✔ insert a shell if empty
+   ✔ configurable, disabled by default
   ✔ auto (no need to hold rmb)
-  . holding rmb (configurable)
+  ✗ holding rmb (auto is better)
  . reloading
   ✗ auto-reloading while standing still (it's annoying)
   ✔ ignoring off-hand slot
@@ -12,16 +13,15 @@
   ✔ reload button
    ✔ configurable
     ✔ reload while holding
-    ✔ single key press reloads fully
-     . make configurable
+    ✗ single key press reloads fully (issues when switching items midst reload)
      ✔ pressing rmb interrupts reloading
- . first-person animation
+ ✔ first-person animation
   ✔ basic pose
   ✔ cycling animation
-  . reloading animation
- . third-person animation
-  . basic pose
-  . reloading animation
+  ✗ reloading animation (hard to implement atm)
+ ✔ third-person animation
+  ✔ basic pose
+  ✗ reloading animation (hard to implement atm)
  . melee damage & knockback
   . custom hit sound
  ✔ firing bullets
@@ -59,8 +59,7 @@
   . slug version
  ✔ cycling
  ✔ loading
- . ejected shells hitting ground
-  . disablable in config
+ ✗ ejected shells hitting ground (useless clutter)
 . ammo types
  ✔ register items
  ✔ varying texture depending on stack sizie
@@ -97,9 +96,10 @@
  ✔ rare spawn as pillagers patrol member
  ✔ spawns at lv5 raid replacing one of the mobs
  ✔ drops buckshot, emeralds and antique shotgun
-. backtools mod support
+✗ backtools mod support (buggy mod)
 . powershot mod support
 . advancements
+. geckolib for animations
 . configuration
  ✔ bullet speed
  ✔ damage
@@ -115,6 +115,6 @@
  ✔ reload rate
  ✔ handmade shotgun
  ✔ antique
- . disable auto reload on empty magazine
- . disable magazine (always use ammo from inventory)
+ ✔ disable auto reload on empty magazine
+ ✔ disable magazine (always use ammo from inventory)
  . send server config to a client
