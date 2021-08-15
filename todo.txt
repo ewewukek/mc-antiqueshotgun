@@ -11,8 +11,9 @@
   . don't reload if there is another shotgun of the same type in inventory
   ✔ reload button
    ✔ configurable
-    . reload while holding
+    ✔ reload while holding
     ✔ single key press reloads fully
+     . make configurable
      ✔ pressing rmb interrupts reloading
  . first-person animation
   ✔ basic pose
@@ -92,10 +93,10 @@
  . brute - melee damage & knockback increase
   . max level for handmade is 1
   . max level for antique is 3
-. shotgun mob
+✔ shotgun mob
  ✔ rare spawn as pillagers patrol member
  ✔ spawns at lv5 raid replacing one of the mobs
- . drops buckshot, emeralds and antique shotgun
+ ✔ drops buckshot, emeralds and antique shotgun
 . backtools mod support
 . powershot mod support
 . advancements
