@@ -30,11 +30,14 @@ public abstract class ShotgunItem extends Item {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity player, Hand hand) {
-        if (hand != Hand.MAIN_HAND && !canBeUsedFromOffhand()) {
-            return super.onItemRightClick(worldIn, player, hand);
-        }
-
         ItemStack stack = player.getHeldItem(hand);
+
+        if (hand == Hand.OFF_HAND) {
+            ItemStack mainHandStack = player.getHeldItem(Hand.MAIN_HAND);
+            if (!canBeUsedFromOffhand() || mainHandStack.getItem() instanceof ShotgunItem) {
+                return ActionResult.resultPass(stack);
+            }
+        }
 
         if (!worldIn.isRemote) {
             if (isReloading(stack)) {
