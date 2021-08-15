@@ -28,15 +28,17 @@ public abstract class ShotgunItem extends Item {
     public abstract int getReloadDuration();
     public abstract int getShellInsertDuration();
 
+    public boolean canBeUsedFromOffhand(PlayerEntity player) {
+        return canBeUsedFromOffhand()
+            && !(player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof ShotgunItem);
+    }
+
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity player, Hand hand) {
         ItemStack stack = player.getHeldItem(hand);
 
-        if (hand == Hand.OFF_HAND) {
-            ItemStack mainHandStack = player.getHeldItem(Hand.MAIN_HAND);
-            if (!canBeUsedFromOffhand() || mainHandStack.getItem() instanceof ShotgunItem) {
-                return ActionResult.resultPass(stack);
-            }
+        if (hand == Hand.OFF_HAND && !canBeUsedFromOffhand(player)) {
+            return ActionResult.resultPass(stack);
         }
 
         if (!worldIn.isRemote) {
