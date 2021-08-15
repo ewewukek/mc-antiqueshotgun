@@ -41,6 +41,8 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
     public static float raidSpawnChance;
     public static float patrolSpawnChance;
 
+    public boolean isReloading;
+
     public ElderHunterEntity(EntityType<? extends ElderHunterEntity> type, World worldIn) {
         super(type, worldIn);
         ItemStack stack = new ItemStack(AntiqueShotgunMod.ANTIQUE_SHOTGUN);
@@ -169,11 +171,9 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
         long currentTime = world.getGameTime();
         if (!ShotgunItem.hasTimerExpired(stack, currentTime)) return;
 
-        boolean isReloading = getAttackTarget() != null
-            ? ShotgunItem.isReloading(stack)
-            : ShotgunItem.getAmmoInMagazineCount(stack) < magazineCapacity;
+        boolean doReload = getAttackTarget() != null ? isReloading : ShotgunItem.getAmmoInMagazineCount(stack) < magazineCapacity;
 
-        if (!isReloading) {
+        if (!doReload) {
             if (!ShotgunItem.isSlideBack(stack)) {
                 world.playSound(null, getPosX(), getPosY(), getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_BACK, SoundCategory.HOSTILE, 0.5F, 1.0F);
 
@@ -188,7 +188,7 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
                 ShotgunItem.setTimerExpiryTime(stack, currentTime + postCycleDelay());
 
                 if (ShotgunItem.getAmmoInMagazineCount(stack) == 0) {
-                    ShotgunItem.setReloading(stack, true);
+                    isReloading = true;
                 }
                 if (getAttackTarget() == null) {
                     setAggroed(false);
@@ -208,7 +208,7 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
                     ShotgunItem.setTimerExpiryTime(stack, currentTime + shellPostInsertDelay());
 
                     if (ShotgunItem.getAmmoInMagazineCount(stack) == magazineCapacity) {
-                        ShotgunItem.setReloading(stack, false);
+                        isReloading = false;
                     }
                 }
             }
