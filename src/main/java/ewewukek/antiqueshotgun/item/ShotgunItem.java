@@ -23,6 +23,8 @@ public abstract class ShotgunItem extends Item {
         super(properties);
     }
 
+    public static boolean insertOneIfEmpty;
+
     public abstract boolean canBeUsedFromOffhand();
     public abstract int getMagazineCapacity();
     public abstract int getReloadDuration();
@@ -42,10 +44,6 @@ public abstract class ShotgunItem extends Item {
         }
 
         if (!worldIn.isRemote) {
-            if (isReloading(stack)) {
-                setReloading(stack, false);
-            }
-
             long currentTime = worldIn.getGameTime();
             AmmoType ammoType = getAmmoInChamber(stack);
             if (hasTimerExpired(stack, currentTime) && ammoType != AmmoType.NONE) {
@@ -71,59 +69,39 @@ public abstract class ShotgunItem extends Item {
             return;
         }
 
-        if (KeyState.isReloadKeyDown(player)) {
-            if (!isReloading(stack) && !findAmmo(player).isEmpty()) {
-                setReloading(stack, true);
-            }
-        } else {
-            if (isReloading(stack) && !isInsertingShell(stack)) {
-                setReloading(stack, false);
-            }
-        }
+        ItemStack ammoStack = findAmmo(player);
+        boolean canReload = getAmmoInMagazineCount(stack) < getMagazineCapacity() && !ammoStack.isEmpty();
+        boolean chamberEmpty = getAmmoInChamber(stack) == AmmoType.NONE;
+        boolean magazineEmpty = getAmmoInMagazineCount(stack) == 0;
+        boolean isReloading = canReload && (KeyState.isReloadKeyDown(player) || insertOneIfEmpty && chamberEmpty && magazineEmpty);
 
         double posX = player.getPosX();
         double posY = player.getPosY();
         double posZ = player.getPosZ();
 
-        boolean insertShell = false;
-
-        if (getAmmoInChamber(stack) == AmmoType.NONE) {
+        if (chamberEmpty) {
             if (!isSlideBack(stack)) {
-                world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_BACK, SoundCategory.PLAYERS, 0.5F, 1.0F);
+                if (!isReloading && !magazineEmpty) {
+                    world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_BACK, SoundCategory.PLAYERS, 0.5F, 1.0F);
 
-                setSlideBack(stack, true);
-                setTimerExpiryTime(stack, currentTime + midCycleDelay());
-
-                return;
-
-            } else if (isSlideBack(stack)) {
-                if (getAmmoInMagazineCount(stack) > 0) {
-                    world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_FORWARD, SoundCategory.PLAYERS, 0.5F, 1.0F);
-
-                    setSlideBack(stack, false);
-                    setAmmoInChamber(stack, extractAmmoFromMagazine(stack));
-                    setTimerExpiryTime(stack, currentTime + postCycleDelay());
+                    setSlideBack(stack, true);
+                    setTimerExpiryTime(stack, currentTime + midCycleDelay());
 
                     return;
-
-                } else {
-                    insertShell = true;
                 }
-            }
-        }
-
-        ItemStack ammoStack = findAmmo(player);
-
-        if (isReloading(stack)) {
-            if (getAmmoInMagazineCount(stack) < getMagazineCapacity() && !ammoStack.isEmpty()) {
-                insertShell = true;
 
             } else {
-                setReloading(stack, false);
+                world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_FORWARD, SoundCategory.PLAYERS, 0.5F, 1.0F);
+
+                setSlideBack(stack, false);
+                setAmmoInChamber(stack, extractAmmoFromMagazine(stack));
+                setTimerExpiryTime(stack, currentTime + postCycleDelay());
+
+                return;
             }
         }
 
-        if (insertShell && !ammoStack.isEmpty()) {
+        if (isReloading) {
             if (!isInsertingShell(stack)) {
                 setInsertingShell(stack, true);
                 setTimerExpiryTime(stack, currentTime + shellPreInsertDelay());
@@ -237,15 +215,6 @@ public abstract class ShotgunItem extends Item {
 
     public static void setInsertingShell(ItemStack stack, boolean value) {
         stack.getOrCreateTag().putByte("inserting_shell", (byte) (value ? 1 : 0));
-    }
-
-    public static boolean isReloading(ItemStack stack) {
-        CompoundNBT tag = stack.getTag();
-        return tag != null && tag.getByte("reloading") != 0;
-    }
-
-    public static void setReloading(ItemStack stack, boolean value) {
-        stack.getOrCreateTag().putByte("reloading", (byte) (value ? 1 : 0));
     }
 
     public static AmmoType getAmmoInChamber(ItemStack stack) {

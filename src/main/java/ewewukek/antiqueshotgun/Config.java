@@ -20,6 +20,7 @@ import ewewukek.antiqueshotgun.item.HandmadeAmmoItem;
 import ewewukek.antiqueshotgun.item.HandmadeShotgunItem;
 import ewewukek.antiqueshotgun.item.RubberAmmoItem;
 import ewewukek.antiqueshotgun.item.SawdoffShotgunItem;
+import ewewukek.antiqueshotgun.item.ShotgunItem;
 import ewewukek.antiqueshotgun.item.SlugAmmoItem;
 import net.minecraftforge.fml.loading.FMLPaths;
 
@@ -32,6 +33,8 @@ public class Config {
 
     public static void reload() {
         load();
+
+        ShotgunItem.insertOneIfEmpty = instance.common.insertOneIfEmpty;
 
         AntiqueShotgunItem.magazineCapacity = instance.antique_shotgun.magazineCapacity;
         AntiqueShotgunItem.reloadDuration = instance.antique_shotgun.reloadDuration;
@@ -102,6 +105,8 @@ public class Config {
 
     private int version = VERSION;
 
+    private Common common = new Common();
+
     private AntiqueShotgun antique_shotgun = new AntiqueShotgun();
     private HandmadeShotgun handmade_shotgun = new HandmadeShotgun();
     private SawdoffShotgun sawd_off_shotgun = new SawdoffShotgun();
@@ -112,6 +117,10 @@ public class Config {
     private RubberShell rubber_shell = new RubberShell();
 
     private ElderHunter elder_hunter = new ElderHunter();
+
+    private static class Common {
+        public boolean insertOneIfEmpty = false;
+    }
 
     private static class AntiqueShotgun {
         public int magazineCapacity = 7;
