@@ -58,6 +58,7 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
 
         goalSelector.addGoal(1, new AbstractRaiderEntity.FindTargetGoal(this, findRange));
         goalSelector.addGoal(2, new ShotgunAttackGoal(this, 1, attackRange));
+        goalSelector.addGoal(3, new AbstractIllagerEntity.RaidOpenDoorGoal(this));
 
         goalSelector.addGoal(8, new WaterAvoidingRandomWalkingGoal(this, 0.6D));
         goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, findRange, 1));
