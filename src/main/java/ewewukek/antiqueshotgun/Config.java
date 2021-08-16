@@ -44,6 +44,7 @@ public class Config {
         HandmadeShotgunItem.magazineCapacity = instance.handmade_shotgun.magazineCapacity;
         HandmadeShotgunItem.reloadDuration = instance.handmade_shotgun.reloadDuration;
         HandmadeShotgunItem.shellInsertDuration = instance.handmade_shotgun.shellInsertDuration;
+        HandmadeShotgunItem.misfireChance = instance.handmade_shotgun.misfireChance;
 
         SawdoffShotgunItem.magazineCapacity = instance.sawd_off_shotgun.magazineCapacity;
 
@@ -134,6 +135,7 @@ public class Config {
         public int magazineCapacity = 4;
         public int reloadDuration = 16;
         public int shellInsertDuration = 14;
+        public float misfireChance = 0.05f;
     }
 
     private static class SawdoffShotgun {

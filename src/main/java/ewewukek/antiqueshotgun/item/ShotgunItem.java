@@ -32,6 +32,7 @@ public abstract class ShotgunItem extends Item {
     public abstract int getMagazineCapacity();
     public abstract int getReloadDuration();
     public abstract int getShellInsertDuration();
+    public abstract float getMisfireChance();
 
     public boolean canBeUsedFromOffhand(PlayerEntity player) {
         return canBeUsedFromOffhand()
@@ -50,12 +51,18 @@ public abstract class ShotgunItem extends Item {
             long currentTime = worldIn.getGameTime();
             AmmoType ammoType = getAmmoInChamber(stack);
             if (hasTimerExpired(stack, currentTime) && ammoType != AmmoType.NONE) {
-                final float deg2rad = 0.017453292f;
-                Vector3d direction = new Vector3d(0, 0, 1).rotatePitch(-deg2rad * player.rotationPitch).rotateYaw(-deg2rad * player.rotationYaw);
-                fireBullets(worldIn, player, direction, ammoType);
-                worldIn.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_FIRE, SoundCategory.PLAYERS, 1.5F, 1);
+                if (random.nextFloat() >= getMisfireChance()) {
+                    final float deg2rad = 0.017453292f;
+                    Vector3d direction = new Vector3d(0, 0, 1).rotatePitch(-deg2rad * player.rotationPitch).rotateYaw(-deg2rad * player.rotationYaw);
+                    fireBullets(worldIn, player, direction, ammoType);
+                    worldIn.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_FIRE, SoundCategory.PLAYERS, 1.5F, 1);
 
-                damageItem(stack, player);
+                    damageItem(stack, player);
+
+                } else {
+                    worldIn.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_DRY_FIRE, SoundCategory.PLAYERS, 0.5F, 1);
+                }
+
                 setAmmoInChamber(stack, AmmoType.NONE);
                 setTimerExpiryTime(stack, currentTime + postFireDelay());
             }

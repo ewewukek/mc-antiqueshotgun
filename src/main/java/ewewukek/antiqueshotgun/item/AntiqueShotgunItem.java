@@ -30,4 +30,9 @@ public class AntiqueShotgunItem extends ShotgunItem {
     public int getShellInsertDuration() {
         return shellInsertDuration;
     }
+
+    @Override
+    public float getMisfireChance() {
+        return 0;
+    }
 }

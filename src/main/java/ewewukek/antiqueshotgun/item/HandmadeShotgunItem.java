@@ -10,6 +10,7 @@ public class HandmadeShotgunItem extends ShotgunItem {
     public static int magazineCapacity;
     public static int reloadDuration;
     public static int shellInsertDuration;
+    public static float misfireChance;
 
     @Override
     public boolean canBeUsedFromOffhand() {
@@ -29,4 +30,9 @@ public class HandmadeShotgunItem extends ShotgunItem {
     @Override
     public int getShellInsertDuration() {
         return shellInsertDuration;
+    }
+
+    @Override
+    public float getMisfireChance() {
+        return misfireChance;
     }}

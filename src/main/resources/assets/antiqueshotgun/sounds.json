@@ -4,6 +4,11 @@
       "antiqueshotgun:shotgun_fire"
     ]
   },
+  "shotgun_dry_fire": {
+    "sounds": [
+      "antiqueshotgun:shotgun_dry_fire"
+    ]
+  },
   "shotgun_pump_back": {
     "sounds": [
       "antiqueshotgun:shotgun_pump_back"
