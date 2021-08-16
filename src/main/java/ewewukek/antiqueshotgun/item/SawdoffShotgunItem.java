@@ -1,6 +1,8 @@
 package ewewukek.antiqueshotgun.item;
 
+import ewewukek.antiqueshotgun.AmmoType;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 public class SawdoffShotgunItem extends HandmadeShotgunItem {
     public SawdoffShotgunItem(Item.Properties properties) {
@@ -10,6 +12,12 @@ public class SawdoffShotgunItem extends HandmadeShotgunItem {
     public static int magazineCapacity;
     public static float spreadStdDevAdd;
     public static float damageMultiplier;
+
+    @Override
+    public boolean isAmmo(ItemStack stack) {
+        AmmoType type = AmmoType.fromItem(stack.getItem());
+        return type != AmmoType.NONE && type != AmmoType.SLUG && type != AmmoType.RUBBER;
+    }
 
     @Override
     public boolean canBeUsedFromOffhand() {

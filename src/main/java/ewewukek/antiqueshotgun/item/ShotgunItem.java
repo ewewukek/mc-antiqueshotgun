@@ -223,21 +223,21 @@ public abstract class ShotgunItem extends Item {
         return getShellInsertDuration() - shellPreInsertDelay();
     }
 
-    private static AmmoType ammoTypeFromStack(ItemStack ammoStack) {
-        AmmoType ammoType = AmmoType.fromItem(ammoStack.getItem());
-        return ammoType;
-    }
-
-    private static boolean isAmmo(ItemStack stack) {
+    public boolean isAmmo(ItemStack stack) {
         return AmmoType.fromItem(stack.getItem()) != AmmoType.NONE;
     }
 
-    private static ItemStack findAmmo(PlayerEntity player) {
+    public ItemStack findAmmo(PlayerEntity player) {
         for (int i = 0; i != player.inventory.mainInventory.size(); ++i) {
             ItemStack itemstack = player.inventory.mainInventory.get(i);
             if (isAmmo(itemstack)) return itemstack;
         }
         return ItemStack.EMPTY;
+    }
+
+    public static AmmoType ammoTypeFromStack(ItemStack ammoStack) {
+        AmmoType ammoType = AmmoType.fromItem(ammoStack.getItem());
+        return ammoType;
     }
 
     public static boolean hasTimerExpired(ItemStack stack, long currentTime) {
