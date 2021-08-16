@@ -184,11 +184,23 @@ public abstract class ShotgunItem extends Item {
 
             float spread = (ammoItem.spreadStdDev() + getSpreadStdDevAdd()) * gaussian;
 
-            Vector3d motion = direction.rotatePitch(spread * MathHelper.sin(angle))
-                .rotateYaw(spread * MathHelper.cos(angle))
-                .scale(ammoItem.speed());
+            // a plane perpendicular to direction
+            Vector3d n1;
+            Vector3d n2;
+            if (Math.abs(direction.x) < 1e-5 && Math.abs(direction.z) < 1e-5) {
+                n1 = new Vector3d(1, 0, 0);
+                n2 = new Vector3d(0, 0, 1);
+            } else {
+                n1 = new Vector3d(-direction.z, 0, direction.x).normalize();
+                n2 = direction.crossProduct(n1);
+            }
 
-            motion.add(playerMotion.x, shooter.isOnGround() ? 0 : playerMotion.y, playerMotion.z);
+            Vector3d motion = direction.scale(MathHelper.cos(spread))
+                .add(n1.scale(MathHelper.sin(spread) * MathHelper.sin(angle))) // signs are not important
+                .add(n2.scale(MathHelper.sin(spread) * MathHelper.cos(angle)));
+
+            motion = motion.scale(ammoItem.speed())
+                .add(playerMotion.x, shooter.isOnGround() ? 0 : playerMotion.y, playerMotion.z);
 
             BulletEntity bullet = new BulletEntity(world);
             bullet.ammoType = ammoType;
