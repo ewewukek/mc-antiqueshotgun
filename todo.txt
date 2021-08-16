@@ -25,15 +25,15 @@
  . melee damage & knockback
   . custom hit sound
  ✔ firing bullets
- . unloading in crafting table
-. handmade
+ ✔ unloading in crafting table
+✔ handmade
  ✔ register items
  ✔ multi-step crafting
- . has a chance of misfire
+ ✔ has a chance of misfire
  ✔ less ammo capacity
  ✔ slower cycling
- . higher spread
- . less damage and range 0.8-0.9
+ ✔ higher spread
+ ✔ less damage and range 0.8-0.9
 . antique (Ol' Betsy)
  ✔ register items
  . loot table
@@ -45,15 +45,15 @@
    [  N]
   . antique_shotgun
    [BGS] B=antique_barrel, G=gold_ingot, S=handmade_stock
-. saw'd-off
+✔ saw'd-off
  ✔ register items
  ✔ made by putting handmade in a stonecutter
-  . decreases durability by half
- . can't fire slugs or rubber
+  ✔ decreases durability by half
+ ✔ can't fire slugs or rubber
  ✔ 2 shell magazine
  ✔ usable from off-hand
- . higher spread
- . less damage and range
+ ✔ higher spread
+ ✔ less damage and range
 . sounds
  ✔ firing
   . slug version
