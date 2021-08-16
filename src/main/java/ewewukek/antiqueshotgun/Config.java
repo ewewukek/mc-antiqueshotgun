@@ -46,9 +46,11 @@ public class Config {
         HandmadeShotgunItem.shellInsertDuration = instance.handmade_shotgun.shellInsertDuration;
         HandmadeShotgunItem.misfireChance = instance.handmade_shotgun.misfireChance;
         HandmadeShotgunItem.spreadStdDevAdd = (float)Math.toRadians(instance.handmade_shotgun.spreadStdDevAdd);
+        HandmadeShotgunItem.damageMultiplier = instance.handmade_shotgun.damageMultiplier;
 
         SawdoffShotgunItem.magazineCapacity = instance.sawd_off_shotgun.magazineCapacity;
         SawdoffShotgunItem.spreadStdDevAdd = (float)Math.toRadians(instance.sawd_off_shotgun.spreadStdDevAdd);
+        SawdoffShotgunItem.damageMultiplier = instance.handmade_shotgun.damageMultiplier;
 
         HandmadeAmmoItem.pelletCount = instance.handmade_shell.pelletCount;
         HandmadeAmmoItem.spreadStdDev = (float)Math.toRadians(instance.handmade_shell.spreadStdDev);
@@ -139,11 +141,13 @@ public class Config {
         public int shellInsertDuration = 14;
         public float misfireChance = 0.05f;
         public float spreadStdDevAdd = 0.5f;
+        public float damageMultiplier = 0.9f;
     }
 
     private static class SawdoffShotgun {
         public int magazineCapacity = 1;
         public float spreadStdDevAdd = 1;
+        public float damageMultiplier = 0.8f;
     }
 
     private static class HandmadeShell {

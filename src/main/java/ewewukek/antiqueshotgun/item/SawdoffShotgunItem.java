@@ -9,6 +9,7 @@ public class SawdoffShotgunItem extends HandmadeShotgunItem {
 
     public static int magazineCapacity;
     public static float spreadStdDevAdd;
+    public static float damageMultiplier;
 
     @Override
     public boolean canBeUsedFromOffhand() {
@@ -23,5 +24,10 @@ public class SawdoffShotgunItem extends HandmadeShotgunItem {
     @Override
     public float getSpreadStdDevAdd() {
         return spreadStdDevAdd;
+    }
+
+    @Override
+    public float getDamageMultiplier() {
+        return damageMultiplier;
     }
 }

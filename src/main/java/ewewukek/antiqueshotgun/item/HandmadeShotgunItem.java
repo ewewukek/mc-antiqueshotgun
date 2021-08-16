@@ -12,6 +12,7 @@ public class HandmadeShotgunItem extends ShotgunItem {
     public static int shellInsertDuration;
     public static float misfireChance;
     public static float spreadStdDevAdd;
+    public static float damageMultiplier;
 
     @Override
     public boolean canBeUsedFromOffhand() {
@@ -41,5 +42,10 @@ public class HandmadeShotgunItem extends ShotgunItem {
     @Override
     public float getSpreadStdDevAdd() {
         return spreadStdDevAdd;
+    }
+
+    @Override
+    public float getDamageMultiplier() {
+        return damageMultiplier;
     }
 }

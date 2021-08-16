@@ -38,6 +38,7 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
     public short ticksLeft;
     public double distanceLeft;
     public AmmoType ammoType;
+    public float damageMultiplier;
 
     public BulletEntity(World world) {
         super(AntiqueShotgunMod.BULLET_ENTITY_TYPE, world);
@@ -149,7 +150,7 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
         DamageSource damagesource = getDamageSource(this, shooter != null ? shooter : this);
 
         AmmoItem ammoItem = ammoType.toItem();
-        float damage = ammoItem.damage() / ammoItem.pelletCount();
+        float damage = damageMultiplier * ammoItem.damage() / ammoItem.pelletCount();
 
         if (ammoItem.pelletCount() == 1) {
             target.attackEntityFrom(damagesource, damage);
@@ -195,6 +196,7 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
         super.readAdditional(compound);
         ammoType = AmmoType.fromByte(compound.getByte("type"));
         distanceLeft = compound.getFloat("distanceLeft");
+        damageMultiplier = compound.getFloat("damageMultiplier");
     }
 
     @Override
@@ -202,6 +204,7 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
         super.writeAdditional(compound);
         compound.putByte("type", ammoType.toByte());
         compound.putFloat("distanceLeft", (float)distanceLeft);
+        compound.putFloat("damageMultiplier", damageMultiplier);
     }
 
 // Forge {

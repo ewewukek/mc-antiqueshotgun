@@ -34,6 +34,7 @@ public abstract class ShotgunItem extends Item {
     public abstract int getShellInsertDuration();
     public abstract float getMisfireChance();
     public abstract float getSpreadStdDevAdd();
+    public abstract float getDamageMultiplier();
 
     public boolean canBeUsedFromOffhand(PlayerEntity player) {
         return canBeUsedFromOffhand()
@@ -192,6 +193,7 @@ public abstract class ShotgunItem extends Item {
             BulletEntity bullet = new BulletEntity(world);
             bullet.ammoType = ammoType;
             bullet.distanceLeft = ammoItem.range();
+            bullet.damageMultiplier = getDamageMultiplier();
             bullet.setShooter(shooter);
             bullet.setPosition(pos.x, pos.y, pos.z);
             bullet.setMotion(motion);

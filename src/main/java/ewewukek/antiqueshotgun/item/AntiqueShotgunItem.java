@@ -40,4 +40,9 @@ public class AntiqueShotgunItem extends ShotgunItem {
     public float getSpreadStdDevAdd() {
         return 0;
     }
+
+    @Override
+    public float getDamageMultiplier() {
+        return 1;
+    }
 }
