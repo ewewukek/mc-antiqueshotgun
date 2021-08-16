@@ -6,6 +6,7 @@ import ewewukek.antiqueshotgun.AmmoType;
 import ewewukek.antiqueshotgun.AntiqueShotgunMod;
 import ewewukek.antiqueshotgun.KeyState;
 import ewewukek.antiqueshotgun.entity.BulletEntity;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -14,6 +15,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
@@ -53,6 +55,7 @@ public abstract class ShotgunItem extends Item {
                 fireBullets(worldIn, player, direction, ammoType);
                 worldIn.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_FIRE, SoundCategory.PLAYERS, 1.5F, 1);
 
+                damageItem(stack, player);
                 setAmmoInChamber(stack, AmmoType.NONE);
                 setTimerExpiryTime(stack, currentTime + postFireDelay());
             }
@@ -138,6 +141,20 @@ public abstract class ShotgunItem extends Item {
                 setTimerExpiryTime(stack, currentTime + shellPostInsertDelay());
             }
         }
+    }
+
+    @Override
+    public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
+        if (!worldIn.isRemote && entityLiving instanceof PlayerEntity && state.getBlockHardness(worldIn, pos) != 0.0f) {
+            damageItem(stack, (PlayerEntity) entityLiving);
+        }
+        return false;
+    }
+
+    public static void damageItem(ItemStack stack, PlayerEntity player) {
+        stack.damageItem(1, player, (entity) -> {
+            entity.sendBreakAnimation(player.getActiveHand());
+        });
     }
 
     @Override
