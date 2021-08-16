@@ -16,6 +16,7 @@ import ewewukek.antiqueshotgun.item.RubberAmmoItem;
 import ewewukek.antiqueshotgun.item.SawdoffShotgunItem;
 import ewewukek.antiqueshotgun.item.ShotgunItem;
 import ewewukek.antiqueshotgun.item.SlugAmmoItem;
+import ewewukek.antiqueshotgun.item.crafting.SawdoffShotgunRecipe;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -28,6 +29,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IFutureReloadListener;
@@ -152,6 +154,13 @@ public class AntiqueShotgunMod {
                 new SoundEvent(new ResourceLocation(MODID, "shotgun_pump_back")).setRegistryName(MODID, "shotgun_pump_back"),
                 new SoundEvent(new ResourceLocation(MODID, "shotgun_pump_forward")).setRegistryName(MODID, "shotgun_pump_forward"),
                 new SoundEvent(new ResourceLocation(MODID, "shotgun_inserting_shell")).setRegistryName(MODID, "shotgun_inserting_shell")
+            );
+        }
+
+        @SubscribeEvent
+        public static void onRecipeRegistry(final RegistryEvent.Register<IRecipeSerializer<?>> event) {
+            event.getRegistry().registerAll(
+                SawdoffShotgunRecipe.SERIALIZER.setRegistryName(MODID, "sawd_off_shotgun_recipe")
             );
         }
     }
