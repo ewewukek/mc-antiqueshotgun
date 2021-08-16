@@ -17,6 +17,7 @@ import ewewukek.antiqueshotgun.item.SawdoffShotgunItem;
 import ewewukek.antiqueshotgun.item.ShotgunItem;
 import ewewukek.antiqueshotgun.item.SlugAmmoItem;
 import ewewukek.antiqueshotgun.item.crafting.SawdoffShotgunRecipe;
+import ewewukek.antiqueshotgun.item.crafting.UnloadShotgunRecipe;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -160,7 +161,8 @@ public class AntiqueShotgunMod {
         @SubscribeEvent
         public static void onRecipeRegistry(final RegistryEvent.Register<IRecipeSerializer<?>> event) {
             event.getRegistry().registerAll(
-                SawdoffShotgunRecipe.SERIALIZER.setRegistryName(MODID, "sawd_off_shotgun_recipe")
+                SawdoffShotgunRecipe.SERIALIZER.setRegistryName(MODID, "sawd_off_shotgun_recipe"),
+                UnloadShotgunRecipe.SERIALIZER.setRegistryName(MODID, "unload_shotgun_recipe")
             );
         }
     }

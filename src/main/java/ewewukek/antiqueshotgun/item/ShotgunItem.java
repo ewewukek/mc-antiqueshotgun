@@ -288,4 +288,36 @@ public abstract class ShotgunItem extends Item {
         newMagazine[newMagazine.length - 1] = ammoType.toByte();
         tag.putByteArray("magazine", newMagazine);
     }
+
+    public static ItemStack unload(ItemStack stack) {
+        CompoundNBT tag = stack.getTag();
+        if (tag == null) return ItemStack.EMPTY;
+
+        ItemStack ammoStack = ItemStack.EMPTY;
+
+        AmmoType chamberAmmoType = getAmmoInChamber(stack);
+        if (chamberAmmoType != AmmoType.NONE) {
+            ammoStack = new ItemStack(chamberAmmoType.toItem());
+            setAmmoInChamber(stack, AmmoType.NONE);
+        }
+
+        byte[] magazine = tag.getByteArray("magazine");
+        int length = magazine.length;
+        while (length > 0) {
+            Item ammoItem = AmmoType.fromByte(magazine[length - 1]).toItem();
+            if (ammoStack.isEmpty()) {
+                ammoStack = new ItemStack(ammoItem);
+            } else if (ammoItem == ammoStack.getItem()) {
+                ammoStack.grow(1);
+            } else {
+                break;
+            }
+            --length;
+        }
+        if (length < magazine.length) {
+            tag.putByteArray("magazine", Arrays.copyOf(magazine, length));
+        }
+
+        return ammoStack;
+    }
 }
