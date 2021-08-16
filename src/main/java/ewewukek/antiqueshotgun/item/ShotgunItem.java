@@ -33,7 +33,7 @@ public abstract class ShotgunItem extends Item {
     public abstract int getReloadDuration();
     public abstract int getShellInsertDuration();
     public abstract float getMisfireChance();
-    public abstract float getSpreadMultiplier();
+    public abstract float getSpreadStdDevAdd();
 
     public boolean canBeUsedFromOffhand(PlayerEntity player) {
         return canBeUsedFromOffhand()
@@ -181,7 +181,7 @@ public abstract class ShotgunItem extends Item {
             float gaussian = Math.abs((float) random.nextGaussian());
             if (gaussian > 4) gaussian = 4;
 
-            float spread = getSpreadMultiplier() * ammoItem.spreadStdDev() * gaussian;
+            float spread = (ammoItem.spreadStdDev() + getSpreadStdDevAdd()) * gaussian;
 
             Vector3d motion = direction.rotatePitch(spread * MathHelper.sin(angle))
                 .rotateYaw(spread * MathHelper.cos(angle))

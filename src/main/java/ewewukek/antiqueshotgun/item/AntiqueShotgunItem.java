@@ -37,7 +37,7 @@ public class AntiqueShotgunItem extends ShotgunItem {
     }
 
     @Override
-    public float getSpreadMultiplier() {
-        return 1;
+    public float getSpreadStdDevAdd() {
+        return 0;
     }
 }
