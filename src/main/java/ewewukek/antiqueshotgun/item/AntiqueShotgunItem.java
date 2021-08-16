@@ -35,4 +35,9 @@ public class AntiqueShotgunItem extends ShotgunItem {
     public float getMisfireChance() {
         return 0;
     }
+
+    @Override
+    public float getSpreadMultiplier() {
+        return 1;
+    }
 }
