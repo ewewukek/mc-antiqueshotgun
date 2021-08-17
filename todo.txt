@@ -64,21 +64,21 @@
  ✔ register items
  ✔ varying texture depending on stack sizie
   ✔ predicate for stack size
- . slug
+ ✔ slug
   ✔ recipe
   ✔ range/damage/no spread/high velocity
   ✔ entity
-  . slower reloading
+  ✔ slower reloading
  ✔ buckshot
   ✔ recipe
   ✔ range/damage/spread
   ✔ entity
- . handmade
+ ✔ handmade
   ✔ recipe
   ✔ range/damage/spread
   ✔ buckshot
   ✔ entity
-  . misfire or jam the weapon
+  ✔ misfire or jam the weapon
  . rubber round
   ✔ rubber
    ✔ obtained from slime via smelting
