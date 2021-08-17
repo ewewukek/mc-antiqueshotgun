@@ -21,13 +21,23 @@ public class UnloadShotgunRecipe extends SpecialRecipe {
     @Override
     public boolean matches(CraftingInventory inv, World worldIn) {
         ItemStack stack = findShotgun(inv);
-        return !stack.isEmpty() && (ShotgunItem.getAmmoInChamber(stack) != AmmoType.NONE || ShotgunItem.getAmmoInMagazineCount(stack) > 0);
+        return !stack.isEmpty() && (
+            ShotgunItem.getAmmoInChamber(stack) != AmmoType.NONE
+            || ShotgunItem.getAmmoInMagazineCount(stack) > 0
+            || ShotgunItem.isJammed(stack)
+        );
     }
 
     @Override
     public ItemStack getCraftingResult(CraftingInventory inv) {
-        ItemStack stack = findShotgun(inv);
-        return ShotgunItem.unload(stack.copy());
+        ItemStack stack = findShotgun(inv).copy();
+        if (ShotgunItem.isJammed(stack)) {
+            ShotgunItem.setJammed(stack, false);
+            ShotgunItem.setSlideBack(stack, false);
+            return stack;
+        } else {
+            return ShotgunItem.unload(stack);
+        }
     }
 
     @Override
@@ -37,8 +47,12 @@ public class UnloadShotgunRecipe extends SpecialRecipe {
         for(int i = 0; i < items.size(); ++i) {
             ItemStack stack = inv.getStackInSlot(i);
             if (stack.getItem() instanceof ShotgunItem) {
-                stack = stack.copy();
-                ShotgunItem.unload(stack);
+                if (ShotgunItem.isJammed(stack)) {
+                    stack = ItemStack.EMPTY;
+                } else {
+                    stack = stack.copy();
+                    ShotgunItem.unload(stack);
+                }
             }
             items.set(i, stack);
         }

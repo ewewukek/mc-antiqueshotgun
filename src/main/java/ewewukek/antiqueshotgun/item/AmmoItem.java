@@ -19,4 +19,12 @@ public abstract class AmmoItem extends Item {
     public int postFireDelay() {
         return 0;
     }
+
+    public float misfireChance() {
+        return 0;
+    }
+
+    public float jamChance() {
+        return 0;
+    }
 }

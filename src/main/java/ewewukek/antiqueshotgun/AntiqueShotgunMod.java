@@ -95,6 +95,8 @@ public class AntiqueShotgunMod {
     public static SoundEvent SOUND_SHOTGUN_PUMP_BACK;
     @ObjectHolder(MODID + ":shotgun_pump_forward")
     public static SoundEvent SOUND_SHOTGUN_PUMP_FORWARD;
+    @ObjectHolder(MODID + ":shotgun_pump_jammed")
+    public static SoundEvent SOUND_SHOTGUN_PUMP_JAMMED;
     @ObjectHolder(MODID + ":shotgun_inserting_shell")
     public static SoundEvent SOUND_SHOTGUN_INSERTING_SHELL;
 
@@ -157,6 +159,7 @@ public class AntiqueShotgunMod {
                 new SoundEvent(new ResourceLocation(MODID, "shotgun_dry_fire")).setRegistryName(MODID, "shotgun_dry_fire"),
                 new SoundEvent(new ResourceLocation(MODID, "shotgun_pump_back")).setRegistryName(MODID, "shotgun_pump_back"),
                 new SoundEvent(new ResourceLocation(MODID, "shotgun_pump_forward")).setRegistryName(MODID, "shotgun_pump_forward"),
+                new SoundEvent(new ResourceLocation(MODID, "shotgun_pump_jammed")).setRegistryName(MODID, "shotgun_pump_jammed"),
                 new SoundEvent(new ResourceLocation(MODID, "shotgun_inserting_shell")).setRegistryName(MODID, "shotgun_inserting_shell")
             );
         }

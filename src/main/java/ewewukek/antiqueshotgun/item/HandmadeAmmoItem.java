@@ -10,6 +10,8 @@ public class HandmadeAmmoItem extends AmmoItem {
     public static float speed;
     public static float range;
     public static float damage;
+    public static float misfireChance;
+    public static float jamChance;
 
     @Override
     public int pelletCount() {
@@ -34,5 +36,15 @@ public class HandmadeAmmoItem extends AmmoItem {
     @Override
     public float damage() {
         return damage;
+    }
+
+    @Override
+    public float misfireChance() {
+        return misfireChance;
+    }
+
+    @Override
+    public float jamChance() {
+        return jamChance;
     }
 }

@@ -25,6 +25,8 @@ public abstract class ShotgunItem extends Item {
         super(properties);
     }
 
+    public static final int JAMMED_SOUND_REPEAT_INTERVAL = 10;
+
     public static boolean enableMagazine;
     public static boolean insertOneIfEmpty;
 
@@ -63,9 +65,23 @@ public abstract class ShotgunItem extends Item {
 
         if (!worldIn.isRemote) {
             long currentTime = worldIn.getGameTime();
+            if (!hasTimerExpired(stack, currentTime)) {
+                return ActionResult.resultFail(stack);
+            }
+
+            if (isJammed(stack)) {
+                worldIn.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_JAMMED, SoundCategory.PLAYERS, 0.5F, 1);
+
+                setTimerExpiryTime(stack, currentTime + JAMMED_SOUND_REPEAT_INTERVAL);
+                return ActionResult.resultFail(stack);
+            }
+
             AmmoType ammoType = getAmmoInChamber(stack);
-            if (hasTimerExpired(stack, currentTime) && ammoType != AmmoType.NONE) {
-                if (random.nextFloat() >= getMisfireChance()) {
+            if (ammoType != AmmoType.NONE) {
+                AmmoItem ammoItem = ammoType.toItem();
+                boolean misfire = random.nextFloat() < getMisfireChance() + ammoItem.misfireChance();
+
+                if (!misfire) {
                     final float deg2rad = 0.017453292f;
                     Vector3d direction = new Vector3d(0, 0, 1).rotatePitch(-deg2rad * player.rotationPitch).rotateYaw(-deg2rad * player.rotationYaw);
                     fireBullets(worldIn, player, direction, ammoType);
@@ -78,7 +94,7 @@ public abstract class ShotgunItem extends Item {
                 }
 
                 setAmmoInChamber(stack, AmmoType.NONE);
-                setTimerExpiryTime(stack, currentTime + postFireDelay() + ammoType.toItem().postFireDelay());
+                setTimerExpiryTime(stack, currentTime + postFireDelay() + ammoItem.postFireDelay());
             }
         }
 
@@ -88,6 +104,10 @@ public abstract class ShotgunItem extends Item {
     public void update(PlayerEntity player, ItemStack stack) {
         World world = player.world;
         if (world.isRemote) return;
+
+        if (isJammed(stack)) {
+            return;
+        }
 
         long currentTime = world.getGameTime();
         if (!hasTimerExpired(stack, currentTime)) {
@@ -125,8 +145,6 @@ public abstract class ShotgunItem extends Item {
                 }
 
             } else {
-                world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_FORWARD, SoundCategory.PLAYERS, 0.5F, 1.0F);
-
                 AmmoType ammoType;
                 if (enableMagazine) {
                     ammoType = extractAmmoFromMagazine(stack);
@@ -138,9 +156,21 @@ public abstract class ShotgunItem extends Item {
                     }
                 }
 
-                setSlideBack(stack, false);
-                setAmmoInChamber(stack, ammoType);
-                setTimerExpiryTime(stack, currentTime + postCycleDelay());
+                boolean jammed = random.nextFloat() < ammoType.toItem().jamChance();
+
+                if (!jammed) {
+                    world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_FORWARD, SoundCategory.PLAYERS, 0.5F, 1.0F);
+
+                    setSlideBack(stack, false);
+                    setAmmoInChamber(stack, ammoType);
+                    setTimerExpiryTime(stack, currentTime + postCycleDelay());
+
+                } else {
+                    world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_JAMMED, SoundCategory.PLAYERS, 0.5F, 1.0F);
+
+                    setJammed(stack, true);
+                    setTimerExpiryTime(stack, currentTime + JAMMED_SOUND_REPEAT_INTERVAL);
+                }
 
                 return;
             }
@@ -281,6 +311,15 @@ public abstract class ShotgunItem extends Item {
 
     public static void setSlideBack(ItemStack stack, boolean value) {
         stack.getOrCreateTag().putByte("slide_back", (byte) (value ? 1 : 0));
+    }
+
+    public static boolean isJammed(ItemStack stack) {
+        CompoundNBT tag = stack.getTag();
+        return tag != null && tag.getByte("jammed") != 0;
+    }
+
+    public static void setJammed(ItemStack stack, boolean value) {
+        stack.getOrCreateTag().putByte("jammed", (byte) (value ? 1 : 0));
     }
 
     // synthetic state to add a delay before playing the shell insertion sound

@@ -19,6 +19,11 @@
       "antiqueshotgun:shotgun_pump_forward"
     ]
   },
+  "shotgun_pump_jammed": {
+    "sounds": [
+      "antiqueshotgun:shotgun_pump_jammed"
+    ]
+  },
   "shotgun_inserting_shell": {
     "sounds": [
       "antiqueshotgun:shotgun_inserting_shell"

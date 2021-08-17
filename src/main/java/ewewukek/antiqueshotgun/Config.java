@@ -57,6 +57,8 @@ public class Config {
         HandmadeAmmoItem.speed = instance.handmade_shell.speed / 20;
         HandmadeAmmoItem.range = instance.handmade_shell.range;
         HandmadeAmmoItem.damage = instance.handmade_shell.damage;
+        HandmadeAmmoItem.misfireChance = instance.handmade_shell.misfireChance;
+        HandmadeAmmoItem.jamChance = instance.handmade_shell.jamChance;
 
         BuckshotAmmoItem.pelletCount = instance.buckshot_shell.pelletCount;
         BuckshotAmmoItem.spreadStdDev = (float)Math.toRadians(instance.buckshot_shell.spreadStdDev);
@@ -140,7 +142,7 @@ public class Config {
         public int magazineCapacity = 4;
         public int reloadDuration = 16;
         public int shellInsertDuration = 14;
-        public float misfireChance = 0.05f;
+        public float misfireChance = 0.025f;
         public float spreadStdDevAdd = 0.5f;
         public float damageMultiplier = 0.9f;
     }
@@ -157,6 +159,8 @@ public class Config {
         public float speed = 400;
         public float range = 15;
         public float damage = 20;
+        public float misfireChance = 0.025f;
+        public float jamChance = 0.005f;
     }
 
     private static class BuckshotShell {
