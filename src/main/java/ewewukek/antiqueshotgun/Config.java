@@ -68,6 +68,7 @@ public class Config {
         SlugAmmoItem.speed = instance.slug_shell.speed / 20;
         SlugAmmoItem.range = instance.slug_shell.range;
         SlugAmmoItem.damage = instance.slug_shell.damage;
+        SlugAmmoItem.postFireDelay = instance.slug_shell.postFireDelay;
 
         RubberAmmoItem.spreadStdDev = (float)Math.toRadians(instance.rubber_shell.spreadStdDev);
         RubberAmmoItem.speed = instance.rubber_shell.speed / 20;
@@ -171,6 +172,7 @@ public class Config {
         public float speed = 400;
         public float range = 25;
         public float damage = 25;
+        public int postFireDelay = 3;
     }
 
     public static class RubberShell {

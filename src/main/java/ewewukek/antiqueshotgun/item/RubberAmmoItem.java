@@ -34,4 +34,9 @@ public class RubberAmmoItem extends AmmoItem {
     public float damage() {
         return damage;
     }
+
+    @Override
+    public int postFireDelay() {
+        return 0;
+    }
 }

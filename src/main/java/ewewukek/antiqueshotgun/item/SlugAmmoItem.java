@@ -9,6 +9,7 @@ public class SlugAmmoItem extends AmmoItem {
     public static float speed;
     public static float range;
     public static float damage;
+    public static int postFireDelay;
 
     @Override
     public int pelletCount() {
@@ -33,5 +34,10 @@ public class SlugAmmoItem extends AmmoItem {
     @Override
     public float damage() {
         return damage;
+    }
+
+    @Override
+    public int postFireDelay() {
+        return postFireDelay;
     }
 }

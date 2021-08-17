@@ -66,7 +66,7 @@ public abstract class ShotgunItem extends Item {
                 }
 
                 setAmmoInChamber(stack, AmmoType.NONE);
-                setTimerExpiryTime(stack, currentTime + postFireDelay());
+                setTimerExpiryTime(stack, currentTime + postFireDelay() + ammoType.toItem().postFireDelay());
             }
         }
 
