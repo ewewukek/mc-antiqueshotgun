@@ -7,10 +7,16 @@ public abstract class AmmoItem extends Item {
         super(properties);
     }
 
-    public abstract int pelletCount();
     public abstract float spreadStdDev();
     public abstract float speed();
     public abstract float range();
     public abstract float damage();
-    public abstract int postFireDelay();
+
+    public int pelletCount() {
+        return 1;
+    }
+
+    public int postFireDelay() {
+        return 0;
+    }
 }

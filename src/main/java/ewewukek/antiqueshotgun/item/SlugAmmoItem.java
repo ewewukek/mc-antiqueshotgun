@@ -12,11 +12,6 @@ public class SlugAmmoItem extends AmmoItem {
     public static int postFireDelay;
 
     @Override
-    public int pelletCount() {
-        return 1;
-    }
-
-    @Override
     public float spreadStdDev() {
         return spreadStdDev;
     }

@@ -35,9 +35,4 @@ public class BuckshotAmmoItem extends AmmoItem {
     public float damage() {
         return damage;
     }
-
-    @Override
-    public int postFireDelay() {
-        return 0;
-    }
 }

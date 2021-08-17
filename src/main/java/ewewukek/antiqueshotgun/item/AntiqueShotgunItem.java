@@ -12,11 +12,6 @@ public class AntiqueShotgunItem extends ShotgunItem {
     public static int shellInsertDuration;
 
     @Override
-    public boolean canBeUsedFromOffhand() {
-        return false;
-    }
-
-    @Override
     public int getMagazineCapacity() {
         return magazineCapacity;
     }
@@ -29,20 +24,5 @@ public class AntiqueShotgunItem extends ShotgunItem {
     @Override
     public int getShellInsertDuration() {
         return shellInsertDuration;
-    }
-
-    @Override
-    public float getMisfireChance() {
-        return 0;
-    }
-
-    @Override
-    public float getSpreadStdDevAdd() {
-        return 0;
-    }
-
-    @Override
-    public float getDamageMultiplier() {
-        return 1;
     }
 }

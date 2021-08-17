@@ -28,13 +28,25 @@ public abstract class ShotgunItem extends Item {
     public static boolean enableMagazine;
     public static boolean insertOneIfEmpty;
 
-    public abstract boolean canBeUsedFromOffhand();
     public abstract int getMagazineCapacity();
     public abstract int getReloadDuration();
     public abstract int getShellInsertDuration();
-    public abstract float getMisfireChance();
-    public abstract float getSpreadStdDevAdd();
-    public abstract float getDamageMultiplier();
+
+    public boolean canBeUsedFromOffhand() {
+        return false;
+    }
+
+    public float getMisfireChance() {
+        return 0;
+    }
+
+    public float getSpreadStdDevAdd() {
+        return 0;
+    }
+
+    public float getDamageMultiplier() {
+        return 1;
+    }
 
     public boolean canBeUsedFromOffhand(PlayerEntity player) {
         return canBeUsedFromOffhand()

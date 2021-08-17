@@ -11,11 +11,6 @@ public class RubberAmmoItem extends AmmoItem {
     public static float damage;
 
     @Override
-    public int pelletCount() {
-        return 1;
-    }
-
-    @Override
     public float spreadStdDev() {
         return spreadStdDev;
     }
@@ -33,10 +28,5 @@ public class RubberAmmoItem extends AmmoItem {
     @Override
     public float damage() {
         return damage;
-    }
-
-    @Override
-    public int postFireDelay() {
-        return 0;
     }
 }

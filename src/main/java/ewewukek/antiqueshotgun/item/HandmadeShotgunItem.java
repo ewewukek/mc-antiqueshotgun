@@ -15,11 +15,6 @@ public class HandmadeShotgunItem extends ShotgunItem {
     public static float damageMultiplier;
 
     @Override
-    public boolean canBeUsedFromOffhand() {
-        return false;
-    }
-
-    @Override
     public int getMagazineCapacity() {
         return magazineCapacity;
     }
