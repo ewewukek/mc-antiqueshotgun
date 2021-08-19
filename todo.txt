@@ -37,6 +37,7 @@
 . antique (Ol' Betsy)
  ✔ register items
  . loot table
+  ✔ loot table overriding
   . found in broken state, needs repairing
    . smithing table?
  . optional crafting
@@ -54,9 +55,9 @@
  ✔ usable from off-hand
  ✔ higher spread
  ✔ less damage and range
-. sounds
+✔ sounds
  ✔ firing
-  . slug version
+  ✔ slug version
  ✔ cycling
  ✔ loading
  ✗ ejected shells hitting ground (useless clutter)
@@ -88,10 +89,13 @@
   ✔ knockback
   ✔ inflicts slowness, nausea and weakness
 . enchants
- . unbreaking & mending works by default
- . brute - melee damage & knockback increase
-  . max level for handmade is 1
-  . max level for antique is 3
+ ✔ unbreaking & mending works by default
+ . brute
+  ✔ knockback increase
+  . melee damage increase
+  ✔ max level for handmade is 1
+  ✔ max level for antique is 3
+  . custom hit sound
 ✔ shotgun mob
  ✔ rare spawn as pillagers patrol member
  ✔ spawns at lv5 raid replacing one of the mobs
