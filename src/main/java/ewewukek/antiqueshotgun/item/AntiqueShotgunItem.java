@@ -28,6 +28,6 @@ public class AntiqueShotgunItem extends ShotgunItem {
 
     @Override
     public int getItemEnchantability() {
-        return 40;
+        return 50;
     }
 }
