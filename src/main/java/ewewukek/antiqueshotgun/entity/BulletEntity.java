@@ -7,8 +7,10 @@ import ewewukek.antiqueshotgun.AmmoType;
 import ewewukek.antiqueshotgun.AntiqueShotgunMod;
 import ewewukek.antiqueshotgun.DamageQueue;
 import ewewukek.antiqueshotgun.item.AmmoItem;
+import ewewukek.antiqueshotgun.item.RubberAmmoItem;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -153,7 +155,15 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
         float damage = damageMultiplier * ammoItem.damage() / ammoItem.pelletCount();
 
         if (ammoItem.pelletCount() == 1) {
-            target.attackEntityFrom(damagesource, damage);
+            if (target.attackEntityFrom(damagesource, damage)) {
+                if (ammoType == AmmoType.RUBBER && target instanceof LivingEntity) {
+                    LivingEntity livingEntity = (LivingEntity)target;
+                    Vector3d knockback = getMotion().mul(1, 0, 1).normalize().scale(RubberAmmoItem.knockbackForce);
+                    if (knockback.lengthSquared() > 0) {
+                        livingEntity.addVelocity(knockback.x, 0.1, knockback.z);
+                    }
+                }
+            }
         } else {
             DamageQueue.add(target, damagesource, damage);
         }

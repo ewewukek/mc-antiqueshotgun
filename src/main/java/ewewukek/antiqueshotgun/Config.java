@@ -76,6 +76,7 @@ public class Config {
         RubberAmmoItem.speed = instance.rubber_shell.speed / 20;
         RubberAmmoItem.range = instance.rubber_shell.range;
         RubberAmmoItem.damage = instance.rubber_shell.damage;
+        RubberAmmoItem.knockbackForce = instance.rubber_shell.knockbackForce;
 
         ElderHunterEntity.magazineCapacity = instance.elder_hunter.magazineCapacity;
         ElderHunterEntity.aimDuration = instance.elder_hunter.aimDuration;
@@ -184,6 +185,7 @@ public class Config {
         public float speed = 200;
         public float range = 20;
         public float damage = 1;
+        public float knockbackForce = 0.6f;
     }
 
     public static class ElderHunter {
