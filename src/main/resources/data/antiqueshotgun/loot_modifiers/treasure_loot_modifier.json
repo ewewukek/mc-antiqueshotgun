@@ -1,0 +1,12 @@
+{
+  "type": "antiqueshotgun:treasure_loot_modifier",
+  "conditions": [],
+  "overrides": {
+    "minecraft:chests/desert_pyramid": [
+      {
+        "item": "antiqueshotgun:antique_shotgun",
+        "probability": 1
+      }
+    ]
+  }
+}

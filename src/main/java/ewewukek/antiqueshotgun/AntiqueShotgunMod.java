@@ -18,6 +18,7 @@ import ewewukek.antiqueshotgun.item.ShotgunItem;
 import ewewukek.antiqueshotgun.item.SlugAmmoItem;
 import ewewukek.antiqueshotgun.item.crafting.SawdoffShotgunRecipe;
 import ewewukek.antiqueshotgun.item.crafting.UnloadShotgunRecipe;
+import ewewukek.antiqueshotgun.world.TreasureLootModifier;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -44,6 +45,7 @@ import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.raid.Raid;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.TickEvent;
@@ -172,6 +174,13 @@ public class AntiqueShotgunMod {
             event.getRegistry().registerAll(
                 SawdoffShotgunRecipe.SERIALIZER.setRegistryName(MODID, "sawd_off_shotgun_recipe"),
                 UnloadShotgunRecipe.SERIALIZER.setRegistryName(MODID, "unload_shotgun_recipe")
+            );
+        }
+
+        @SubscribeEvent
+        public static void onLootModifierRegistry(final RegistryEvent.Register<GlobalLootModifierSerializer<?>> event) {
+            event.getRegistry().register(
+                TreasureLootModifier.SERIALIZER.setRegistryName(MODID, "treasure_loot_modifier")
             );
         }
     }
