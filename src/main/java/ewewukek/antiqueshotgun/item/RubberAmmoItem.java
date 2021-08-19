@@ -11,6 +11,10 @@ public class RubberAmmoItem extends AmmoItem {
     public static float damage;
 
     public static float knockbackForce;
+    public static float slownessDuration;
+    public static int slownessLevel;
+    public static float weaknessDuration;
+    public static float nauseaDuration;
 
     @Override
     public float spreadStdDev() {

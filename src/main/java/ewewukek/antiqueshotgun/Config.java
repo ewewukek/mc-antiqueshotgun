@@ -77,6 +77,10 @@ public class Config {
         RubberAmmoItem.range = instance.rubber_shell.range;
         RubberAmmoItem.damage = instance.rubber_shell.damage;
         RubberAmmoItem.knockbackForce = instance.rubber_shell.knockbackForce;
+        RubberAmmoItem.slownessDuration = instance.rubber_shell.slownessDuration;
+        RubberAmmoItem.slownessLevel = instance.rubber_shell.slownessLevel;
+        RubberAmmoItem.weaknessDuration = instance.rubber_shell.weaknessDuration;
+        RubberAmmoItem.nauseaDuration = instance.rubber_shell.nauseaDuration;
 
         ElderHunterEntity.magazineCapacity = instance.elder_hunter.magazineCapacity;
         ElderHunterEntity.aimDuration = instance.elder_hunter.aimDuration;
@@ -186,6 +190,10 @@ public class Config {
         public float range = 20;
         public float damage = 1;
         public float knockbackForce = 0.6f;
+        public float slownessDuration = 10;
+        public int slownessLevel = 1;
+        public float weaknessDuration = 10;
+        public float nauseaDuration = 5;
     }
 
     public static class ElderHunter {

@@ -18,6 +18,8 @@ import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IndirectEntityDamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -158,10 +160,15 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
             if (target.attackEntityFrom(damagesource, damage)) {
                 if (ammoType == AmmoType.RUBBER && target instanceof LivingEntity) {
                     LivingEntity livingEntity = (LivingEntity)target;
+
                     Vector3d knockback = getMotion().mul(1, 0, 1).normalize().scale(RubberAmmoItem.knockbackForce);
                     if (knockback.lengthSquared() > 0) {
                         livingEntity.addVelocity(knockback.x, 0.1, knockback.z);
                     }
+
+                    livingEntity.addPotionEffect(new EffectInstance(Effects.SLOWNESS, (int)(RubberAmmoItem.slownessDuration * 20), RubberAmmoItem.slownessLevel));
+                    livingEntity.addPotionEffect(new EffectInstance(Effects.WEAKNESS, (int)(RubberAmmoItem.weaknessDuration * 20)));
+                    livingEntity.addPotionEffect(new EffectInstance(Effects.NAUSEA, (int)(RubberAmmoItem.nauseaDuration * 20)));
                 }
             }
         } else {
