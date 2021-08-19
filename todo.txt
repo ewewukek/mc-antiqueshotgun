@@ -60,7 +60,7 @@
  ✔ cycling
  ✔ loading
  ✗ ejected shells hitting ground (useless clutter)
-. ammo types
+✔ ammo types
  ✔ register items
  ✔ varying texture depending on stack sizie
   ✔ predicate for stack size
@@ -79,14 +79,14 @@
   ✔ buckshot
   ✔ entity
   ✔ misfire or jam the weapon
- . rubber round
+ ✔ rubber round
   ✔ rubber
    ✔ obtained from slime via smelting
   ✔ recipe
   ✔ 0 damage
   ✔ entity
-  . knockback
-  . inflicts slowness, nausea and weakness
+  ✔ knockback
+  ✔ inflicts slowness, nausea and weakness
 . enchants
  . unbreaking & mending works by default
  . brute - melee damage & knockback increase
