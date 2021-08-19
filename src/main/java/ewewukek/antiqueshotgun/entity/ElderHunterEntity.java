@@ -152,7 +152,7 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
         AmmoType ammoType = ShotgunItem.getAmmoInChamber(stack);
 
         ((ShotgunItem)stack.getItem()).fireBullets(world, this, direction, ammoType);
-        world.playSound(null, getPosX(), getPosY(), getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_FIRE, SoundCategory.HOSTILE, 1.5F, 1);
+        world.playSound(null, getPosX(), getPosY(), getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_FIRE, SoundCategory.HOSTILE, 3.5f, 1);
 
         ShotgunItem.setAmmoInChamber(stack, AmmoType.NONE);
         ShotgunItem.setTimerExpiryTime(stack, world.getGameTime() + postFireDelay());
@@ -175,13 +175,13 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
 
         if (!doReload) {
             if (!ShotgunItem.isSlideBack(stack)) {
-                world.playSound(null, getPosX(), getPosY(), getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_BACK, SoundCategory.HOSTILE, 0.5F, 1.0F);
+                world.playSound(null, getPosX(), getPosY(), getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_BACK, SoundCategory.HOSTILE, 0.8f, 1);
 
                 ShotgunItem.setSlideBack(stack, true);
                 ShotgunItem.setTimerExpiryTime(stack, currentTime + midCycleDelay());
 
             } else {
-                world.playSound(null, getPosX(), getPosY(), getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_FORWARD, SoundCategory.HOSTILE, 0.5F, 1.0F);
+                world.playSound(null, getPosX(), getPosY(), getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_FORWARD, SoundCategory.HOSTILE, 0.8f, 1);
 
                 ShotgunItem.setSlideBack(stack, false);
                 ShotgunItem.setAmmoInChamber(stack, ShotgunItem.extractAmmoFromMagazine(stack));
@@ -201,7 +201,7 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
                     ShotgunItem.setTimerExpiryTime(stack, currentTime + shellPreInsertDelay());
 
                 } else {
-                    world.playSound(null, getPosX(), getPosY(), getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_INSERTING_SHELL, SoundCategory.HOSTILE, 0.5F, 1.0F);
+                    world.playSound(null, getPosX(), getPosY(), getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_INSERTING_SHELL, SoundCategory.HOSTILE, 0.8f, 1);
 
                     ShotgunItem.addAmmoToMagazine(stack, AmmoType.BUCKSHOT);
                     ShotgunItem.setInsertingShell(stack, false);

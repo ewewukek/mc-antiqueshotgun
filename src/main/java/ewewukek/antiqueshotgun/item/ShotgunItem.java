@@ -70,7 +70,7 @@ public abstract class ShotgunItem extends Item {
             }
 
             if (isJammed(stack)) {
-                worldIn.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_JAMMED, SoundCategory.PLAYERS, 0.5F, 1);
+                worldIn.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_JAMMED, SoundCategory.PLAYERS, 0.8f, 1);
 
                 setTimerExpiryTime(stack, currentTime + JAMMED_SOUND_REPEAT_INTERVAL);
                 return ActionResult.resultFail(stack);
@@ -85,12 +85,12 @@ public abstract class ShotgunItem extends Item {
                     final float deg2rad = 0.017453292f;
                     Vector3d direction = new Vector3d(0, 0, 1).rotatePitch(-deg2rad * player.rotationPitch).rotateYaw(-deg2rad * player.rotationYaw);
                     fireBullets(worldIn, player, direction, ammoType);
-                    worldIn.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_FIRE, SoundCategory.PLAYERS, 1.5F, 1);
+                    worldIn.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_FIRE, SoundCategory.PLAYERS, 3.5f, 1);
 
                     damageItem(stack, player);
 
                 } else {
-                    worldIn.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_DRY_FIRE, SoundCategory.PLAYERS, 0.5F, 1);
+                    worldIn.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_DRY_FIRE, SoundCategory.PLAYERS, 0.8f, 1);
                 }
 
                 setAmmoInChamber(stack, AmmoType.NONE);
@@ -136,7 +136,7 @@ public abstract class ShotgunItem extends Item {
         if (chamberEmpty) {
             if (!isSlideBack(stack)) {
                 if (!isReloading && !magazineEmpty) {
-                    world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_BACK, SoundCategory.PLAYERS, 0.5F, 1.0F);
+                    world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_BACK, SoundCategory.PLAYERS, 0.8f, 1);
 
                     setSlideBack(stack, true);
                     setTimerExpiryTime(stack, currentTime + midCycleDelay());
@@ -159,14 +159,14 @@ public abstract class ShotgunItem extends Item {
                 boolean jammed = random.nextFloat() < ammoType.toItem().jamChance();
 
                 if (!jammed) {
-                    world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_FORWARD, SoundCategory.PLAYERS, 0.5F, 1.0F);
+                    world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_FORWARD, SoundCategory.PLAYERS, 0.8f, 1);
 
                     setSlideBack(stack, false);
                     setAmmoInChamber(stack, ammoType);
                     setTimerExpiryTime(stack, currentTime + postCycleDelay());
 
                 } else {
-                    world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_JAMMED, SoundCategory.PLAYERS, 0.5F, 1.0F);
+                    world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_JAMMED, SoundCategory.PLAYERS, 0.8f, 1);
 
                     setJammed(stack, true);
                     setTimerExpiryTime(stack, currentTime + JAMMED_SOUND_REPEAT_INTERVAL);
@@ -182,7 +182,7 @@ public abstract class ShotgunItem extends Item {
                 setTimerExpiryTime(stack, currentTime + shellPreInsertDelay());
 
             } else {
-                world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_INSERTING_SHELL, SoundCategory.PLAYERS, 0.5F, 1.0F);
+                world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_INSERTING_SHELL, SoundCategory.PLAYERS, 0.8f, 1);
 
                 addAmmoToMagazine(stack, ammoTypeFromStack(ammoStack));
                 if (!player.abilities.isCreativeMode) {
