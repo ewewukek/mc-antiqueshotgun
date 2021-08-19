@@ -25,4 +25,9 @@ public class AntiqueShotgunItem extends ShotgunItem {
     public int getShellInsertDuration() {
         return shellInsertDuration;
     }
+
+    @Override
+    public int getItemEnchantability() {
+        return 40;
+    }
 }

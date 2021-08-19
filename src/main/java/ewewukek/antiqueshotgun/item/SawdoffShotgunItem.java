@@ -38,4 +38,9 @@ public class SawdoffShotgunItem extends HandmadeShotgunItem {
     public float getDamageMultiplier() {
         return damageMultiplier;
     }
+
+    @Override
+    public int getItemEnchantability() {
+        return 0;
+    }
 }

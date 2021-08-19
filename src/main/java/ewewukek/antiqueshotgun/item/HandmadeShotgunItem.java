@@ -43,4 +43,9 @@ public class HandmadeShotgunItem extends ShotgunItem {
     public float getDamageMultiplier() {
         return damageMultiplier;
     }
+
+    @Override
+    public int getItemEnchantability() {
+        return 1;
+    }
 }

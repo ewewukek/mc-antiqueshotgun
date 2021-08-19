@@ -5,6 +5,7 @@ import java.util.concurrent.Executor;
 import java.util.function.Supplier;
 
 import ewewukek.antiqueshotgun.client.ClientSetup;
+import ewewukek.antiqueshotgun.enchantment.BruteEnchantment;
 import ewewukek.antiqueshotgun.entity.BulletEntity;
 import ewewukek.antiqueshotgun.entity.ElderHunterEntity;
 import ewewukek.antiqueshotgun.item.AmmoItem;
@@ -19,15 +20,20 @@ import ewewukek.antiqueshotgun.item.SlugAmmoItem;
 import ewewukek.antiqueshotgun.item.crafting.SawdoffShotgunRecipe;
 import ewewukek.antiqueshotgun.item.crafting.UnloadShotgunRecipe;
 import ewewukek.antiqueshotgun.world.TreasureLootModifier;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.monster.EvokerEntity;
 import net.minecraft.entity.monster.PillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -41,6 +47,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.Unit;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.raid.Raid;
@@ -51,6 +58,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.LogicalSide;
@@ -109,6 +117,13 @@ public class AntiqueShotgunMod {
 
     @ObjectHolder(MODID + ":elder_hunter")
     public static EntityType<ElderHunterEntity> ELDER_HUNTER_ENTITY_TYPE;
+
+    public static final EnchantmentType ENCHANTMENT_TYPE_SHOTGUN = EnchantmentType.create(MODID + ":shotgun", (item) -> {
+        return item instanceof ShotgunItem && ((ShotgunItem)item).getItemEnchantability() != 0;
+    });
+
+    @ObjectHolder(MODID + ":brute")
+    public static Enchantment BRUTE_ENCHANTMENT;
 
     public AntiqueShotgunMod() {
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
@@ -181,6 +196,13 @@ public class AntiqueShotgunMod {
         public static void onLootModifierRegistry(final RegistryEvent.Register<GlobalLootModifierSerializer<?>> event) {
             event.getRegistry().register(
                 TreasureLootModifier.SERIALIZER.setRegistryName(MODID, "treasure_loot_modifier")
+            );
+        }
+
+        @SubscribeEvent
+        public static void onEnchantmentRegistry(final RegistryEvent.Register<Enchantment> event) {
+            event.getRegistry().register(
+                new BruteEnchantment(Enchantment.Rarity.COMMON, EquipmentSlotType.MAINHAND).setRegistryName(MODID, "brute")
             );
         }
     }
@@ -267,6 +289,23 @@ public class AntiqueShotgunMod {
                         event.setCanceled(true);
                     }
                 }
+            }
+        }
+
+        @SubscribeEvent
+        public static void onAttackEntityEvent(final AttackEntityEvent event) {
+            PlayerEntity player = event.getPlayer();
+            Entity target = event.getTarget();
+            if (target.canBeAttackedWithItem() && !target.hitByEntity(player)) {
+                // Forge: Initialize this value to the attack knockback attribute of the player, which is by default 0
+                float knockback = 0.5f * EnchantmentHelper.getMaxEnchantmentLevel(BRUTE_ENCHANTMENT, player);
+                float angle = player.rotationYaw * (float)(Math.PI / 180);
+                if (target instanceof LivingEntity) {
+                    ((LivingEntity)target).applyKnockback(knockback, MathHelper.sin(angle), -MathHelper.cos(angle));
+                } else {
+                    target.addVelocity(-MathHelper.sin(angle) * knockback, 0.1, MathHelper.cos(angle) * knockback);
+                }
+                player.setSprinting(false);
             }
         }
     }
