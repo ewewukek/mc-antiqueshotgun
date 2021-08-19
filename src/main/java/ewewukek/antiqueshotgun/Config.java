@@ -50,7 +50,7 @@ public class Config {
 
         SawdoffShotgunItem.magazineCapacity = instance.sawd_off_shotgun.magazineCapacity;
         SawdoffShotgunItem.spreadStdDevAdd = (float)Math.toRadians(instance.sawd_off_shotgun.spreadStdDevAdd);
-        SawdoffShotgunItem.damageMultiplier = instance.handmade_shotgun.damageMultiplier;
+        SawdoffShotgunItem.damageMultiplier = instance.sawd_off_shotgun.damageMultiplier;
 
         HandmadeAmmoItem.pelletCount = instance.handmade_shell.pelletCount;
         HandmadeAmmoItem.spreadStdDev = (float)Math.toRadians(instance.handmade_shell.spreadStdDev);
