@@ -89,6 +89,8 @@ public class AntiqueShotgunMod {
 
     @ObjectHolder(MODID + ":shotgun_fire")
     public static SoundEvent SOUND_SHOTGUN_FIRE;
+    @ObjectHolder(MODID + ":shotgun_fire_slug")
+    public static SoundEvent SOUND_SHOTGUN_FIRE_SLUG;
     @ObjectHolder(MODID + ":shotgun_dry_fire")
     public static SoundEvent SOUND_SHOTGUN_DRY_FIRE;
     @ObjectHolder(MODID + ":shotgun_pump_back")
@@ -156,6 +158,7 @@ public class AntiqueShotgunMod {
         public static void onSoundRegistry(final RegistryEvent.Register<SoundEvent> event) {
             event.getRegistry().registerAll(
                 new SoundEvent(new ResourceLocation(MODID, "shotgun_fire")).setRegistryName(MODID, "shotgun_fire"),
+                new SoundEvent(new ResourceLocation(MODID, "shotgun_fire_slug")).setRegistryName(MODID, "shotgun_fire_slug"),
                 new SoundEvent(new ResourceLocation(MODID, "shotgun_dry_fire")).setRegistryName(MODID, "shotgun_dry_fire"),
                 new SoundEvent(new ResourceLocation(MODID, "shotgun_pump_back")).setRegistryName(MODID, "shotgun_pump_back"),
                 new SoundEvent(new ResourceLocation(MODID, "shotgun_pump_forward")).setRegistryName(MODID, "shotgun_pump_forward"),

@@ -69,8 +69,12 @@ public abstract class ShotgunItem extends Item {
                 return ActionResult.resultFail(stack);
             }
 
+            double posX = player.getPosX();
+            double posY = player.getPosY();
+            double posZ = player.getPosZ();
+
             if (isJammed(stack)) {
-                worldIn.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_JAMMED, SoundCategory.PLAYERS, 0.8f, 1);
+                worldIn.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_JAMMED, SoundCategory.PLAYERS, 0.8f, 1);
 
                 setTimerExpiryTime(stack, currentTime + JAMMED_SOUND_REPEAT_INTERVAL);
                 return ActionResult.resultFail(stack);
@@ -85,12 +89,17 @@ public abstract class ShotgunItem extends Item {
                     final float deg2rad = 0.017453292f;
                     Vector3d direction = new Vector3d(0, 0, 1).rotatePitch(-deg2rad * player.rotationPitch).rotateYaw(-deg2rad * player.rotationYaw);
                     fireBullets(worldIn, player, direction, ammoType);
-                    worldIn.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_FIRE, SoundCategory.PLAYERS, 3.5f, 1);
+
+                    if (ammoType == AmmoType.SLUG) {
+                        worldIn.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_FIRE_SLUG, SoundCategory.PLAYERS, 3.5f, 1);
+                    } else {
+                        worldIn.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_FIRE, SoundCategory.PLAYERS, 3.5f, 1);
+                    }
 
                     damageItem(stack, player);
 
                 } else {
-                    worldIn.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_DRY_FIRE, SoundCategory.PLAYERS, 0.8f, 1);
+                    worldIn.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_DRY_FIRE, SoundCategory.PLAYERS, 0.8f, 1);
                 }
 
                 setAmmoInChamber(stack, AmmoType.NONE);
