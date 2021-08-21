@@ -10,6 +10,7 @@ public class BuckshotAmmoItem extends AmmoItem {
     public static float speed;
     public static float range;
     public static float damage;
+    public static int durabilityDamage;
 
     @Override
     public int pelletCount() {
@@ -34,5 +35,10 @@ public class BuckshotAmmoItem extends AmmoItem {
     @Override
     public float damage() {
         return damage;
+    }
+
+    @Override
+    public int durabilityDamage() {
+        return durabilityDamage;
     }
 }

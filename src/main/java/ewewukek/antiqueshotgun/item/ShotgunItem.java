@@ -106,7 +106,7 @@ public abstract class ShotgunItem extends Item {
                         worldIn.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_FIRE, SoundCategory.PLAYERS, 3.5f, 1);
                     }
 
-                    damageItem(stack, player);
+                    damageItem(stack, ammoItem.durabilityDamage(), player);
 
                 } else {
                     worldIn.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_DRY_FIRE, SoundCategory.PLAYERS, 0.8f, 1);
@@ -227,13 +227,13 @@ public abstract class ShotgunItem extends Item {
     @Override
     public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
         if (!worldIn.isRemote && entityLiving instanceof PlayerEntity && state.getBlockHardness(worldIn, pos) != 0.0f) {
-            damageItem(stack, (PlayerEntity) entityLiving);
+            damageItem(stack, 1, (PlayerEntity) entityLiving);
         }
         return false;
     }
 
-    public static void damageItem(ItemStack stack, PlayerEntity player) {
-        stack.damageItem(1, player, (entity) -> {
+    public static void damageItem(ItemStack stack, int amount, PlayerEntity player) {
+        stack.damageItem(amount, player, (entity) -> {
             entity.sendBreakAnimation(player.getActiveHand());
         });
     }

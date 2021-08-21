@@ -58,6 +58,7 @@ public class Config {
         HandmadeAmmoItem.speed = instance.handmade_shell.speed / 20;
         HandmadeAmmoItem.range = instance.handmade_shell.range;
         HandmadeAmmoItem.damage = instance.handmade_shell.damage;
+        HandmadeAmmoItem.durabilityDamage = instance.handmade_shell.durabilityDamage;
         HandmadeAmmoItem.misfireChance = instance.handmade_shell.misfireChance;
         HandmadeAmmoItem.jamChance = instance.handmade_shell.jamChance;
 
@@ -66,17 +67,20 @@ public class Config {
         BuckshotAmmoItem.speed = instance.buckshot_shell.speed / 20;
         BuckshotAmmoItem.range = instance.buckshot_shell.range;
         BuckshotAmmoItem.damage = instance.buckshot_shell.damage;
+        BuckshotAmmoItem.durabilityDamage = instance.buckshot_shell.durabilityDamage;
 
         SlugAmmoItem.spreadStdDev = (float)Math.toRadians(instance.slug_shell.spreadStdDev);
         SlugAmmoItem.speed = instance.slug_shell.speed / 20;
         SlugAmmoItem.range = instance.slug_shell.range;
         SlugAmmoItem.damage = instance.slug_shell.damage;
+        SlugAmmoItem.durabilityDamage = instance.slug_shell.durabilityDamage;
         SlugAmmoItem.postFireDelay = instance.slug_shell.postFireDelay;
 
         RubberAmmoItem.spreadStdDev = (float)Math.toRadians(instance.rubber_shell.spreadStdDev);
         RubberAmmoItem.speed = instance.rubber_shell.speed / 20;
         RubberAmmoItem.range = instance.rubber_shell.range;
         RubberAmmoItem.damage = instance.rubber_shell.damage;
+        RubberAmmoItem.durabilityDamage = instance.rubber_shell.durabilityDamage;
         RubberAmmoItem.knockbackForce = instance.rubber_shell.knockbackForce;
         RubberAmmoItem.slownessDuration = instance.rubber_shell.slownessDuration;
         RubberAmmoItem.slownessLevel = instance.rubber_shell.slownessLevel;
@@ -171,6 +175,7 @@ public class Config {
         public float speed = 400;
         public float range = 15;
         public float damage = 20;
+        public int durabilityDamage = 3;
         public float misfireChance = 0.025f;
         public float jamChance = 0.005f;
     }
@@ -181,6 +186,7 @@ public class Config {
         public float speed = 400;
         public float range = 15;
         public float damage = 25;
+        public int durabilityDamage = 1;
     }
 
     private static class SlugShell {
@@ -188,6 +194,7 @@ public class Config {
         public float speed = 400;
         public float range = 25;
         public float damage = 25;
+        public int durabilityDamage = 1;
         public int postFireDelay = 3;
     }
 
@@ -196,6 +203,7 @@ public class Config {
         public float speed = 200;
         public float range = 20;
         public float damage = 1;
+        public int durabilityDamage = 2;
         public float knockbackForce = 0.6f;
         public float slownessDuration = 10;
         public int slownessLevel = 1;

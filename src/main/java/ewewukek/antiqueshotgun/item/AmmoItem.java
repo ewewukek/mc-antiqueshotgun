@@ -11,6 +11,7 @@ public abstract class AmmoItem extends Item {
     public abstract float speed();
     public abstract float range();
     public abstract float damage();
+    public abstract int durabilityDamage();
 
     public int pelletCount() {
         return 1;

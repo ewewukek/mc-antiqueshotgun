@@ -9,6 +9,7 @@ public class RubberAmmoItem extends AmmoItem {
     public static float speed;
     public static float range;
     public static float damage;
+    public static int durabilityDamage;
 
     public static float knockbackForce;
     public static float slownessDuration;
@@ -34,5 +35,10 @@ public class RubberAmmoItem extends AmmoItem {
     @Override
     public float damage() {
         return damage;
+    }
+
+    @Override
+    public int durabilityDamage() {
+        return durabilityDamage;
     }
 }
