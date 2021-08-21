@@ -102,22 +102,22 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.ENTITY_PILLAGER_AMBIENT;
+        return SoundEvents.ENTITY_ILLUSIONER_AMBIENT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_PILLAGER_DEATH;
+        return SoundEvents.ENTITY_ILLUSIONER_DEATH;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return SoundEvents.ENTITY_PILLAGER_HURT;
+        return SoundEvents.ENTITY_ILLUSIONER_HURT;
     }
 
     @Override
     public SoundEvent getRaidLossSound() {
-        return SoundEvents.ENTITY_PILLAGER_CELEBRATE;
+        return SoundEvents.ENTITY_ILLUSIONER_AMBIENT;
     }
 
     @Override
