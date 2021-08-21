@@ -18,6 +18,7 @@
  ✔ first-person animation
   ✔ basic pose
   ✔ cycling animation
+  . equip animation
   ✗ reloading animation (hard to implement atm)
  ✔ third-person animation
   ✔ basic pose
@@ -34,6 +35,7 @@
  ✔ less damage and range 0.8-0.9
 . antique (Ol' Betsy)
  ✔ register items
+ ✔ anvil repairing (1 ingot fully repairs)
  . loot table
   ✔ loot table overriding
   . barrel
@@ -68,6 +70,7 @@
  ✔ register items
  ✔ varying texture depending on stack sizie
   ✔ predicate for stack size
+ ✔ durability damage based on ammo type (buck/slug - 1, rubber - 2, handmade - 3)
  ✔ slug
   ✔ recipe
   ✔ range/damage/no spread/high velocity
