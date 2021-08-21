@@ -22,8 +22,6 @@
  ✔ third-person animation
   ✔ basic pose
   ✗ reloading animation (hard to implement atm)
- . melee damage & knockback
-  . custom hit sound
  ✔ firing bullets
  ✔ unloading in crafting table
 ✔ handmade
@@ -38,13 +36,18 @@
  ✔ register items
  . loot table
   ✔ loot table overriding
-  . found in broken state, needs repairing
-   . smithing table?
+  . barrel
+   . found in bastion remnants treasure chest
+  . golden reload mechanism
+   . found in bastion remnants and nether fortresses
+  . antique stock
+   . found in woodland mansions
+  . optional crafting
  . optional crafting
-  . antique_barrel
+  . barrel
    [nnF] n=netherite_scrap, N=netherite_ingot, F=flint_and_steel
    [  N]
-  . antique_shotgun
+  . shotgun
    [BGS] B=antique_barrel, G=gold_ingot, S=handmade_stock
 ✔ saw'd-off
  ✔ register items
@@ -88,20 +91,21 @@
   ✔ entity
   ✔ knockback
   ✔ inflicts slowness, nausea and weakness
-. enchants
+✔ enchants
  ✔ unbreaking & mending works by default
- . brute
+ ✔ brute
   ✔ knockback increase
-  . melee damage increase
+  ✔ melee damage increase
   ✔ max level for handmade is 1
   ✔ max level for antique is 3
-  . custom hit sound
+  ✔ custom hit sound
 ✔ shotgun mob
  ✔ rare spawn as pillagers patrol member
  ✔ spawns at lv5 raid replacing one of the mobs
  ✔ drops buckshot, emeralds and antique shotgun
 ✗ backtools mod support (buggy mod)
-. powershot mod support
+✗ powershot mod support
+. first person model mod
 . advancements
 . geckolib for animations
 . configuration
