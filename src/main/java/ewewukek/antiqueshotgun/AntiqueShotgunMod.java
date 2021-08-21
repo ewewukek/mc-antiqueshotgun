@@ -301,7 +301,7 @@ public class AntiqueShotgunMod {
             PlayerEntity player = event.getPlayer();
             Entity target = event.getTarget();
             if (target.canBeAttackedWithItem() && !target.hitByEntity(player)) {
-                float knockback = BruteEnchantment.knockbackForce * EnchantmentHelper.getMaxEnchantmentLevel(BRUTE_ENCHANTMENT, player);
+                float knockback = BruteEnchantment.knockbackForcePerLevel * EnchantmentHelper.getMaxEnchantmentLevel(BRUTE_ENCHANTMENT, player);
                 if (knockback > 0) {
                     float angle = player.rotationYaw * (float)(Math.PI / 180);
                     if (target instanceof LivingEntity) {

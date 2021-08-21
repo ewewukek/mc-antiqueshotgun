@@ -83,8 +83,9 @@ public class Config {
         RubberAmmoItem.weaknessDuration = instance.rubber_shell.weaknessDuration;
         RubberAmmoItem.nauseaDuration = instance.rubber_shell.nauseaDuration;
 
-        BruteEnchantment.extraDamage = instance.brute_enchantment.extraDamage;
-        BruteEnchantment.knockbackForce = instance.brute_enchantment.knockbackForce;
+        BruteEnchantment.extraDamageBase = instance.brute_enchantment.extraDamageBase;
+        BruteEnchantment.extraDamagePerLevel = instance.brute_enchantment.extraDamagePerLevel;
+        BruteEnchantment.knockbackForcePerLevel = instance.brute_enchantment.knockbackForcePerLevel;
 
         ElderHunterEntity.magazineCapacity = instance.elder_hunter.magazineCapacity;
         ElderHunterEntity.aimDuration = instance.elder_hunter.aimDuration;
@@ -203,8 +204,9 @@ public class Config {
     }
 
     public static class BruteEnchantmentConfig {
-        public float extraDamage = 1;
-        public float knockbackForce = 0.5f;
+        public float extraDamageBase = 1;
+        public float extraDamagePerLevel = 1;
+        public float knockbackForcePerLevel = 0.5f;
     }
 
     public static class ElderHunter {

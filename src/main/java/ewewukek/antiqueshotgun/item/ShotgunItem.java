@@ -215,7 +215,7 @@ public abstract class ShotgunItem extends Item {
 
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-        float extraDamage = BruteEnchantment.extraDamage * EnchantmentHelper.getEnchantmentLevel(AntiqueShotgunMod.BRUTE_ENCHANTMENT, stack);
+        float extraDamage = BruteEnchantment.extraDamageBase + BruteEnchantment.extraDamagePerLevel * EnchantmentHelper.getEnchantmentLevel(AntiqueShotgunMod.BRUTE_ENCHANTMENT, stack);
         if (slot != EquipmentSlotType.MAINHAND || extraDamage == 0) {
             return super.getAttributeModifiers(slot, stack);
         }
