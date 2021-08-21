@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "antiqueshotgun:handmade_barrel"
+  },
+  "addition": {
+    "item": "antiqueshotgun:handmade_stock"
+  },
+  "result": {
+    "item": "antiqueshotgun:handmade_shotgun"
+  }
+}
