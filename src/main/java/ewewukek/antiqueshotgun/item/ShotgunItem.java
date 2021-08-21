@@ -2,13 +2,22 @@ package ewewukek.antiqueshotgun.item;
 
 import java.util.Arrays;
 
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.ImmutableMultimap.Builder;
+import com.google.common.collect.Multimap;
+
 import ewewukek.antiqueshotgun.AmmoType;
 import ewewukek.antiqueshotgun.AntiqueShotgunMod;
 import ewewukek.antiqueshotgun.KeyState;
 import ewewukek.antiqueshotgun.entity.BulletEntity;
 import net.minecraft.block.BlockState;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -201,6 +210,17 @@ public abstract class ShotgunItem extends Item {
                 setTimerExpiryTime(stack, currentTime + shellPostInsertDelay());
             }
         }
+    }
+
+    @Override
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
+        float extraDamage = EnchantmentHelper.getEnchantmentLevel(AntiqueShotgunMod.BRUTE_ENCHANTMENT, stack);
+        if (slot != EquipmentSlotType.MAINHAND || extraDamage == 0) {
+            return super.getAttributeModifiers(slot, stack);
+        }
+        Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Damage modifier", extraDamage, AttributeModifier.Operation.ADDITION));
+        return builder.build();
     }
 
     @Override
