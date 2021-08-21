@@ -1,6 +1,8 @@
 package ewewukek.antiqueshotgun.item;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 
 public class HandmadeShotgunItem extends ShotgunItem {
     public HandmadeShotgunItem(Item.Properties properties) {
@@ -47,5 +49,10 @@ public class HandmadeShotgunItem extends ShotgunItem {
     @Override
     public int getItemEnchantability() {
         return 1;
+    }
+
+    @Override
+    public boolean getIsRepairable(ItemStack stack, ItemStack other) {
+        return !other.isEmpty() && other.getItem() == Items.IRON_INGOT;
     }
 }

@@ -55,6 +55,7 @@ import net.minecraft.world.raid.Raid;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -312,6 +313,19 @@ public class AntiqueShotgunMod {
                     player.setSprinting(false);
                     player.getEntityWorld().playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), AntiqueShotgunMod.SOUND_BRUTE_HIT, SoundCategory.PLAYERS, 1, 1);
                 }
+            }
+        }
+
+        @SubscribeEvent
+        public static void onAnvilUpdateEvent(final AnvilUpdateEvent event) {
+            ItemStack leftStack = event.getLeft();
+            ItemStack rightStack = event.getRight();
+            if (leftStack.getItem() == ANTIQUE_SHOTGUN && leftStack.getDamage() > 0 && leftStack.getItem().getIsRepairable(leftStack, rightStack)) {
+                ItemStack output = leftStack.copy();
+                output.setDamage(0);
+                event.setOutput(output);
+                event.setCost(1 + (int)Math.ceil(4 * leftStack.getDamage() / leftStack.getMaxDamage()));
+                event.setMaterialCost(1);
             }
         }
     }

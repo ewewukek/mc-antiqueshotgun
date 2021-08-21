@@ -1,6 +1,8 @@
 package ewewukek.antiqueshotgun.item;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 
 public class AntiqueShotgunItem extends ShotgunItem {
     public AntiqueShotgunItem(Item.Properties properties) {
@@ -29,5 +31,10 @@ public class AntiqueShotgunItem extends ShotgunItem {
     @Override
     public int getItemEnchantability() {
         return 50;
+    }
+
+    @Override
+    public boolean getIsRepairable(ItemStack stack, ItemStack other) {
+        return !other.isEmpty() && other.getItem() == Items.NETHERITE_INGOT;
     }
 }
