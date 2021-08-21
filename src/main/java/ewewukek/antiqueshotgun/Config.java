@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import ewewukek.antiqueshotgun.enchantment.BruteEnchantment;
 import ewewukek.antiqueshotgun.entity.ElderHunterEntity;
 import ewewukek.antiqueshotgun.item.AntiqueShotgunItem;
 import ewewukek.antiqueshotgun.item.BuckshotAmmoItem;
@@ -82,6 +83,9 @@ public class Config {
         RubberAmmoItem.weaknessDuration = instance.rubber_shell.weaknessDuration;
         RubberAmmoItem.nauseaDuration = instance.rubber_shell.nauseaDuration;
 
+        BruteEnchantment.extraDamage = instance.brute_enchantment.extraDamage;
+        BruteEnchantment.knockbackForce = instance.brute_enchantment.knockbackForce;
+
         ElderHunterEntity.magazineCapacity = instance.elder_hunter.magazineCapacity;
         ElderHunterEntity.aimDuration = instance.elder_hunter.aimDuration;
         ElderHunterEntity.reloadDuration = instance.elder_hunter.reloadDuration;
@@ -129,6 +133,8 @@ public class Config {
     private BuckshotShell buckshot_shell = new BuckshotShell();
     private SlugShell slug_shell = new SlugShell();
     private RubberShell rubber_shell = new RubberShell();
+
+    private BruteEnchantmentConfig brute_enchantment = new BruteEnchantmentConfig();
 
     private ElderHunter elder_hunter = new ElderHunter();
 
@@ -194,6 +200,11 @@ public class Config {
         public int slownessLevel = 1;
         public float weaknessDuration = 10;
         public float nauseaDuration = 5;
+    }
+
+    public static class BruteEnchantmentConfig {
+        public float extraDamage = 1;
+        public float knockbackForce = 0.5f;
     }
 
     public static class ElderHunter {

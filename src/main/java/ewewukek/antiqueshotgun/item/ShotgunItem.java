@@ -9,6 +9,7 @@ import com.google.common.collect.Multimap;
 import ewewukek.antiqueshotgun.AmmoType;
 import ewewukek.antiqueshotgun.AntiqueShotgunMod;
 import ewewukek.antiqueshotgun.KeyState;
+import ewewukek.antiqueshotgun.enchantment.BruteEnchantment;
 import ewewukek.antiqueshotgun.entity.BulletEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -214,7 +215,7 @@ public abstract class ShotgunItem extends Item {
 
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-        float extraDamage = EnchantmentHelper.getEnchantmentLevel(AntiqueShotgunMod.BRUTE_ENCHANTMENT, stack);
+        float extraDamage = BruteEnchantment.extraDamage * EnchantmentHelper.getEnchantmentLevel(AntiqueShotgunMod.BRUTE_ENCHANTMENT, stack);
         if (slot != EquipmentSlotType.MAINHAND || extraDamage == 0) {
             return super.getAttributeModifiers(slot, stack);
         }
