@@ -44,6 +44,7 @@ import net.minecraft.resources.IFutureReloadListener;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.Unit;
 import net.minecraft.util.math.BlockPos;
@@ -111,6 +112,8 @@ public class AntiqueShotgunMod {
     public static SoundEvent SOUND_SHOTGUN_PUMP_JAMMED;
     @ObjectHolder(MODID + ":shotgun_inserting_shell")
     public static SoundEvent SOUND_SHOTGUN_INSERTING_SHELL;
+    @ObjectHolder(MODID + ":brute_hit")
+    public static SoundEvent SOUND_BRUTE_HIT;
 
     @ObjectHolder(MODID + ":bullet")
     public static EntityType<BulletEntity> BULLET_ENTITY_TYPE;
@@ -180,7 +183,8 @@ public class AntiqueShotgunMod {
                 new SoundEvent(new ResourceLocation(MODID, "shotgun_pump_back")).setRegistryName(MODID, "shotgun_pump_back"),
                 new SoundEvent(new ResourceLocation(MODID, "shotgun_pump_forward")).setRegistryName(MODID, "shotgun_pump_forward"),
                 new SoundEvent(new ResourceLocation(MODID, "shotgun_pump_jammed")).setRegistryName(MODID, "shotgun_pump_jammed"),
-                new SoundEvent(new ResourceLocation(MODID, "shotgun_inserting_shell")).setRegistryName(MODID, "shotgun_inserting_shell")
+                new SoundEvent(new ResourceLocation(MODID, "shotgun_inserting_shell")).setRegistryName(MODID, "shotgun_inserting_shell"),
+                new SoundEvent(new ResourceLocation(MODID, "brute_hit")).setRegistryName(MODID, "brute_hit")
             );
         }
 
@@ -298,13 +302,16 @@ public class AntiqueShotgunMod {
             Entity target = event.getTarget();
             if (target.canBeAttackedWithItem() && !target.hitByEntity(player)) {
                 float knockback = BruteEnchantment.knockbackForce * EnchantmentHelper.getMaxEnchantmentLevel(BRUTE_ENCHANTMENT, player);
-                float angle = player.rotationYaw * (float)(Math.PI / 180);
-                if (target instanceof LivingEntity) {
-                    ((LivingEntity)target).applyKnockback(knockback, MathHelper.sin(angle), -MathHelper.cos(angle));
-                } else {
-                    target.addVelocity(-MathHelper.sin(angle) * knockback, 0.1, MathHelper.cos(angle) * knockback);
+                if (knockback > 0) {
+                    float angle = player.rotationYaw * (float)(Math.PI / 180);
+                    if (target instanceof LivingEntity) {
+                        ((LivingEntity)target).applyKnockback(knockback, MathHelper.sin(angle), -MathHelper.cos(angle));
+                    } else {
+                        target.addVelocity(-MathHelper.sin(angle) * knockback, 0.1, MathHelper.cos(angle) * knockback);
+                    }
+                    player.setSprinting(false);
+                    player.getEntityWorld().playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), AntiqueShotgunMod.SOUND_BRUTE_HIT, SoundCategory.PLAYERS, 1, 1);
                 }
-                player.setSprinting(false);
             }
         }
     }

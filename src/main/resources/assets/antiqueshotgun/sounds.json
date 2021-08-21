@@ -33,5 +33,10 @@
     "sounds": [
       "antiqueshotgun:shotgun_inserting_shell"
     ]
+  },
+  "brute_hit": {
+    "sounds": [
+      "antiqueshotgun:brute_hit"
+    ]
   }
 }
