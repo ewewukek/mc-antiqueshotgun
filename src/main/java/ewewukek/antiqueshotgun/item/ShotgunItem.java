@@ -132,6 +132,7 @@ public abstract class ShotgunItem extends Item {
         if (!hasTimerExpired(stack, currentTime)) {
             return;
         }
+        removeTimer(stack);
 
         ItemStack ammoStack = findAmmo(player);
         boolean chamberEmpty = getAmmoInChamber(stack) == AmmoType.NONE;
@@ -308,7 +309,7 @@ public abstract class ShotgunItem extends Item {
     }
 
     public boolean isAmmo(ItemStack stack) {
-        return AmmoType.fromItem(stack.getItem()) != AmmoType.NONE;
+        return ammoTypeFromStack(stack) != AmmoType.NONE;
     }
 
     public ItemStack findAmmo(PlayerEntity player) {
@@ -320,69 +321,73 @@ public abstract class ShotgunItem extends Item {
     }
 
     public static AmmoType ammoTypeFromStack(ItemStack ammoStack) {
-        AmmoType ammoType = AmmoType.fromItem(ammoStack.getItem());
-        return ammoType;
+        return AmmoType.fromItem(ammoStack.getItem());
     }
 
     public static boolean hasTimerExpired(ItemStack stack, long currentTime) {
-        CompoundNBT tag = stack.getTag();
-        long storedTime = tag != null ? tag.getLong("timer_expiry_time") : 0;
-        return currentTime > storedTime;
+        return currentTime > stack.getOrCreateTag().getLong("timer_expiry_time");
     }
 
     public static void setTimerExpiryTime(ItemStack stack, long time) {
         stack.getOrCreateTag().putLong("timer_expiry_time", time);
     }
 
+    public static void removeTimer(ItemStack stack) {
+        stack.getOrCreateTag().remove("timer_expiry_time");
+    }
+
     public static boolean isSlideBack(ItemStack stack) {
-        CompoundNBT tag = stack.getTag();
-        return tag != null && tag.getByte("slide_back") != 0;
+        return stack.getOrCreateTag().getByte("slide_back") != 0;
     }
 
     public static void setSlideBack(ItemStack stack, boolean value) {
-        stack.getOrCreateTag().putByte("slide_back", (byte) (value ? 1 : 0));
+        setBoolTag(stack, "slide_back", value);
     }
 
     public static boolean isJammed(ItemStack stack) {
-        CompoundNBT tag = stack.getTag();
-        return tag != null && tag.getByte("jammed") != 0;
+        return stack.getOrCreateTag().getByte("jammed") != 0;
     }
 
     public static void setJammed(ItemStack stack, boolean value) {
-        stack.getOrCreateTag().putByte("jammed", (byte) (value ? 1 : 0));
+        setBoolTag(stack, "jammed", value);
     }
 
     // synthetic state to add a delay before playing the shell insertion sound
     public static boolean isInsertingShell(ItemStack stack) {
-        CompoundNBT tag = stack.getTag();
-        return tag != null && tag.getByte("inserting_shell") != 0;
+        return stack.getOrCreateTag().getByte("inserting_shell") != 0;
     }
 
     public static void setInsertingShell(ItemStack stack, boolean value) {
-        stack.getOrCreateTag().putByte("inserting_shell", (byte) (value ? 1 : 0));
+        setBoolTag(stack, "inserting_shell", value);
     }
 
     public static AmmoType getAmmoInChamber(ItemStack stack) {
-        CompoundNBT tag = stack.getTag();
-        return AmmoType.fromByte(tag != null ? tag.getByte("chamber") : 0);
+        return AmmoType.fromByte(stack.getOrCreateTag().getByte("chamber"));
     }
 
     public static void setAmmoInChamber(ItemStack stack, AmmoType ammoType) {
-        stack.getOrCreateTag().putByte("chamber", ammoType.toByte());
+        if (ammoType != AmmoType.NONE) {
+            stack.getOrCreateTag().putByte("chamber", ammoType.toByte());
+        } else {
+            stack.getOrCreateTag().remove("chamber");
+        }
     }
 
     public static int getAmmoInMagazineCount(ItemStack stack) {
-        CompoundNBT tag = stack.getTag();
-        return tag != null ? tag.getByteArray("magazine").length : 0;
+        return stack.getOrCreateTag().getByteArray("magazine").length;
     }
 
     public static AmmoType extractAmmoFromMagazine(ItemStack stack) {
-        CompoundNBT tag = stack.getTag();
-        if (tag == null) return AmmoType.NONE;
+        CompoundNBT tag = stack.getOrCreateTag();
         byte[] magazine = tag.getByteArray("magazine");
         if (magazine.length == 0) return AmmoType.NONE;
+
         AmmoType ammoType = AmmoType.fromByte(magazine[magazine.length - 1]);
-        tag.putByteArray("magazine", Arrays.copyOf(magazine, magazine.length - 1));
+        if (magazine.length > 1) {
+            tag.putByteArray("magazine", Arrays.copyOf(magazine, magazine.length - 1));
+        } else {
+            tag.remove("magazine");
+        }
         return ammoType;
     }
 
@@ -395,9 +400,6 @@ public abstract class ShotgunItem extends Item {
     }
 
     public static ItemStack unload(ItemStack stack) {
-        CompoundNBT tag = stack.getTag();
-        if (tag == null) return ItemStack.EMPTY;
-
         ItemStack ammoStack = ItemStack.EMPTY;
 
         AmmoType chamberAmmoType = getAmmoInChamber(stack);
@@ -406,6 +408,7 @@ public abstract class ShotgunItem extends Item {
             setAmmoInChamber(stack, AmmoType.NONE);
         }
 
+        CompoundNBT tag = stack.getOrCreateTag();
         byte[] magazine = tag.getByteArray("magazine");
         int length = magazine.length;
         while (length > 0) {
@@ -420,9 +423,21 @@ public abstract class ShotgunItem extends Item {
             --length;
         }
         if (length < magazine.length) {
-            tag.putByteArray("magazine", Arrays.copyOf(magazine, length));
+            if (length > 0) {
+                tag.putByteArray("magazine", Arrays.copyOf(magazine, length));
+            } else {
+                tag.remove("magazine");
+            }
         }
 
         return ammoStack;
+    }
+
+    public static void setBoolTag(ItemStack stack, String key, boolean value) {
+        if (value) {
+            stack.getOrCreateTag().putByte(key, (byte)1);
+        } else {
+            stack.getOrCreateTag().remove(key);
+        }
     }
 }
