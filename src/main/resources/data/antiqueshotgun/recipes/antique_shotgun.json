@@ -1,0 +1,22 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "B  ",
+    " G ",
+    "  S"
+  ],
+  "key": {
+    "B": {
+      "item": "antiqueshotgun:antique_barrel"
+    },
+    "G": {
+      "item": "antiqueshotgun:antique_gears"
+    },
+    "S": {
+      "item": "antiqueshotgun:antique_stock"
+    }
+  },
+  "result": {
+    "item": "antiqueshotgun:antique_shotgun"
+  }
+}

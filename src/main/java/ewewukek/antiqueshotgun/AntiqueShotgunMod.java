@@ -143,6 +143,8 @@ public class AntiqueShotgunMod {
             event.getRegistry().registerAll(
                 new AntiqueShotgunItem(new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(MODID, "antique_shotgun"),
                 new Item(new Item.Properties().group(ItemGroup.MISC)).setRegistryName(MODID, "antique_barrel"),
+                new Item(new Item.Properties().group(ItemGroup.MISC)).setRegistryName(MODID, "antique_gears"),
+                new Item(new Item.Properties().group(ItemGroup.MISC)).setRegistryName(MODID, "antique_stock"),
                 new HandmadeShotgunItem(new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(MODID, "handmade_shotgun"),
                 new Item(new Item.Properties().group(ItemGroup.MISC)).setRegistryName(MODID, "handmade_barrel"),
                 new Item(new Item.Properties().group(ItemGroup.MISC)).setRegistryName(MODID, "handmade_stock"),

@@ -2,10 +2,34 @@
   "type": "antiqueshotgun:treasure_loot_modifier",
   "conditions": [],
   "overrides": {
-    "minecraft:chests/desert_pyramid": [
+    "minecraft:chests/bastion_bridge": [
       {
-        "item": "antiqueshotgun:antique_shotgun",
-        "probability": 1
+        "item": "antiqueshotgun:antique_gears",
+        "probability": 0.2
+      }
+    ],
+    "minecraft:chests/bastion_hoglin_stable": [
+      {
+        "item": "antiqueshotgun:antique_gears",
+        "probability": 0.2
+      }
+    ],
+    "minecraft:chests/bastion_other": [
+      {
+        "item": "antiqueshotgun:antique_gears",
+        "probability": 0.2
+      }
+    ],
+    "minecraft:chests/bastion_treasure": [
+      {
+        "item": "antiqueshotgun:antique_barrel",
+        "probability": 0.5
+      }
+    ],
+    "minecraft:chests/woodland_mansion": [
+      {
+        "item": "antiqueshotgun:antique_stock",
+        "probability": 0.2
       }
     ]
   }
