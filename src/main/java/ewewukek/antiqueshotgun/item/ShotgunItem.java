@@ -124,6 +124,8 @@ public abstract class ShotgunItem extends Item {
         World world = player.world;
         if (world.isRemote) return;
 
+        if (getId(stack) == 0) genId(stack);
+
         if (isJammed(stack)) {
             return;
         }
@@ -242,6 +244,12 @@ public abstract class ShotgunItem extends Item {
     @Override
     public int getUseDuration(ItemStack stack) {
         return 72000;
+    }
+
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack from, ItemStack to, boolean slotChanged) {
+        if (to.isEmpty() || to.getItem() != this) return true;
+        return slotChanged || getId(from) != getId(to);
     }
 
     public void fireBullets(World world, LivingEntity shooter, Vector3d direction, AmmoType ammoType) {
@@ -439,5 +447,14 @@ public abstract class ShotgunItem extends Item {
         } else {
             stack.getOrCreateTag().remove(key);
         }
+    }
+
+    // hack to avoid reequip animation on tag change
+    public static int getId(ItemStack stack) {
+        return stack.getOrCreateTag().getInt("id");
+    }
+
+    private static void genId(ItemStack stack) {
+        stack.getOrCreateTag().putInt("id", Long.hashCode(System.currentTimeMillis()));
     }
 }

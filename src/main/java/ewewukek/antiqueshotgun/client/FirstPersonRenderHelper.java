@@ -31,7 +31,7 @@ public class FirstPersonRenderHelper {
             matrixStack.rotate(Vector3f.XP.rotationDegrees(180 + sign * (20 - 20 * swingSharp)));
 
         } else {
-            matrixStack.translate(sign * 0.31f, -0.29f, -0.41f);
+            matrixStack.translate(sign * 0.31f, -0.29f - 0.6f * equipProgress, -0.41f);
         }
 
         // compensate rotated model
