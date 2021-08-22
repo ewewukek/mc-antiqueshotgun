@@ -18,7 +18,7 @@
  ✔ first-person animation
   ✔ basic pose
   ✔ cycling animation
-  . equip animation
+  ✔ equip animation
   ✗ reloading animation (hard to implement atm)
  ✔ third-person animation
   ✔ basic pose
@@ -36,15 +36,14 @@
 . antique (Ol' Betsy)
  ✔ register items
  ✔ anvil repairing (1 ingot fully repairs)
- . loot table
+ ✔ loot table
   ✔ loot table overriding
-  . barrel
-   . found in bastion remnants treasure chest
-  . golden reload mechanism
-   . found in bastion remnants and nether fortresses
-  . antique stock
-   . found in woodland mansions
-  . optional crafting
+  ✔ barrel
+   ✔ found in bastion remnants treasure chest
+  ✔ golden reload mechanism
+   ✔ found in bastion remnants and nether fortresses
+  ✔ antique stock
+   ✔ found in woodland mansions
  . optional crafting
   . barrel
    [nnF] n=netherite_scrap, N=netherite_ingot, F=flint_and_steel
