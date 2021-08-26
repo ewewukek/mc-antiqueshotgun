@@ -199,6 +199,8 @@ public abstract class ShotgunItem extends Item {
         }
 
         if (isReloading) {
+            player.setSprinting(false);
+
             if (!isInsertingShell(stack)) {
                 setInsertingShell(stack, true);
                 setTimerExpiryTime(stack, currentTime + shellPreInsertDelay());
