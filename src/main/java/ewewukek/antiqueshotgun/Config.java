@@ -36,9 +36,9 @@ public class Config {
         load();
 
         ShotgunItem.enableMagazine = instance.common.enableMagazine;
-        ShotgunItem.insertOneIfEmpty = instance.common.insertOneIfEmpty;
 
         ReloadAction.reloadFull = instance.client.reloadFull;
+        ReloadAction.insertOneIfEmpty = instance.client.insertOneIfEmpty;
 
         AntiqueShotgunItem.magazineCapacity = instance.antique_shotgun.magazineCapacity;
         AntiqueShotgunItem.reloadDuration = instance.antique_shotgun.reloadDuration;
@@ -149,11 +149,11 @@ public class Config {
 
     private static class Common {
         public boolean enableMagazine = true;
-        public boolean insertOneIfEmpty = false;
     }
 
     private static class Client {
         public boolean reloadFull = true;
+        public boolean insertOneIfEmpty = true;
     }
 
     private static class AntiqueShotgun {

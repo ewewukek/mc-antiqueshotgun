@@ -38,7 +38,6 @@ public abstract class ShotgunItem extends Item {
     public static final int JAMMED_SOUND_REPEAT_INTERVAL = 10;
 
     public static boolean enableMagazine;
-    public static boolean insertOneIfEmpty;
 
     public abstract int getMagazineCapacity();
     public abstract int getReloadDuration();
@@ -146,8 +145,7 @@ public abstract class ShotgunItem extends Item {
         if (enableMagazine) {
             magazineEmpty = getAmmoInMagazineCount(stack) == 0;
             boolean canReload = getAmmoInMagazineCount(stack) < getMagazineCapacity() && !ammoStack.isEmpty();
-            boolean reloadAction = ReloadAction.isReloading(player);
-            isReloading = canReload && (reloadAction || insertOneIfEmpty && chamberEmpty && magazineEmpty);
+            isReloading = canReload && ReloadAction.isReloading(player);
 
         } else {
             magazineEmpty = ammoStack.isEmpty();

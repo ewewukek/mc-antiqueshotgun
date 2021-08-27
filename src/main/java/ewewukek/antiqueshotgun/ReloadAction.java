@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 public class ReloadAction {
 // client part
     public static boolean reloadFull;
+    public static boolean insertOneIfEmpty;
 
     public static ItemStack activeStack;
 
@@ -34,12 +35,16 @@ public class ReloadAction {
             ShotgunItem shotgun = (ShotgunItem)activeStack.getItem();
 
             int magazineCount = ShotgunItem.getAmmoInMagazineCount(activeStack);
+            boolean chamberEmpty = ShotgunItem.getAmmoInChamber(activeStack) == AmmoType.NONE;
             boolean canReload = magazineCount < shotgun.getMagazineCapacity() && !shotgun.findAmmo(player).isEmpty();
 
             if (canReload) {
                 if (reloadKeyDown) {
                     isReloading = true;
                 } else {
+                    if (insertOneIfEmpty && magazineCount == 0 && chamberEmpty) {
+                        isReloading = true;
+                    }
                     if (!reloadFull && ShotgunItem.isInsertingShell(activeStack)) {
                         isReloading = false;
                     }
