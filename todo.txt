@@ -3,17 +3,18 @@
  ✔ firing
  ✔ cycling
   ✔ insert a shell if empty
-   ✔ configurable, disabled by default
+   ✔ configurable
   ✔ auto (no need to hold rmb)
   ✗ holding rmb (auto is better)
  . reloading
   ✗ auto-reloading while standing still (it's annoying)
   ✔ ignoring off-hand slot
   . don't reload if there is another shotgun of the same type in inventory
+  ✔ disable sprint while reloading
   ✔ reload button
    ✔ configurable
     ✔ reload while holding
-    ✗ single key press reloads fully (issues when switching items midst reload)
+    ✔ single key press reloads fully
      ✔ pressing rmb interrupts reloading
  ✔ first-person animation
   ✔ basic pose
