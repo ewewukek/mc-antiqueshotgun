@@ -19,6 +19,7 @@ public class ReloadAction {
     private static ItemStack activeStackPrev;
     private static boolean isReloadingPrev;
     private static boolean isReloading;
+    private static boolean isAutoReload;
 
     public static void clientTick(boolean reloadKeyDown) {
         if (activeStack != activeStackPrev) {
@@ -41,11 +42,13 @@ public class ReloadAction {
             if (canReload) {
                 if (reloadKeyDown) {
                     isReloading = true;
+                    isAutoReload = false;
                 } else {
                     if (insertOneIfEmpty && magazineCount == 0 && chamberEmpty) {
                         isReloading = true;
+                        isAutoReload = true;
                     }
-                    if (!reloadFull && ShotgunItem.isInsertingShell(activeStack)) {
+                    if ((!reloadFull || isAutoReload) && ShotgunItem.isInsertingShell(activeStack)) {
                         isReloading = false;
                     }
                 }
@@ -60,7 +63,7 @@ public class ReloadAction {
         }
     }
 
-    public static void breakAutoReload() {
+    public static void breakFullReload() {
         if (reloadFull) {
             isReloading = false;
         }

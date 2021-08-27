@@ -115,7 +115,7 @@ public abstract class ShotgunItem extends Item {
                 setTimerExpiryTime(stack, currentTime + postFireDelay() + ammoItem.postFireDelay());
             }
         } else {
-            ReloadAction.breakAutoReload();
+            ReloadAction.breakFullReload();
         }
 
         return ActionResult.resultFail(stack);
@@ -145,7 +145,7 @@ public abstract class ShotgunItem extends Item {
         if (enableMagazine) {
             magazineEmpty = getAmmoInMagazineCount(stack) == 0;
             boolean canReload = getAmmoInMagazineCount(stack) < getMagazineCapacity() && !ammoStack.isEmpty();
-            isReloading = canReload && ReloadAction.isReloading(player);
+            isReloading = canReload && (isInsertingShell(stack) || ReloadAction.isReloading(player));
 
         } else {
             magazineEmpty = ammoStack.isEmpty();
