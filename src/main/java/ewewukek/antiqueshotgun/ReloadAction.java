@@ -38,18 +38,22 @@ public class ReloadAction {
             int magazineCount = ShotgunItem.getAmmoInMagazineCount(activeStack);
             boolean chamberEmpty = ShotgunItem.getAmmoInChamber(activeStack) == AmmoType.NONE;
             boolean canReload = magazineCount < shotgun.getMagazineCapacity() && !shotgun.findAmmo(player).isEmpty();
+            boolean idle = ShotgunItem.hasTimerExpired(activeStack, player.world.getGameTime());
 
             if (canReload) {
                 if (reloadKeyDown) {
                     isReloading = true;
                     isAutoReload = false;
                 } else {
-                    if (insertOneIfEmpty && magazineCount == 0 && chamberEmpty) {
-                        isReloading = true;
-                        isAutoReload = true;
-                    }
-                    if ((!reloadFull || isAutoReload) && ShotgunItem.isInsertingShell(activeStack)) {
-                        isReloading = false;
+                    if (idle) {
+                        if (insertOneIfEmpty && magazineCount == 0 && chamberEmpty) {
+                            isReloading = true;
+                            isAutoReload = true;
+                        }
+                    } else {
+                        if (!reloadFull || isAutoReload) {
+                            isReloading = false;
+                        }
                     }
                 }
             } else {
