@@ -49,6 +49,7 @@ public class ShotgunAttackGoal extends Goal {
 
         if (seesEnemy) {
             shooter.getLookController().setLookPositionWithEntity(target, 30, 30);
+            shooter.rotationYaw = shooter.rotationYawHead;
             if (isAiming) {
                 aimTime++;
                 if (aimTime > ElderHunterEntity.aimDuration) {
