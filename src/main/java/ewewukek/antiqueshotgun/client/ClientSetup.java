@@ -67,7 +67,6 @@ public class ClientSetup {
 
     @SubscribeEvent
     public static void onClientTickEvent(final ClientTickEvent event) {
-        ReloadAction.reloadKeyDown = reloadKey.isKeyDown();
-        ReloadAction.clientUpdate();
+        ReloadAction.clientTick(reloadKey.isKeyDown());
     }
 }

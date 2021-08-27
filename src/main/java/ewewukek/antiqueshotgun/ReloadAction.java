@@ -4,17 +4,39 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import ewewukek.antiqueshotgun.item.ShotgunItem;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 
 public class ReloadAction {
 // client part
-    public static boolean lastReloadKeyDown;
-    public static boolean reloadKeyDown;
+    public static ItemStack activeStack;
 
-    public static void clientUpdate() {
-        if (reloadKeyDown != lastReloadKeyDown) {
-            AntiqueShotgunMod.NETWORK_CHANNEL.sendToServer(new AntiqueShotgunMod.ReloadStatePacket(reloadKeyDown));
-            lastReloadKeyDown = reloadKeyDown;
+    private static ItemStack activeStackPrev;
+    private static boolean isReloadingPrev;
+    private static boolean isReloading;
+
+    public static void clientTick(boolean reloadKeyDown) {
+        if (activeStack != null) {
+            Minecraft mc = Minecraft.getInstance();
+            ShotgunItem shotgun = (ShotgunItem)activeStack.getItem();
+
+            int magazineCount = ShotgunItem.getAmmoInMagazineCount(activeStack);
+            boolean canReload = magazineCount < shotgun.getMagazineCapacity() && !shotgun.findAmmo(mc.player).isEmpty();
+
+            if (canReload) {
+                if (reloadKeyDown) {
+                    isReloading = true;
+                }
+            } else {
+                isReloading = false;
+            }
+        }
+
+        if (isReloading != isReloadingPrev) {
+            AntiqueShotgunMod.NETWORK_CHANNEL.sendToServer(new AntiqueShotgunMod.ReloadStatePacket(isReloading));
+            isReloadingPrev = isReloading;
         }
     }
 

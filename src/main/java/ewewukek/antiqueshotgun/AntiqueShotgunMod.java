@@ -219,14 +219,17 @@ public class AntiqueShotgunMod {
         @SubscribeEvent
         public static void onPlayerTick(final TickEvent.PlayerTickEvent event) {
             if (event.phase == TickEvent.Phase.START) {
+                ReloadAction.activeStack = null;
                 ItemStack stack = event.player.getHeldItem(Hand.MAIN_HAND);
                 if (stack.getItem() instanceof ShotgunItem) {
+                    ReloadAction.activeStack = stack;
                     ((ShotgunItem)stack.getItem()).update(event.player, stack);
                 } else {
                     ItemStack offhandStack = event.player.getHeldItem(Hand.OFF_HAND);
                     if (offhandStack.getItem() instanceof ShotgunItem) {
                         ShotgunItem shotgun = (ShotgunItem)offhandStack.getItem();
                         if (shotgun.canBeUsedFromOffhand(event.player)) {
+                            ReloadAction.activeStack = stack;
                             shotgun.update(event.player, offhandStack);
                         }
                     }
