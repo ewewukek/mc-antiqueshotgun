@@ -55,6 +55,12 @@ public class ReloadAction {
         }
     }
 
+    public static void breakAutoReload() {
+        if (reloadFull) {
+            isReloading = false;
+        }
+    }
+
 // server part
     private static final Map<UUID, Boolean> reloadState = new HashMap<>();
 

@@ -115,6 +115,8 @@ public abstract class ShotgunItem extends Item {
                 setAmmoInChamber(stack, AmmoType.NONE);
                 setTimerExpiryTime(stack, currentTime + postFireDelay() + ammoItem.postFireDelay());
             }
+        } else {
+            ReloadAction.breakAutoReload();
         }
 
         return ActionResult.resultFail(stack);
