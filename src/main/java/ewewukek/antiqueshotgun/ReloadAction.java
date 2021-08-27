@@ -11,6 +11,8 @@ import net.minecraft.item.ItemStack;
 
 public class ReloadAction {
 // client part
+    public static boolean reloadFull;
+
     public static ItemStack activeStack;
 
     private static ItemStack activeStackPrev;
@@ -35,6 +37,10 @@ public class ReloadAction {
             if (canReload) {
                 if (reloadKeyDown) {
                     isReloading = true;
+                } else {
+                    if (!reloadFull && ShotgunItem.isInsertingShell(activeStack)) {
+                        isReloading = false;
+                    }
                 }
             } else {
                 isReloading = false;

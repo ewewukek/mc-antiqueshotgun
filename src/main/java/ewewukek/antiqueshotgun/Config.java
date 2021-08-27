@@ -38,6 +38,8 @@ public class Config {
         ShotgunItem.enableMagazine = instance.common.enableMagazine;
         ShotgunItem.insertOneIfEmpty = instance.common.insertOneIfEmpty;
 
+        ReloadAction.reloadFull = instance.client.reloadFull;
+
         AntiqueShotgunItem.magazineCapacity = instance.antique_shotgun.magazineCapacity;
         AntiqueShotgunItem.reloadDuration = instance.antique_shotgun.reloadDuration;
         AntiqueShotgunItem.shellInsertDuration = instance.antique_shotgun.shellInsertDuration;
@@ -130,6 +132,8 @@ public class Config {
 
     private Common common = new Common();
 
+    private Client client = new Client();
+
     private AntiqueShotgun antique_shotgun = new AntiqueShotgun();
     private HandmadeShotgun handmade_shotgun = new HandmadeShotgun();
     private SawdoffShotgun sawd_off_shotgun = new SawdoffShotgun();
@@ -146,6 +150,10 @@ public class Config {
     private static class Common {
         public boolean enableMagazine = true;
         public boolean insertOneIfEmpty = false;
+    }
+
+    private static class Client {
+        public boolean reloadFull = true;
     }
 
     private static class AntiqueShotgun {
