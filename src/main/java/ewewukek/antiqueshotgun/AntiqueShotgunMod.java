@@ -133,7 +133,7 @@ public class AntiqueShotgunMod {
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
         });
-        NETWORK_CHANNEL.registerMessage(1, ReloadKeyChangedPacket.class, ReloadKeyChangedPacket::encode, ReloadKeyChangedPacket::new, ReloadKeyChangedPacket::handle);
+        NETWORK_CHANNEL.registerMessage(1, ReloadStatePacket.class, ReloadStatePacket::encode, ReloadStatePacket::new, ReloadStatePacket::handle);
     }
 
     @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -332,25 +332,25 @@ public class AntiqueShotgunMod {
         }
     }
 
-    public static class ReloadKeyChangedPacket {
-        private boolean isDown;
+    public static class ReloadStatePacket {
+        private boolean isReloading;
 
-        public ReloadKeyChangedPacket(boolean isDown) {
-            this.isDown = isDown;
+        public ReloadStatePacket(boolean isReloading) {
+            this.isReloading = isReloading;
         }
 
-        ReloadKeyChangedPacket(PacketBuffer buf) {
-            isDown = buf.readByte() != 0;
+        ReloadStatePacket(PacketBuffer buf) {
+            isReloading = buf.readByte() != 0;
         }
 
         void encode(PacketBuffer buf) {
-            buf.writeByte(isDown ? 1 : 0);
+            buf.writeByte(isReloading ? 1 : 0);
         }
 
         void handle(Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(() -> {
                 PlayerEntity player = ctx.get().getSender();
-                KeyState.setReloadKeyDown(player, isDown);
+                ReloadAction.setIsReloading(player, isReloading);
             });
             ctx.get().setPacketHandled(true);
         }

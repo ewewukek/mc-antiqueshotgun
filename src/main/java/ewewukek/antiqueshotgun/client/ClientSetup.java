@@ -3,6 +3,7 @@ package ewewukek.antiqueshotgun.client;
 import org.lwjgl.glfw.GLFW;
 
 import ewewukek.antiqueshotgun.AntiqueShotgunMod;
+import ewewukek.antiqueshotgun.ReloadAction;
 import ewewukek.antiqueshotgun.item.ShotgunItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
@@ -23,7 +24,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 @Mod.EventBusSubscriber(Dist.CLIENT)
 public class ClientSetup {
     private static final KeyBinding reloadKey = new KeyBinding("key.antiqueshotgun.reload", GLFW.GLFW_KEY_R, "key.antiqueshotgun.category");
-    private static boolean lastReloadKeyIsDown;
 
     public static void init(final FMLClientSetupEvent event) {
         // TODO: find a way to use registerGlobalProperty
@@ -67,10 +67,7 @@ public class ClientSetup {
 
     @SubscribeEvent
     public static void onClientTickEvent(final ClientTickEvent event) {
-        boolean reloadKeyIsDown = reloadKey.isKeyDown();
-        if (reloadKeyIsDown != lastReloadKeyIsDown) {
-            AntiqueShotgunMod.NETWORK_CHANNEL.sendToServer(new AntiqueShotgunMod.ReloadKeyChangedPacket(reloadKeyIsDown));
-            lastReloadKeyIsDown = reloadKeyIsDown;
-        }
+        ReloadAction.reloadKeyDown = reloadKey.isKeyDown();
+        ReloadAction.clientUpdate();
     }
 }

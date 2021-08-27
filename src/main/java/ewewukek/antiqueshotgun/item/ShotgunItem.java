@@ -8,7 +8,7 @@ import com.google.common.collect.Multimap;
 
 import ewewukek.antiqueshotgun.AmmoType;
 import ewewukek.antiqueshotgun.AntiqueShotgunMod;
-import ewewukek.antiqueshotgun.KeyState;
+import ewewukek.antiqueshotgun.ReloadAction;
 import ewewukek.antiqueshotgun.enchantment.BruteEnchantment;
 import ewewukek.antiqueshotgun.entity.BulletEntity;
 import net.minecraft.block.BlockState;
@@ -144,7 +144,8 @@ public abstract class ShotgunItem extends Item {
         if (enableMagazine) {
             magazineEmpty = getAmmoInMagazineCount(stack) == 0;
             boolean canReload = getAmmoInMagazineCount(stack) < getMagazineCapacity() && !ammoStack.isEmpty();
-            isReloading = canReload && (KeyState.isReloadKeyDown(player) || insertOneIfEmpty && chamberEmpty && magazineEmpty);
+            boolean reloadAction = ReloadAction.isReloading(player);
+            isReloading = canReload && (reloadAction || insertOneIfEmpty && chamberEmpty && magazineEmpty);
 
         } else {
             magazineEmpty = ammoStack.isEmpty();
