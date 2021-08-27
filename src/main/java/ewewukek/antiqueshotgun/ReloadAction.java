@@ -18,6 +18,13 @@ public class ReloadAction {
     private static boolean isReloading;
 
     public static void clientTick(boolean reloadKeyDown) {
+        if (activeStack != activeStackPrev) {
+            if (activeStack == null || activeStackPrev == null || ShotgunItem.getId(activeStack) != ShotgunItem.getId(activeStackPrev)) {
+                isReloading = false;
+            }
+            activeStackPrev = activeStack;
+        }
+
         if (activeStack != null) {
             Minecraft mc = Minecraft.getInstance();
             ShotgunItem shotgun = (ShotgunItem)activeStack.getItem();
