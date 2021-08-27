@@ -15,6 +15,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -48,7 +49,7 @@ public class ClientSetup {
         ClientRegistry.registerKeyBinding(reloadKey);
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOW)
     public static void onRenderHandEvent(final RenderHandEvent event) {
         ItemStack stack = event.getItemStack();
         if (!stack.isEmpty() && stack.getItem() instanceof ShotgunItem) {
