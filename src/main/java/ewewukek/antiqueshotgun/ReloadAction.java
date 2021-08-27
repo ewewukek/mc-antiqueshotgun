@@ -27,12 +27,14 @@ public class ReloadAction {
             activeStackPrev = activeStack;
         }
 
-        if (activeStack != null) {
-            Minecraft mc = Minecraft.getInstance();
+        Minecraft mc = Minecraft.getInstance();
+        PlayerEntity player = mc.player;
+
+        if (activeStack != null && player != null) {
             ShotgunItem shotgun = (ShotgunItem)activeStack.getItem();
 
             int magazineCount = ShotgunItem.getAmmoInMagazineCount(activeStack);
-            boolean canReload = magazineCount < shotgun.getMagazineCapacity() && !shotgun.findAmmo(mc.player).isEmpty();
+            boolean canReload = magazineCount < shotgun.getMagazineCapacity() && !shotgun.findAmmo(player).isEmpty();
 
             if (canReload) {
                 if (reloadKeyDown) {
