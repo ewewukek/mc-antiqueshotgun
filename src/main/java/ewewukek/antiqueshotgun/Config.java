@@ -102,7 +102,7 @@ public class Config {
         ElderHunterEntity.raidSpawnChance = instance.elder_hunter.raidSpawnChance;
         ElderHunterEntity.patrolSpawnChance = instance.elder_hunter.patrolSpawnChance;
 
-        System.out.println("reload complete");
+        LOGGER.info("reload complete");
     }
 
     private static void load() {
