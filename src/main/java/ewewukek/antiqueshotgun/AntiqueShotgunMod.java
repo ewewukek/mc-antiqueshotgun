@@ -1,7 +1,5 @@
 package ewewukek.antiqueshotgun;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 import java.util.function.Supplier;
 
 import ewewukek.antiqueshotgun.client.ClientSetup;
@@ -40,14 +38,10 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.profiler.IProfiler;
-import net.minecraft.resources.IFutureReloadListener;
-import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.Unit;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IServerWorld;
@@ -249,17 +243,7 @@ public class AntiqueShotgunMod {
 
         @SubscribeEvent
         public static void onAddReloadListenerEvent(final AddReloadListenerEvent event) {
-            event.addListener(new IFutureReloadListener() {
-                @Override
-                public CompletableFuture<Void> reload(IStage stage, IResourceManager resourceManager,
-                    IProfiler preparationsProfiler, IProfiler reloadProfiler, Executor backgroundExecutor,
-                    Executor gameExecutor) {
-
-                    return stage.markCompleteAwaitingOthers(Unit.INSTANCE).thenRunAsync(() -> {
-                        Config.reload();
-                    }, gameExecutor);
-                }
-            });
+            Config.reload();
         }
 
         private static long lastPatrolSpawnTime = 0;
