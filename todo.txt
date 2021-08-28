@@ -34,7 +34,7 @@
  ✔ slower cycling
  ✔ higher spread
  ✔ less damage and range 0.8-0.9
-. antique (Ol' Betsy)
+✔ antique (Ol' Betsy)
  ✔ register items
  ✔ anvil repairing (1 ingot fully repairs)
  ✔ loot table
@@ -45,11 +45,11 @@
    ✔ found in bastion remnants and nether fortresses
   ✔ antique stock
    ✔ found in woodland mansions
- . optional crafting
-  . barrel
+ ✔ optional crafting
+  ✔ barrel
    [nnF] n=netherite_scrap, N=netherite_ingot, F=flint_and_steel
    [  N]
-  . shotgun
+  ✔ shotgun
    [BGS] B=antique_barrel, G=gold_ingot, S=handmade_stock
 ✔ saw'd-off
  ✔ register items
@@ -108,10 +108,11 @@
  ✔ drops buckshot, emeralds and antique shotgun
 ✗ backtools mod support (buggy mod)
 ✗ powershot mod support
-. first person model mod
+✔ first person model mod
+. localization
 . advancements
 . geckolib for animations
-. configuration
+✔ configuration
  ✔ bullet speed
  ✔ damage
  ✔ spread
@@ -128,4 +129,4 @@
  ✔ antique
  ✔ disable auto reload on empty magazine
  ✔ disable magazine (always use ammo from inventory)
- . send server config to a client
+ ✗ send server config to a client (no longer needed, client config is separated from server)
