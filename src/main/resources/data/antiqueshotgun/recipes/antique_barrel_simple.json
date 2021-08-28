@@ -1,0 +1,26 @@
+{
+  "type": "crafting_shaped",
+  "conditions": [
+    {
+      "type": "antiqueshotgun:crafting_enabled"
+    }
+  ],
+  "pattern": [
+    "nnF",
+    "  N"
+  ],
+  "key": {
+    "n": {
+      "item": "minecraft:netherite_scrap"
+    },
+    "N": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "F": {
+      "item": "minecraft:flint_and_steel"
+    }
+  },
+  "result": {
+    "item": "antiqueshotgun:antique_barrel"
+  }
+}

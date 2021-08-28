@@ -9,6 +9,8 @@ public class AntiqueShotgunItem extends ShotgunItem {
         super(properties.defaultMaxDamage(2000));
     }
 
+    public static boolean enableCrafting;
+
     public static int magazineCapacity;
     public static int reloadDuration;
     public static int shellInsertDuration;

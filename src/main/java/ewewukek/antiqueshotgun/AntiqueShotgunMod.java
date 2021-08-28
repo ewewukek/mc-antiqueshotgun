@@ -19,6 +19,7 @@ import ewewukek.antiqueshotgun.item.ShotgunItem;
 import ewewukek.antiqueshotgun.item.SlugAmmoItem;
 import ewewukek.antiqueshotgun.item.crafting.SawdoffShotgunRecipe;
 import ewewukek.antiqueshotgun.item.crafting.UnloadShotgunRecipe;
+import ewewukek.antiqueshotgun.item.crafting.conditions.CraftingEnabled;
 import ewewukek.antiqueshotgun.world.TreasureLootModifier;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -53,6 +54,7 @@ import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.raid.Raid;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AnvilUpdateEvent;
@@ -133,6 +135,7 @@ public class AntiqueShotgunMod {
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
         });
+        CraftingHelper.register(CraftingEnabled.SERIALIZER);
         NETWORK_CHANNEL.registerMessage(1, ReloadStatePacket.class, ReloadStatePacket::encode, ReloadStatePacket::new, ReloadStatePacket::handle);
     }
 

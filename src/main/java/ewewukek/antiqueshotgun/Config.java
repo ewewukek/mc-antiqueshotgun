@@ -40,6 +40,7 @@ public class Config {
         ReloadAction.reloadFull = instance.client.reloadFull;
         ReloadAction.insertOneIfEmpty = instance.client.insertOneIfEmpty;
 
+        AntiqueShotgunItem.enableCrafting = instance.antique_shotgun.enableCrafting;
         AntiqueShotgunItem.magazineCapacity = instance.antique_shotgun.magazineCapacity;
         AntiqueShotgunItem.reloadDuration = instance.antique_shotgun.reloadDuration;
         AntiqueShotgunItem.shellInsertDuration = instance.antique_shotgun.shellInsertDuration;
@@ -157,6 +158,7 @@ public class Config {
     }
 
     private static class AntiqueShotgun {
+        public boolean enableCrafting = false;
         public int magazineCapacity = 7;
         public int reloadDuration = 12;
         public int shellInsertDuration = 10;
