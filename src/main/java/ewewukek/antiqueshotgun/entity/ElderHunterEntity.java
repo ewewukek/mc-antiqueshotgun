@@ -49,7 +49,7 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
         for (int i = 0; i < magazineCapacity; ++i) {
             ShotgunItem.addAmmoToMagazine(stack, AmmoType.BUCKSHOT);
         }
-        setItemStackToSlot(EquipmentSlotType.MAINHAND, stack);
+        setItemSlot(EquipmentSlotType.MAINHAND, stack);
         setDropChance(EquipmentSlotType.MAINHAND, shotgunDropChance);
     }
 
@@ -70,31 +70,31 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
         goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, findRange, 1));
         goalSelector.addGoal(10, new LookAtGoal(this, MobEntity.class, findRange));
 
-        targetSelector.addGoal(1, (new HurtByTargetGoal(this, AbstractRaiderEntity.class)).setCallsForHelp());
+        targetSelector.addGoal(1, (new HurtByTargetGoal(this, AbstractRaiderEntity.class)).setAlertOthers());
         targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
         targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolemEntity.class, true));
         targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillagerEntity.class, true));
     }
 
     public static AttributeModifierMap createEntityAttributes() {
-        return MonsterEntity.func_234295_eP_()
-            .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35)
-            .createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0)
-            .createMutableAttribute(Attributes.ATTACK_DAMAGE, 10.0)
-            .createMutableAttribute(Attributes.MAX_HEALTH, 24.0)
-            .create();
+        return MonsterEntity.createMonsterAttributes()
+            .add(Attributes.MOVEMENT_SPEED, 0.35)
+            .add(Attributes.FOLLOW_RANGE, 32.0)
+            .add(Attributes.ATTACK_DAMAGE, 10.0)
+            .add(Attributes.MAX_HEALTH, 24.0)
+            .build();
     }
 
     @Override
-    public void applyWaveBonus(int wave, boolean p_213660_2_) {
+    public void applyRaidBuffs(int wave, boolean p_213660_2_) {
     }
 
     @Override
-    public boolean isOnSameTeam(Entity entityIn) {
-        if (super.isOnSameTeam(entityIn)) {
+    public boolean isAlliedTo(Entity entityIn) {
+        if (super.isAlliedTo(entityIn)) {
             return true;
         }
-        if (entityIn instanceof LivingEntity && ((LivingEntity)entityIn).getCreatureAttribute() == CreatureAttribute.ILLAGER) {
+        if (entityIn instanceof LivingEntity && ((LivingEntity)entityIn).getMobType() == CreatureAttribute.ILLAGER) {
             return getTeam() == null && entityIn.getTeam() == null;
         }
         return false;
@@ -102,60 +102,60 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.ENTITY_ILLUSIONER_AMBIENT;
+        return SoundEvents.ILLUSIONER_AMBIENT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_ILLUSIONER_DEATH;
+        return SoundEvents.ILLUSIONER_DEATH;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return SoundEvents.ENTITY_ILLUSIONER_HURT;
+        return SoundEvents.ILLUSIONER_HURT;
     }
 
     @Override
-    public SoundEvent getRaidLossSound() {
-        return SoundEvents.ENTITY_ILLUSIONER_AMBIENT;
+    public SoundEvent getCelebrateSound() {
+        return SoundEvents.ILLUSIONER_AMBIENT;
     }
 
     @Override
-    public void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
-        ItemStack stack = getItemStackFromSlot(EquipmentSlotType.MAINHAND);
-        compound.put("weapon", stack.write(new CompoundNBT()));
+    public void addAdditionalSaveData(CompoundNBT compound) {
+        super.addAdditionalSaveData(compound);
+        ItemStack stack = getItemBySlot(EquipmentSlotType.MAINHAND);
+        compound.put("weapon", stack.save(new CompoundNBT()));
     }
 
     @Override
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
-        ItemStack stack = ItemStack.read(compound.getCompound("weapon"));
-        if (!stack.isEmpty()) setItemStackToSlot(EquipmentSlotType.MAINHAND, stack);
+    public void readAdditionalSaveData(CompoundNBT compound) {
+        super.readAdditionalSaveData(compound);
+        ItemStack stack = ItemStack.of(compound.getCompound("weapon"));
+        if (!stack.isEmpty()) setItemSlot(EquipmentSlotType.MAINHAND, stack);
     }
 
     public boolean isWeaponReady() {
-        ItemStack stack = getItemStackFromSlot(EquipmentSlotType.MAINHAND);
+        ItemStack stack = getItemBySlot(EquipmentSlotType.MAINHAND);
 
         return ShotgunItem.getAmmoInChamber(stack) != AmmoType.NONE
-            && ShotgunItem.hasTimerExpired(stack, world.getGameTime());
+            && ShotgunItem.hasTimerExpired(stack, level.getGameTime());
     }
 
     public void fireWeapon(LivingEntity target) {
-        ItemStack stack = getItemStackFromSlot(EquipmentSlotType.MAINHAND);
+        ItemStack stack = getItemBySlot(EquipmentSlotType.MAINHAND);
 
         Vector3d direction = new Vector3d(
-            target.getPosX() - getPosX(),
-            target.getBoundingBox().minY + target.getHeight() * 0.7f - getPosY() - getEyeHeight(),
-            target.getPosZ() - getPosZ()
+            target.getX() - getX(),
+            target.getBoundingBox().minY + target.getBbHeight() * 0.7f - getY() - getEyeHeight(),
+            target.getZ() - getZ()
         );
         AmmoType ammoType = ShotgunItem.getAmmoInChamber(stack);
 
-        ((ShotgunItem)stack.getItem()).fireBullets(world, this, direction, ammoType);
-        world.playSound(null, getPosX(), getPosY(), getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_FIRE, SoundCategory.HOSTILE, 3.5f, 1);
+        ((ShotgunItem)stack.getItem()).fireBullets(level, this, direction, ammoType);
+        level.playSound(null, getX(), getY(), getZ(), AntiqueShotgunMod.SOUND_SHOTGUN_FIRE, SoundCategory.HOSTILE, 3.5f, 1);
 
         ShotgunItem.setAmmoInChamber(stack, AmmoType.NONE);
-        ShotgunItem.setTimerExpiryTime(stack, world.getGameTime() + postFireDelay());
+        ShotgunItem.setTimerExpiryTime(stack, level.getGameTime() + postFireDelay());
     }
 
     @Override
@@ -165,23 +165,23 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
     }
 
     private void update() {
-        ItemStack stack = getItemStackFromSlot(EquipmentSlotType.MAINHAND);
+        ItemStack stack = getItemBySlot(EquipmentSlotType.MAINHAND);
         if (ShotgunItem.getAmmoInChamber(stack) != AmmoType.NONE) return;
 
-        long currentTime = world.getGameTime();
+        long currentTime = level.getGameTime();
         if (!ShotgunItem.hasTimerExpired(stack, currentTime)) return;
 
-        boolean doReload = getAttackTarget() != null ? isReloading : ShotgunItem.getAmmoInMagazineCount(stack) < magazineCapacity;
+        boolean doReload = getTarget() != null ? isReloading : ShotgunItem.getAmmoInMagazineCount(stack) < magazineCapacity;
 
         if (!doReload) {
             if (!ShotgunItem.isSlideBack(stack)) {
-                world.playSound(null, getPosX(), getPosY(), getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_BACK, SoundCategory.HOSTILE, 0.8f, 1);
+                level.playSound(null, getX(), getY(), getZ(), AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_BACK, SoundCategory.HOSTILE, 0.8f, 1);
 
                 ShotgunItem.setSlideBack(stack, true);
                 ShotgunItem.setTimerExpiryTime(stack, currentTime + midCycleDelay());
 
             } else {
-                world.playSound(null, getPosX(), getPosY(), getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_FORWARD, SoundCategory.HOSTILE, 0.8f, 1);
+                level.playSound(null, getX(), getY(), getZ(), AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_FORWARD, SoundCategory.HOSTILE, 0.8f, 1);
 
                 ShotgunItem.setSlideBack(stack, false);
                 ShotgunItem.setAmmoInChamber(stack, ShotgunItem.extractAmmoFromMagazine(stack));
@@ -190,8 +190,8 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
                 if (ShotgunItem.getAmmoInMagazineCount(stack) == 0) {
                     isReloading = true;
                 }
-                if (getAttackTarget() == null) {
-                    setAggroed(false);
+                if (getTarget() == null) {
+                    setAggressive(false);
                 }
             }
         } else {
@@ -201,7 +201,7 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
                     ShotgunItem.setTimerExpiryTime(stack, currentTime + shellPreInsertDelay());
 
                 } else {
-                    world.playSound(null, getPosX(), getPosY(), getPosZ(), AntiqueShotgunMod.SOUND_SHOTGUN_INSERTING_SHELL, SoundCategory.HOSTILE, 0.8f, 1);
+                    level.playSound(null, getX(), getY(), getZ(), AntiqueShotgunMod.SOUND_SHOTGUN_INSERTING_SHELL, SoundCategory.HOSTILE, 0.8f, 1);
 
                     ShotgunItem.addAmmoToMagazine(stack, AmmoType.BUCKSHOT);
                     ShotgunItem.setInsertingShell(stack, false);

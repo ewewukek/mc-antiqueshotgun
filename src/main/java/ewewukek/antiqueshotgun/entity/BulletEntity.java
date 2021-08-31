@@ -55,12 +55,12 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
 
     @Override
     public void tick() {
-        if (!world.isRemote && processCollision()) {
+        if (!level.isClientSide && processCollision()) {
             remove();
             return;
         }
 
-        Vector3d motion = getMotion();
+        Vector3d motion = getDeltaMovement();
 
         distanceLeft -= motion.length();
         if (--ticksLeft <= 0 || distanceLeft <= 0) {
@@ -68,9 +68,9 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
             return;
         }
 
-        double posX = getPosX() + motion.x;
-        double posY = getPosY() + motion.y;
-        double posZ = getPosZ() + motion.z;
+        double posX = getX() + motion.x;
+        double posY = getY() + motion.y;
+        double posZ = getZ() + motion.z;
 
         motion = motion.subtract(0, GRAVITY, 0);
 
@@ -79,7 +79,7 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
             final int count = 4;
             for (int i = 0; i != count; ++i) {
                 double t = (i + 1.0) / count;
-                world.addParticle(
+                level.addParticle(
                     ParticleTypes.BUBBLE,
                     posX - motion.x * t,
                     posY - motion.y * t,
@@ -92,9 +92,9 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
             friction = WATER_FRICTION;
         }
 
-        setMotion(motion.scale(friction));
-        setPosition(posX, posY, posZ);
-        doBlockCollisions();
+        setDeltaMovement(motion.scale(friction));
+        setPos(posX, posY, posZ);
+        checkInsideBlocks();
     }
 
     public DamageSource getDamageSource(BulletEntity bullet, Entity attacker) {
@@ -102,26 +102,26 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
     }
 
     private boolean processCollision() {
-        Vector3d motion = getMotion();
+        Vector3d motion = getDeltaMovement();
         if (motion.length() > distanceLeft) {
             motion = motion.normalize().scale(distanceLeft);
         }
-        Vector3d from = getPositionVec();
+        Vector3d from = position();
         Vector3d to = from.add(motion);
 
-        BlockRayTraceResult collision = world.rayTraceBlocks(
+        BlockRayTraceResult collision = level.clip(
             new RayTraceContext(from, to, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
 
         // prevents hitting entities behind an obstacle
         if (collision.getType() != RayTraceResult.Type.MISS) {
-            to = collision.getHitVec();
+            to = collision.getLocation();
         }
 
         Entity target = closestEntityOnPath(from, to);
         if (target != null) {
             if (target instanceof PlayerEntity) {
-                Entity shooter = func_234616_v_();
-                if (shooter instanceof PlayerEntity && !((PlayerEntity)shooter).canAttackPlayer((PlayerEntity)target)) {
+                Entity shooter = getOwner();
+                if (shooter instanceof PlayerEntity && !((PlayerEntity)shooter).canHarmPlayer((PlayerEntity)target)) {
 
                     target = null;
                 }
@@ -134,12 +134,12 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
 
         if (collision.getType() != RayTraceResult.Type.BLOCK) return false;
 
-        BlockState blockstate = world.getBlockState(collision.getPos());
-        blockstate.onProjectileCollision(world, blockstate, collision, this);
+        BlockState blockstate = level.getBlockState(collision.getBlockPos());
+        blockstate.onProjectileHit(level, blockstate, collision, this);
 
         AmmoItem ammoItem = ammoType.toItem();
         int impactParticleCount = (int)(0.5f * ammoItem.damage() / ammoItem.pelletCount());
-        ((ServerWorld)world).spawnParticle(
+        ((ServerWorld)level).sendParticles(
             new BlockParticleData(ParticleTypes.BLOCK, blockstate),
             to.x, to.y, to.z,
             impactParticleCount + 1,
@@ -150,25 +150,25 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
     }
 
     private void hitEntity(Entity target) {
-        Entity shooter = func_234616_v_();
+        Entity shooter = getOwner();
         DamageSource damagesource = getDamageSource(this, shooter != null ? shooter : this);
 
         AmmoItem ammoItem = ammoType.toItem();
         float damage = damageMultiplier * ammoItem.damage() / ammoItem.pelletCount();
 
         if (ammoItem.pelletCount() == 1) {
-            if (target.attackEntityFrom(damagesource, damage)) {
+            if (target.hurt(damagesource, damage)) {
                 if (ammoType == AmmoType.RUBBER && target instanceof LivingEntity) {
                     LivingEntity livingEntity = (LivingEntity)target;
 
-                    Vector3d knockback = getMotion().mul(1, 0, 1).normalize().scale(RubberAmmoItem.knockbackForce);
-                    if (knockback.lengthSquared() > 0) {
-                        livingEntity.addVelocity(knockback.x, 0.1, knockback.z);
+                    Vector3d knockback = getDeltaMovement().multiply(1, 0, 1).normalize().scale(RubberAmmoItem.knockbackForce);
+                    if (knockback.lengthSqr() > 0) {
+                        livingEntity.push(knockback.x, 0.1, knockback.z);
                     }
 
-                    livingEntity.addPotionEffect(new EffectInstance(Effects.SLOWNESS, (int)(RubberAmmoItem.slownessDuration * 20), RubberAmmoItem.slownessLevel));
-                    livingEntity.addPotionEffect(new EffectInstance(Effects.WEAKNESS, (int)(RubberAmmoItem.weaknessDuration * 20)));
-                    livingEntity.addPotionEffect(new EffectInstance(Effects.NAUSEA, (int)(RubberAmmoItem.nauseaDuration * 20)));
+                    livingEntity.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, (int)(RubberAmmoItem.slownessDuration * 20), RubberAmmoItem.slownessLevel));
+                    livingEntity.addEffect(new EffectInstance(Effects.WEAKNESS, (int)(RubberAmmoItem.weaknessDuration * 20)));
+                    livingEntity.addEffect(new EffectInstance(Effects.CONFUSION, (int)(RubberAmmoItem.nauseaDuration * 20)));
                 }
             }
         } else {
@@ -177,32 +177,32 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
     }
 
     private Predicate<Entity> getTargetPredicate() {
-        Entity shooter = func_234616_v_();
+        Entity shooter = getOwner();
         return (entity) -> {
-            return !entity.isSpectator() && entity.isAlive() && entity.canBeCollidedWith() && entity != shooter;
+            return !entity.isSpectator() && entity.isAlive() && entity.isPickable() && entity != shooter;
         };
     }
 
     private Entity closestEntityOnPath(Vector3d start, Vector3d end) {
-        Vector3d motion = getMotion();
+        Vector3d motion = getDeltaMovement();
 
         Entity result = null;
         double result_dist = 0;
 
-        AxisAlignedBB aabbSelection = getBoundingBox().expand(motion).grow(0.5);
-        for (Entity entity : world.getEntitiesInAABBexcluding(this, aabbSelection, getTargetPredicate())) {
+        AxisAlignedBB aabbSelection = getBoundingBox().expandTowards(motion).inflate(0.5);
+        for (Entity entity : level.getEntities(this, aabbSelection, getTargetPredicate())) {
             AxisAlignedBB aabb = entity.getBoundingBox();
-            Optional<Vector3d> optional = aabb.rayTrace(start, end);
+            Optional<Vector3d> optional = aabb.clip(start, end);
             if (!optional.isPresent()) {
-                aabb = aabb.offset( // previous tick position
-                    entity.lastTickPosX - entity.getPosX(),
-                    entity.lastTickPosY - entity.getPosY(),
-                    entity.lastTickPosZ - entity.getPosZ()
+                aabb = aabb.move( // previous tick position
+                    entity.xOld - entity.getX(),
+                    entity.yOld - entity.getY(),
+                    entity.zOld - entity.getZ()
                 );
-                optional = aabb.rayTrace(start, end);
+                optional = aabb.clip(start, end);
             }
             if (optional.isPresent()) {
-                double dist = start.squareDistanceTo(optional.get());
+                double dist = start.distanceToSqr(optional.get());
                 if (dist < result_dist || result == null) {
                     result = entity;
                     result_dist = dist;
@@ -214,19 +214,19 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
     }
 
     @Override
-    protected void registerData() {}
+    protected void defineSynchedData() {}
 
     @Override
-    protected void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
+    protected void readAdditionalSaveData(CompoundNBT compound) {
+        super.readAdditionalSaveData(compound);
         ammoType = AmmoType.fromByte(compound.getByte("type"));
         distanceLeft = compound.getFloat("distanceLeft");
         damageMultiplier = compound.getFloat("damageMultiplier");
     }
 
     @Override
-    protected void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
+    protected void addAdditionalSaveData(CompoundNBT compound) {
+        super.addAdditionalSaveData(compound);
         compound.putByte("type", ammoType.toByte());
         compound.putFloat("distanceLeft", (float)distanceLeft);
         compound.putFloat("damageMultiplier", damageMultiplier);
@@ -234,14 +234,14 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
 
 // Forge {
     @Override
-    public IPacket<?> createSpawnPacket() {
+    public IPacket<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override
     public void writeSpawnData(PacketBuffer data) {
         data.writeByte(ammoType.toByte());
-        Vector3d motion = getMotion();
+        Vector3d motion = getDeltaMovement();
         data.writeFloat((float)motion.x);
         data.writeFloat((float)motion.y);
         data.writeFloat((float)motion.z);
@@ -252,7 +252,7 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
         ammoType = AmmoType.fromByte(data.readByte());
         distanceLeft = ammoType.toItem().range();
         Vector3d motion = new Vector3d(data.readFloat(), data.readFloat(), data.readFloat());
-        setMotion(motion);
+        setDeltaMovement(motion);
     }
 // }
 }

@@ -31,17 +31,17 @@ public class ClientSetup {
         IItemPropertyGetter countGetter = (stack, world, player) -> {
             return stack.getCount();
         };
-        ItemModelsProperties.registerProperty(AntiqueShotgunMod.HANDMADE_SHELL, new ResourceLocation("count"), countGetter);
-        ItemModelsProperties.registerProperty(AntiqueShotgunMod.BUCKSHOT_SHELL, new ResourceLocation("count"), countGetter);
-        ItemModelsProperties.registerProperty(AntiqueShotgunMod.SLUG_SHELL, new ResourceLocation("count"), countGetter);
-        ItemModelsProperties.registerProperty(AntiqueShotgunMod.RUBBER_SHELL, new ResourceLocation("count"), countGetter);
+        ItemModelsProperties.register(AntiqueShotgunMod.HANDMADE_SHELL, new ResourceLocation("count"), countGetter);
+        ItemModelsProperties.register(AntiqueShotgunMod.BUCKSHOT_SHELL, new ResourceLocation("count"), countGetter);
+        ItemModelsProperties.register(AntiqueShotgunMod.SLUG_SHELL, new ResourceLocation("count"), countGetter);
+        ItemModelsProperties.register(AntiqueShotgunMod.RUBBER_SHELL, new ResourceLocation("count"), countGetter);
 
         IItemPropertyGetter slideBackGetter = (stack, world, player) -> {
             return ShotgunItem.isSlideBack(stack) ? 1 : 0;
         };
-        ItemModelsProperties.registerProperty(AntiqueShotgunMod.ANTIQUE_SHOTGUN, new ResourceLocation(AntiqueShotgunMod.MODID, "slide_back"), slideBackGetter);
-        ItemModelsProperties.registerProperty(AntiqueShotgunMod.HANDMADE_SHOTGUN, new ResourceLocation(AntiqueShotgunMod.MODID, "slide_back"), slideBackGetter);
-        ItemModelsProperties.registerProperty(AntiqueShotgunMod.SAWD_OFF_SHOTGUN, new ResourceLocation(AntiqueShotgunMod.MODID, "slide_back"), slideBackGetter);
+        ItemModelsProperties.register(AntiqueShotgunMod.ANTIQUE_SHOTGUN, new ResourceLocation(AntiqueShotgunMod.MODID, "slide_back"), slideBackGetter);
+        ItemModelsProperties.register(AntiqueShotgunMod.HANDMADE_SHOTGUN, new ResourceLocation(AntiqueShotgunMod.MODID, "slide_back"), slideBackGetter);
+        ItemModelsProperties.register(AntiqueShotgunMod.SAWD_OFF_SHOTGUN, new ResourceLocation(AntiqueShotgunMod.MODID, "slide_back"), slideBackGetter);
 
         RenderingRegistry.registerEntityRenderingHandler(AntiqueShotgunMod.BULLET_ENTITY_TYPE, BulletRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(AntiqueShotgunMod.ELDER_HUNTER_ENTITY_TYPE, ElderHunterRenderer::new);
@@ -57,7 +57,7 @@ public class ClientSetup {
             ShotgunItem shotgun = (ShotgunItem)stack.getItem();
             if (event.getHand() == Hand.MAIN_HAND || shotgun.canBeUsedFromOffhand(mc.player)) {
                 FirstPersonRenderHelper.renderFirstPersonShotgun(
-                    mc.getFirstPersonRenderer(), mc.player,
+                    mc.getItemInHandRenderer(), mc.player,
                     event.getHand(), event.getPartialTicks(), event.getInterpolatedPitch(),
                     event.getSwingProgress(), event.getEquipProgress(), stack,
                     event.getMatrixStack(), event.getBuffers(), event.getLight());
@@ -68,6 +68,6 @@ public class ClientSetup {
 
     @SubscribeEvent
     public static void onClientTickEvent(final ClientTickEvent event) {
-        ReloadAction.clientTick(reloadKey.isKeyDown());
+        ReloadAction.clientTick(reloadKey.isDown());
     }
 }

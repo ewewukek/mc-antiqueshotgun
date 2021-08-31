@@ -38,7 +38,7 @@ public class ReloadAction {
             int magazineCount = ShotgunItem.getAmmoInMagazineCount(activeStack);
             boolean chamberEmpty = ShotgunItem.getAmmoInChamber(activeStack) == AmmoType.NONE;
             boolean canReload = magazineCount < shotgun.getMagazineCapacity() && !shotgun.findAmmo(player).isEmpty();
-            boolean idle = ShotgunItem.hasTimerExpired(activeStack, player.world.getGameTime());
+            boolean idle = ShotgunItem.hasTimerExpired(activeStack, player.level.getGameTime());
 
             if (canReload) {
                 if (reloadKeyDown) {
@@ -77,10 +77,10 @@ public class ReloadAction {
     private static final Map<UUID, Boolean> reloadState = new HashMap<>();
 
     public static boolean isReloading(PlayerEntity player) {
-        return reloadState.getOrDefault(player.getUniqueID(), false);
+        return reloadState.getOrDefault(player.getUUID(), false);
     }
 
     public static void setIsReloading(PlayerEntity player, boolean isReloading) {
-        reloadState.put(player.getUniqueID(), isReloading);
+        reloadState.put(player.getUUID(), isReloading);
     }
 }

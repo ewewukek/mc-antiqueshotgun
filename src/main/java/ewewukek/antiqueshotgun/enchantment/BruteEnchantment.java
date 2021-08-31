@@ -14,7 +14,7 @@ public class BruteEnchantment extends Enchantment {
     }
 
     @Override
-    public int getMinEnchantability(int enchantmentLevel) {
+    public int getMinCost(int enchantmentLevel) {
         if (enchantmentLevel == 1) {
             return 1;
         } else {
@@ -23,7 +23,7 @@ public class BruteEnchantment extends Enchantment {
     }
 
     @Override
-    public int getMaxEnchantability(int enchantmentLevel) {
+    public int getMaxCost(int enchantmentLevel) {
         return 30 + 10 * enchantmentLevel;
     }
 

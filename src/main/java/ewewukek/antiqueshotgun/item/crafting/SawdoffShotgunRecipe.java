@@ -21,7 +21,7 @@ public class SawdoffShotgunRecipe extends StonecuttingRecipe {
 
     @Override
     public boolean matches(IInventory inv, World worldIn) {
-        ItemStack stack = inv.getStackInSlot(0);
+        ItemStack stack = inv.getItem(0);
         return stack != null && !stack.isEmpty()
             && stack.getItem() == AntiqueShotgunMod.HANDMADE_SHOTGUN
             && HandmadeShotgunItem.getAmmoInChamber(stack) == AmmoType.NONE
@@ -29,16 +29,16 @@ public class SawdoffShotgunRecipe extends StonecuttingRecipe {
     }
 
     @Override
-    public ItemStack getRecipeOutput() {
+    public ItemStack getResultItem() {
         return RESULT;
     }
 
     @Override
-    public ItemStack getCraftingResult(IInventory inv) {
-        ItemStack input = inv.getStackInSlot(0);
+    public ItemStack assemble(IInventory inv) {
+        ItemStack input = inv.getItem(0);
         ItemStack result = RESULT.copy();
-        double fraction = (float)input.getDamage() / input.getMaxDamage();
-        result.setDamage((int)Math.ceil(fraction * result.getMaxDamage()));
+        double fraction = (float)input.getDamageValue() / input.getMaxDamage();
+        result.setDamageValue((int)Math.ceil(fraction * result.getMaxDamage()));
         return result;
     }
 

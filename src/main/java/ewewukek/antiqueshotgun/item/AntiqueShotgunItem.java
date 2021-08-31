@@ -6,7 +6,7 @@ import net.minecraft.item.Items;
 
 public class AntiqueShotgunItem extends ShotgunItem {
     public AntiqueShotgunItem(Item.Properties properties) {
-        super(properties.defaultMaxDamage(2000));
+        super(properties.defaultDurability(2000));
     }
 
     public static boolean enableCrafting;
@@ -31,12 +31,12 @@ public class AntiqueShotgunItem extends ShotgunItem {
     }
 
     @Override
-    public int getItemEnchantability() {
+    public int getEnchantmentValue() {
         return 50;
     }
 
     @Override
-    public boolean getIsRepairable(ItemStack stack, ItemStack other) {
+    public boolean isValidRepairItem(ItemStack stack, ItemStack other) {
         return !other.isEmpty() && other.getItem() == Items.NETHERITE_INGOT;
     }
 }

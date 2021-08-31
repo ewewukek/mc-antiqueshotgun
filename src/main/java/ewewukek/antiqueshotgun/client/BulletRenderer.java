@@ -28,7 +28,7 @@ public class BulletRenderer extends EntityRenderer<BulletEntity> {
     }
 
     @Override
-    public ResourceLocation getEntityTexture(BulletEntity bullet) {
+    public ResourceLocation getTextureLocation(BulletEntity bullet) {
         switch (bullet.ammoType) {
         case SLUG:
             return SLUG_TEXTURE;
@@ -41,33 +41,33 @@ public class BulletRenderer extends EntityRenderer<BulletEntity> {
 
     @Override
     public void render(BulletEntity bullet, float yaw, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer render, int packedLight) {
-        matrixStack.push();
+        matrixStack.pushPose();
 
         matrixStack.scale(0.05f, 0.05f, 0.05f);
 
         // billboarding
-        matrixStack.rotate(renderManager.getCameraOrientation());
-        matrixStack.rotate(Vector3f.YP.rotationDegrees(180));
+        matrixStack.mulPose(entityRenderDispatcher.cameraOrientation());
+        matrixStack.mulPose(Vector3f.YP.rotationDegrees(180));
 
-        MatrixStack.Entry entry = matrixStack.getLast();
-        Matrix4f positionMatrix = entry.getMatrix();
-        Matrix3f normalMatrix = entry.getNormal();
+        MatrixStack.Entry entry = matrixStack.last();
+        Matrix4f positionMatrix = entry.pose();
+        Matrix3f normalMatrix = entry.normal();
 
-        IVertexBuilder builder = render.getBuffer(RenderType.getEntityCutout(getEntityTexture(bullet)));
+        IVertexBuilder builder = render.getBuffer(RenderType.entityCutout(getTextureLocation(bullet)));
         addVertex(builder, positionMatrix, normalMatrix, -1, -1, 0, 0, 1, 0, 0, 1, packedLight);
         addVertex(builder, positionMatrix, normalMatrix,  1, -1, 0, 1, 1, 0, 0, 1, packedLight);
         addVertex(builder, positionMatrix, normalMatrix,  1,  1, 0, 1, 0, 0, 0, 1, packedLight);
         addVertex(builder, positionMatrix, normalMatrix, -1,  1, 0, 0, 0, 0, 0, 1, packedLight);
 
-        matrixStack.pop();
+        matrixStack.popPose();
     }
 
     private static void addVertex(IVertexBuilder builder, Matrix4f positionMatrix, Matrix3f normalMatrix, float x, float y, float z, float u, float v, float nx, float ny, float nz, int packedLight) {
-        builder.pos(positionMatrix, x, y, z)
+        builder.vertex(positionMatrix, x, y, z)
                .color(255, 255, 255, 255)
-               .tex(u, v)
-               .overlay(OverlayTexture.NO_OVERLAY)
-               .lightmap(packedLight)
+               .uv(u, v)
+               .overlayCoords(OverlayTexture.NO_OVERLAY)
+               .uv2(packedLight)
                .normal(normalMatrix, nx, ny, nz)
                .endVertex();
     }

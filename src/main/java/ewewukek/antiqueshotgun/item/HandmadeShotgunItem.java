@@ -6,7 +6,7 @@ import net.minecraft.item.Items;
 
 public class HandmadeShotgunItem extends ShotgunItem {
     public HandmadeShotgunItem(Item.Properties properties) {
-        super(properties.defaultMaxDamage(200));
+        super(properties.defaultDurability(200));
     }
 
     public static int magazineCapacity;
@@ -47,12 +47,12 @@ public class HandmadeShotgunItem extends ShotgunItem {
     }
 
     @Override
-    public int getItemEnchantability() {
+    public int getEnchantmentValue() {
         return 1;
     }
 
     @Override
-    public boolean getIsRepairable(ItemStack stack, ItemStack other) {
+    public boolean isValidRepairItem(ItemStack stack, ItemStack other) {
         return !other.isEmpty() && other.getItem() == Items.IRON_INGOT;
     }
 }

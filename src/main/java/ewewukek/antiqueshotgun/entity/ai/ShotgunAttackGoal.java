@@ -17,39 +17,39 @@ public class ShotgunAttackGoal extends Goal {
         this.shooter = shooter;
         this.speed = speed;
         this.attackRange = attackRange;
-        setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
     @Override
-    public boolean shouldExecute() {
-        LivingEntity target = shooter.getAttackTarget();
+    public boolean canUse() {
+        LivingEntity target = shooter.getTarget();
         return target != null && target.isAlive();
     }
 
     @Override
-    public void resetTask() {
-        super.resetTask();
+    public void stop() {
+        super.stop();
         aimTime = 0;
-        shooter.setAttackTarget(null);
+        shooter.setTarget(null);
     }
 
     @Override
-    public void startExecuting() {
-        super.startExecuting();
-        shooter.setAggroed(true);
+    public void start() {
+        super.start();
+        shooter.setAggressive(true);
     }
 
     @Override
     public void tick() {
-        LivingEntity target = shooter.getAttackTarget();
+        LivingEntity target = shooter.getTarget();
         if (target == null || !target.isAlive()) return;
 
-        boolean seesEnemy = shooter.getEntitySenses().canSee(target);
-        boolean inAttackRange = shooter.getDistanceSq(target) < attackRange * attackRange;
+        boolean seesEnemy = shooter.getSensing().canSee(target);
+        boolean inAttackRange = shooter.distanceToSqr(target) < attackRange * attackRange;
 
         if (seesEnemy) {
-            shooter.getLookController().setLookPositionWithEntity(target, 30, 30);
-            shooter.rotationYaw = shooter.rotationYawHead;
+            shooter.getLookControl().setLookAt(target, 30, 30);
+            shooter.yRot = shooter.yRot;
             if (isAiming) {
                 aimTime++;
                 if (aimTime > ElderHunterEntity.aimDuration) {
@@ -63,11 +63,11 @@ public class ShotgunAttackGoal extends Goal {
 
         if (!isAiming) {
             if (seesEnemy && inAttackRange && shooter.isWeaponReady()) {
-                shooter.getNavigator().clearPath();
+                shooter.getNavigation().stop();
                 aimTime = 0;
                 isAiming = true;
             } else {
-                shooter.getNavigator().tryMoveToEntityLiving(target, shooter.isWeaponReady() ? speed : speed * 0.5f);
+                shooter.getNavigation().moveTo(target, shooter.isWeaponReady() ? speed : speed * 0.5f);
             }
         }
     }

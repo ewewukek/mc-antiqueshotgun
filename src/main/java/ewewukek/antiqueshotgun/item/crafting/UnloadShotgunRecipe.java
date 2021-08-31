@@ -29,7 +29,7 @@ public class UnloadShotgunRecipe extends SpecialRecipe {
     }
 
     @Override
-    public ItemStack getCraftingResult(CraftingInventory inv) {
+    public ItemStack assemble(CraftingInventory inv) {
         ItemStack stack = findShotgun(inv).copy();
         if (ShotgunItem.isJammed(stack)) {
             ShotgunItem.setJammed(stack, false);
@@ -42,10 +42,10 @@ public class UnloadShotgunRecipe extends SpecialRecipe {
 
     @Override
     public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv) {
-        NonNullList<ItemStack> items = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+        NonNullList<ItemStack> items = NonNullList.withSize(inv.getContainerSize(), ItemStack.EMPTY);
 
         for(int i = 0; i < items.size(); ++i) {
-            ItemStack stack = inv.getStackInSlot(i);
+            ItemStack stack = inv.getItem(i);
             if (stack.getItem() instanceof ShotgunItem) {
                 if (ShotgunItem.isJammed(stack)) {
                     stack = ItemStack.EMPTY;
@@ -62,8 +62,8 @@ public class UnloadShotgunRecipe extends SpecialRecipe {
 
     private ItemStack findShotgun(CraftingInventory inv) {
         ItemStack result = ItemStack.EMPTY;
-        for (int i = 0; i < inv.getSizeInventory(); ++i) {
-            ItemStack stack = inv.getStackInSlot(i);
+        for (int i = 0; i < inv.getContainerSize(); ++i) {
+            ItemStack stack = inv.getItem(i);
             if (!stack.isEmpty() && stack.getItem() instanceof ShotgunItem) {
                 if (!result.isEmpty()) {
                     return ItemStack.EMPTY;
@@ -75,7 +75,7 @@ public class UnloadShotgunRecipe extends SpecialRecipe {
     }
 
     @Override
-    public boolean canFit(int width, int height) {
+    public boolean canCraftInDimensions(int width, int height) {
         return true;
     }
 

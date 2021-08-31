@@ -61,32 +61,32 @@ public abstract class ShotgunItem extends Item {
 
     public boolean canBeUsedFromOffhand(PlayerEntity player) {
         return canBeUsedFromOffhand()
-            && !(player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof ShotgunItem);
+            && !(player.getItemInHand(Hand.MAIN_HAND).getItem() instanceof ShotgunItem);
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity player, Hand hand) {
-        ItemStack stack = player.getHeldItem(hand);
+    public ActionResult<ItemStack> use(World worldIn, PlayerEntity player, Hand hand) {
+        ItemStack stack = player.getItemInHand(hand);
 
         if (hand == Hand.OFF_HAND && !canBeUsedFromOffhand(player)) {
-            return ActionResult.resultPass(stack);
+            return ActionResult.pass(stack);
         }
 
-        if (!worldIn.isRemote) {
+        if (!worldIn.isClientSide) {
             long currentTime = worldIn.getGameTime();
             if (!hasTimerExpired(stack, currentTime)) {
-                return ActionResult.resultFail(stack);
+                return ActionResult.fail(stack);
             }
 
-            double posX = player.getPosX();
-            double posY = player.getPosY();
-            double posZ = player.getPosZ();
+            double posX = player.getX();
+            double posY = player.getY();
+            double posZ = player.getZ();
 
             if (isJammed(stack)) {
                 worldIn.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_PUMP_JAMMED, SoundCategory.PLAYERS, 0.8f, 1);
 
                 setTimerExpiryTime(stack, currentTime + JAMMED_SOUND_REPEAT_INTERVAL);
-                return ActionResult.resultFail(stack);
+                return ActionResult.fail(stack);
             }
 
             AmmoType ammoType = getAmmoInChamber(stack);
@@ -96,7 +96,7 @@ public abstract class ShotgunItem extends Item {
 
                 if (!misfire) {
                     final float deg2rad = 0.017453292f;
-                    Vector3d direction = new Vector3d(0, 0, 1).rotatePitch(-deg2rad * player.rotationPitch).rotateYaw(-deg2rad * player.rotationYaw);
+                    Vector3d direction = new Vector3d(0, 0, 1).xRot(-deg2rad * player.xRot).yRot(-deg2rad * player.yRot);
                     fireBullets(worldIn, player, direction, ammoType);
 
                     if (ammoType == AmmoType.SLUG) {
@@ -118,12 +118,12 @@ public abstract class ShotgunItem extends Item {
             ReloadAction.breakFullReload();
         }
 
-        return ActionResult.resultFail(stack);
+        return ActionResult.fail(stack);
     }
 
     public void update(PlayerEntity player, ItemStack stack) {
-        World world = player.world;
-        if (world.isRemote) return;
+        World world = player.level;
+        if (world.isClientSide) return;
 
         if (getId(stack) == 0) genId(stack);
 
@@ -152,9 +152,9 @@ public abstract class ShotgunItem extends Item {
             isReloading = false;
         }
 
-        double posX = player.getPosX();
-        double posY = player.getPosY();
-        double posZ = player.getPosZ();
+        double posX = player.getX();
+        double posY = player.getY();
+        double posZ = player.getZ();
 
         if (chamberEmpty) {
             if (!isSlideBack(stack)) {
@@ -174,7 +174,7 @@ public abstract class ShotgunItem extends Item {
 
                 } else {
                     ammoType = ammoTypeFromStack(ammoStack);
-                    if (!player.abilities.isCreativeMode) {
+                    if (!player.abilities.instabuild) {
                         ammoStack.shrink(1);
                     }
                 }
@@ -210,7 +210,7 @@ public abstract class ShotgunItem extends Item {
                 world.playSound(null, posX, posY, posZ, AntiqueShotgunMod.SOUND_SHOTGUN_INSERTING_SHELL, SoundCategory.PLAYERS, 0.8f, 1);
 
                 addAmmoToMagazine(stack, ammoTypeFromStack(ammoStack));
-                if (!player.abilities.isCreativeMode) {
+                if (!player.abilities.instabuild) {
                     ammoStack.shrink(1);
                 }
                 setInsertingShell(stack, false);
@@ -221,26 +221,26 @@ public abstract class ShotgunItem extends Item {
 
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-        float extraDamage = BruteEnchantment.extraDamageBase + BruteEnchantment.extraDamagePerLevel * EnchantmentHelper.getEnchantmentLevel(AntiqueShotgunMod.BRUTE_ENCHANTMENT, stack);
+        float extraDamage = BruteEnchantment.extraDamageBase + BruteEnchantment.extraDamagePerLevel * EnchantmentHelper.getItemEnchantmentLevel(AntiqueShotgunMod.BRUTE_ENCHANTMENT, stack);
         if (slot != EquipmentSlotType.MAINHAND || extraDamage == 0) {
             return super.getAttributeModifiers(slot, stack);
         }
         Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Damage modifier", extraDamage, AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Damage modifier", extraDamage, AttributeModifier.Operation.ADDITION));
         return builder.build();
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-        if (!worldIn.isRemote && entityLiving instanceof PlayerEntity && state.getBlockHardness(worldIn, pos) != 0.0f) {
+    public boolean mineBlock(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
+        if (!worldIn.isClientSide && entityLiving instanceof PlayerEntity && state.getDestroySpeed(worldIn, pos) != 0.0f) {
             damageItem(stack, 1, (PlayerEntity) entityLiving);
         }
         return false;
     }
 
     public static void damageItem(ItemStack stack, int amount, PlayerEntity player) {
-        stack.damageItem(amount, player, (entity) -> {
-            entity.sendBreakAnimation(player.getActiveHand());
+        stack.hurtAndBreak(amount, player, (entity) -> {
+            entity.broadcastBreakEvent(player.getUsedItemHand());
         });
     }
 
@@ -257,8 +257,8 @@ public abstract class ShotgunItem extends Item {
 
     public void fireBullets(World world, LivingEntity shooter, Vector3d direction, AmmoType ammoType) {
         direction = direction.normalize();
-        Vector3d pos = new Vector3d(shooter.getPosX(), shooter.getPosY() + shooter.getEyeHeight(), shooter.getPosZ());
-        Vector3d playerMotion = shooter.getMotion();
+        Vector3d pos = new Vector3d(shooter.getX(), shooter.getY() + shooter.getEyeHeight(), shooter.getZ());
+        Vector3d playerMotion = shooter.getDeltaMovement();
 
         AmmoItem ammoItem = ammoType.toItem();
         for (int i = 0; i < ammoItem.pelletCount(); ++i) {
@@ -276,7 +276,7 @@ public abstract class ShotgunItem extends Item {
                 n2 = new Vector3d(0, 0, 1);
             } else {
                 n1 = new Vector3d(-direction.z, 0, direction.x).normalize();
-                n2 = direction.crossProduct(n1);
+                n2 = direction.cross(n1);
             }
 
             Vector3d motion = direction.scale(MathHelper.cos(spread))
@@ -290,11 +290,11 @@ public abstract class ShotgunItem extends Item {
             bullet.ammoType = ammoType;
             bullet.distanceLeft = ammoItem.range();
             bullet.damageMultiplier = getDamageMultiplier();
-            bullet.setShooter(shooter);
-            bullet.setPosition(pos.x, pos.y, pos.z);
-            bullet.setMotion(motion);
+            bullet.setOwner(shooter);
+            bullet.setPos(pos.x, pos.y, pos.z);
+            bullet.setDeltaMovement(motion);
 
-            world.addEntity(bullet);
+            world.addFreshEntity(bullet);
         }
     }
 
@@ -324,8 +324,8 @@ public abstract class ShotgunItem extends Item {
     }
 
     public ItemStack findAmmo(PlayerEntity player) {
-        for (int i = 0; i != player.inventory.mainInventory.size(); ++i) {
-            ItemStack itemstack = player.inventory.mainInventory.get(i);
+        for (int i = 0; i != player.inventory.items.size(); ++i) {
+            ItemStack itemstack = player.inventory.items.get(i);
             if (isAmmo(itemstack)) return itemstack;
         }
         return ItemStack.EMPTY;

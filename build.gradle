@@ -18,9 +18,7 @@ archivesBaseName = 'antiqueshotgun-1.16.5-forge'
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
 minecraft {
-    // i'm not sure if it's ok to switch to official mappings yet
-    // mappings channel: 'official', version: '1.16.5'
-    mappings channel: 'snapshot', version: '20201028-1.16.3'
+    mappings channel: 'official', version: '1.16.5'
 
     runs {
         client {

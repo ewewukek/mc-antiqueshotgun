@@ -119,7 +119,7 @@ public class AntiqueShotgunMod {
     public static EntityType<ElderHunterEntity> ELDER_HUNTER_ENTITY_TYPE;
 
     public static final EnchantmentType ENCHANTMENT_TYPE_SHOTGUN = EnchantmentType.create(MODID + ":shotgun", (item) -> {
-        return item instanceof ShotgunItem && ((ShotgunItem)item).getItemEnchantability() != 0;
+        return item instanceof ShotgunItem && ((ShotgunItem)item).getEnchantmentValue() != 0;
     });
 
     @ObjectHolder(MODID + ":brute")
@@ -138,33 +138,33 @@ public class AntiqueShotgunMod {
         @SubscribeEvent
         public static void onItemsRegistry(final RegistryEvent.Register<Item> event) {
             event.getRegistry().registerAll(
-                new AntiqueShotgunItem(new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(MODID, "antique_shotgun"),
-                new Item(new Item.Properties().group(ItemGroup.MISC)).setRegistryName(MODID, "antique_barrel"),
-                new Item(new Item.Properties().group(ItemGroup.MISC)).setRegistryName(MODID, "antique_gears"),
-                new Item(new Item.Properties().group(ItemGroup.MISC)).setRegistryName(MODID, "antique_stock"),
-                new HandmadeShotgunItem(new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(MODID, "handmade_shotgun"),
-                new Item(new Item.Properties().group(ItemGroup.MISC)).setRegistryName(MODID, "handmade_barrel"),
-                new Item(new Item.Properties().group(ItemGroup.MISC)).setRegistryName(MODID, "handmade_stock"),
-                new SawdoffShotgunItem(new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(MODID, "sawd_off_shotgun"),
-                new BuckshotAmmoItem(new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(MODID, "buckshot_shell"),
-                new SlugAmmoItem(new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(MODID, "slug_shell"),
-                new HandmadeAmmoItem(new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(MODID, "handmade_shell"),
-                new Item(new Item.Properties().group(ItemGroup.MISC)).setRegistryName(MODID, "rubber"),
-                new RubberAmmoItem(new Item.Properties().group(ItemGroup.COMBAT)).setRegistryName(MODID, "rubber_shell")
+                new AntiqueShotgunItem(new Item.Properties().tab(ItemGroup.TAB_COMBAT)).setRegistryName(MODID, "antique_shotgun"),
+                new Item(new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName(MODID, "antique_barrel"),
+                new Item(new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName(MODID, "antique_gears"),
+                new Item(new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName(MODID, "antique_stock"),
+                new HandmadeShotgunItem(new Item.Properties().tab(ItemGroup.TAB_COMBAT)).setRegistryName(MODID, "handmade_shotgun"),
+                new Item(new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName(MODID, "handmade_barrel"),
+                new Item(new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName(MODID, "handmade_stock"),
+                new SawdoffShotgunItem(new Item.Properties().tab(ItemGroup.TAB_COMBAT)).setRegistryName(MODID, "sawd_off_shotgun"),
+                new BuckshotAmmoItem(new Item.Properties().tab(ItemGroup.TAB_COMBAT)).setRegistryName(MODID, "buckshot_shell"),
+                new SlugAmmoItem(new Item.Properties().tab(ItemGroup.TAB_COMBAT)).setRegistryName(MODID, "slug_shell"),
+                new HandmadeAmmoItem(new Item.Properties().tab(ItemGroup.TAB_COMBAT)).setRegistryName(MODID, "handmade_shell"),
+                new Item(new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName(MODID, "rubber"),
+                new RubberAmmoItem(new Item.Properties().tab(ItemGroup.TAB_COMBAT)).setRegistryName(MODID, "rubber_shell")
             );
         }
 
         @SubscribeEvent
         public static void onEntityRegistry(final RegistryEvent.Register<EntityType<?>> event) {
             event.getRegistry().registerAll(
-                EntityType.Builder.<BulletEntity>create(EntityClassification.MISC)
-                    .setCustomClientFactory(BulletEntity::new).size(0.25f, 0.25f)
+                EntityType.Builder.<BulletEntity>createNothing(EntityClassification.MISC)
+                    .setCustomClientFactory(BulletEntity::new).sized(0.25f, 0.25f)
                     .setTrackingRange(64).setUpdateInterval(5).setShouldReceiveVelocityUpdates(false)
                     .build(MODID + ":bullet").setRegistryName(MODID, "bullet"),
 
-                EntityType.Builder.<ElderHunterEntity>create(ElderHunterEntity::new, EntityClassification.MONSTER)
+                EntityType.Builder.<ElderHunterEntity>of(ElderHunterEntity::new, EntityClassification.MONSTER)
                     .setTrackingRange(8).setUpdateInterval(3)
-                    .size(0.6f, 1.95f).setShouldReceiveVelocityUpdates(true)
+                    .sized(0.6f, 1.95f).setShouldReceiveVelocityUpdates(true)
                     .build(MODID + ":elder_hunter").setRegistryName(MODID, "elder_hunter")
             );
         }
@@ -217,12 +217,12 @@ public class AntiqueShotgunMod {
         public static void onPlayerTick(final TickEvent.PlayerTickEvent event) {
             if (event.phase == TickEvent.Phase.START) {
                 ReloadAction.activeStack = null;
-                ItemStack stack = event.player.getHeldItem(Hand.MAIN_HAND);
+                ItemStack stack = event.player.getItemInHand(Hand.MAIN_HAND);
                 if (stack.getItem() instanceof ShotgunItem) {
                     ReloadAction.activeStack = stack;
                     ((ShotgunItem)stack.getItem()).update(event.player, stack);
                 } else {
-                    ItemStack offhandStack = event.player.getHeldItem(Hand.OFF_HAND);
+                    ItemStack offhandStack = event.player.getItemInHand(Hand.OFF_HAND);
                     if (offhandStack.getItem() instanceof ShotgunItem) {
                         ShotgunItem shotgun = (ShotgunItem)offhandStack.getItem();
                         if (shotgun.canBeUsedFromOffhand(event.player)) {
@@ -260,11 +260,11 @@ public class AntiqueShotgunMod {
 
             if (entity.getType() == EntityType.EVOKER) {
                 EvokerEntity evoker = (EvokerEntity)entity;
-                if (evoker.isRaidActive() && world.rand.nextFloat() < ElderHunterEntity.raidSpawnChance) {
-                    Raid raid = evoker.getRaid();
+                if (evoker.hasActiveRaid() && world.random.nextFloat() < ElderHunterEntity.raidSpawnChance) {
+                    Raid raid = evoker.getCurrentRaid();
                     int wave = evoker.getWave();
-                    BlockPos pos = evoker.getPosition().add(0, -1, 0); // compensate +1 from joinRaid
-                    raid.leaveRaid(evoker, true);
+                    BlockPos pos = evoker.blockPosition().offset(0, -1, 0); // compensate +1 from joinRaid
+                    raid.removeFromRaid(evoker, true);
 
                     ElderHunterEntity hunter = ELDER_HUNTER_ENTITY_TYPE.create(world);
                     raid.joinRaid(wave, hunter, pos, false);
@@ -275,14 +275,14 @@ public class AntiqueShotgunMod {
 
             if (entity.getType() == EntityType.PILLAGER) {
                 PillagerEntity pillager = (PillagerEntity)entity;
-                if (pillager.isLeader() && lastPatrolSpawnTime != world.getGameTime()) {
+                if (pillager.isPatrolLeader() && lastPatrolSpawnTime != world.getGameTime()) {
                     lastPatrolSpawnTime = world.getGameTime();
-                    if (world.rand.nextFloat() < ElderHunterEntity.patrolSpawnChance) {
+                    if (world.random.nextFloat() < ElderHunterEntity.patrolSpawnChance) {
                         ElderHunterEntity hunter = ELDER_HUNTER_ENTITY_TYPE.create(world);
-                        hunter.setPosition(pillager.getPosition().getX(), pillager.getPosition().getY(), pillager.getPosition().getZ());
-                        hunter.onInitialSpawn((IServerWorld)world, world.getDifficultyForLocation(pillager.getPosition()), SpawnReason.PATROL, null, null);
+                        hunter.setPos(pillager.blockPosition().getX(), pillager.blockPosition().getY(), pillager.blockPosition().getZ());
+                        hunter.finalizeSpawn((IServerWorld)world, world.getCurrentDifficultyAt(pillager.blockPosition()), SpawnReason.PATROL, null, null);
                         hunter.setOnGround(true);
-                        world.addEntity(hunter);
+                        world.addFreshEntity(hunter);
                         event.setCanceled(true);
                     }
                 }
@@ -293,17 +293,17 @@ public class AntiqueShotgunMod {
         public static void onAttackEntityEvent(final AttackEntityEvent event) {
             PlayerEntity player = event.getPlayer();
             Entity target = event.getTarget();
-            if (target.canBeAttackedWithItem() && !target.hitByEntity(player)) {
-                float knockback = BruteEnchantment.knockbackForcePerLevel * EnchantmentHelper.getMaxEnchantmentLevel(BRUTE_ENCHANTMENT, player);
+            if (target.isAttackable() && !target.skipAttackInteraction(player)) {
+                float knockback = BruteEnchantment.knockbackForcePerLevel * EnchantmentHelper.getEnchantmentLevel(BRUTE_ENCHANTMENT, player);
                 if (knockback > 0) {
-                    float angle = player.rotationYaw * (float)(Math.PI / 180);
+                    float angle = player.yRot * (float)(Math.PI / 180);
                     if (target instanceof LivingEntity) {
-                        ((LivingEntity)target).applyKnockback(knockback, MathHelper.sin(angle), -MathHelper.cos(angle));
+                        ((LivingEntity)target).knockback(knockback, MathHelper.sin(angle), -MathHelper.cos(angle));
                     } else {
-                        target.addVelocity(-MathHelper.sin(angle) * knockback, 0.1, MathHelper.cos(angle) * knockback);
+                        target.push(-MathHelper.sin(angle) * knockback, 0.1, MathHelper.cos(angle) * knockback);
                     }
                     player.setSprinting(false);
-                    player.getEntityWorld().playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), AntiqueShotgunMod.SOUND_BRUTE_HIT, SoundCategory.PLAYERS, 1, 1);
+                    player.level.playSound(null, player.getX(), player.getY(), player.getZ(), AntiqueShotgunMod.SOUND_BRUTE_HIT, SoundCategory.PLAYERS, 1, 1);
                 }
             }
         }
@@ -312,11 +312,11 @@ public class AntiqueShotgunMod {
         public static void onAnvilUpdateEvent(final AnvilUpdateEvent event) {
             ItemStack leftStack = event.getLeft();
             ItemStack rightStack = event.getRight();
-            if (leftStack.getItem() == ANTIQUE_SHOTGUN && leftStack.getDamage() > 0 && leftStack.getItem().getIsRepairable(leftStack, rightStack)) {
+            if (leftStack.getItem() == ANTIQUE_SHOTGUN && leftStack.getDamageValue() > 0 && leftStack.getItem().isValidRepairItem(leftStack, rightStack)) {
                 ItemStack output = leftStack.copy();
-                output.setDamage(0);
+                output.setDamageValue(0);
                 event.setOutput(output);
-                event.setCost(1 + (int)Math.ceil(4 * leftStack.getDamage() / leftStack.getMaxDamage()));
+                event.setCost(1 + (int)Math.ceil(4 * leftStack.getDamageValue() / leftStack.getMaxDamage()));
                 event.setMaterialCost(1);
             }
         }

@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 
 public class SawdoffShotgunItem extends HandmadeShotgunItem {
     public SawdoffShotgunItem(Item.Properties properties) {
-        super(properties.defaultMaxDamage(100));
+        super(properties.defaultDurability(100));
     }
 
     public static int magazineCapacity;
@@ -40,7 +40,7 @@ public class SawdoffShotgunItem extends HandmadeShotgunItem {
     }
 
     @Override
-    public int getItemEnchantability() {
+    public int getEnchantmentValue() {
         return 0;
     }
 }

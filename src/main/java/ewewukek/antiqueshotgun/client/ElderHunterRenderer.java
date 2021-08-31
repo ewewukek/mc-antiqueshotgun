@@ -30,7 +30,7 @@ public class ElderHunterRenderer extends MobRenderer<ElderHunterEntity, ElderHun
     }
 
     @Override
-    public ResourceLocation getEntityTexture(ElderHunterEntity entity) {
+    public ResourceLocation getTextureLocation(ElderHunterEntity entity) {
         return TEXTURE;
     }
 }

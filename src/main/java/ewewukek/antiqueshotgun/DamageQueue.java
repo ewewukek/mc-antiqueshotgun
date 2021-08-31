@@ -20,7 +20,7 @@ public class DamageQueue {
 
     public static void apply() {
         queue.forEach((target, entry) -> {
-            target.attackEntityFrom(entry.damageSource, entry.damage);
+            target.hurt(entry.damageSource, entry.damage);
         });
         queue.clear();
     }
