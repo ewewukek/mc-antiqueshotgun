@@ -126,7 +126,7 @@ public class AntiqueShotgunMod {
     public static Enchantment BRUTE_ENCHANTMENT;
 
     public AntiqueShotgunMod() {
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
         });
         CraftingHelper.register(CraftingEnabled.SERIALIZER);
