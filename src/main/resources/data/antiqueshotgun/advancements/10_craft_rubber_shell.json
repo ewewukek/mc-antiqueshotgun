@@ -1,0 +1,30 @@
+{
+  "parent": "antiqueshotgun:9_craft_rubber",
+  "display": {
+    "icon": {
+      "item": "antiqueshotgun:rubber_shell"
+    },
+    "title": {
+      "translate": "advancements.antiqueshotgun.rubber_shell.title"
+    },
+    "description": {
+      "translate": "advancements.antiqueshotgun.rubber_shell.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "obtain_paper": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "antiqueshotgun:rubber_shell"
+          }
+        ]
+      }
+    }
+  }
+}

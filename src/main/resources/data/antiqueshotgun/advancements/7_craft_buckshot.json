@@ -1,0 +1,30 @@
+{
+  "parent": "antiqueshotgun:6_craft_handmadeshell",
+  "display": {
+    "icon": {
+      "item": "antiqueshotgun:buckshot_shell"
+    },
+    "title": {
+      "translate": "advancements.antiqueshotgun.buckshot.title"
+    },
+    "description": {
+      "translate": "advancements.antiqueshotgun.buckshot.desc"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "obtain_paper": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "antiqueshotgun:buckshot_shell"
+          }
+        ]
+      }
+    }
+  }
+}

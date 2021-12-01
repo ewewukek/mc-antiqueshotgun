@@ -1,0 +1,30 @@
+{
+  "parent": "antiqueshotgun:7_craft_buckshot",
+  "display": {
+    "icon": {
+      "item": "antiqueshotgun:slug_shell"
+    },
+    "title": {
+      "translate": "advancements.antiqueshotgun.slug.title"
+    },
+    "description": {
+      "translate": "advancements.antiqueshotgun.slug.desc"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "obtain_paper": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "antiqueshotgun:slug_shell"
+          }
+        ]
+      }
+    }
+  }
+}

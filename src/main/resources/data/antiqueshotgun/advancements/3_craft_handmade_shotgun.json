@@ -1,0 +1,30 @@
+{
+  "parent": "antiqueshotgun:2_craft_barrel",
+  "display": {
+    "icon": {
+      "item": "antiqueshotgun:handmade_shotgun"
+    },
+    "title": {
+      "translate": "advancements.antiqueshotgun.handmade_shotgun.title"
+    },
+    "description": {
+      "translate": "advancements.antiqueshotgun.handmade_shotgun.desc"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "obtain_paper": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "antiqueshotgun:handmade_shotgun"
+          }
+        ]
+      }
+    }
+  }
+}

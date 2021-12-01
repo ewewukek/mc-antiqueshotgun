@@ -1,0 +1,34 @@
+{
+  "parent": "antiqueshotgun:8_craft_slug",
+  "display": {
+    "icon": {
+      "item": "minecraft:iron_axe"
+    },
+    "title": {
+      "translate": "advancements.antiqueshotgun.slay_hunter.title"
+    },
+    "description": {
+      "translate": "advancements.antiqueshotgun.slay_hunter.desc"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "antiqueshotgun:elder_hunter": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "antiqueshotgun:elder_hunter"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    }
+  }
+}

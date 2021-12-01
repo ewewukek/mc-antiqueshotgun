@@ -1,0 +1,30 @@
+{
+  "parent": "antiqueshotgun:3_craft_handmade_shotgun",
+  "display": {
+    "icon": {
+      "item": "antiqueshotgun:sawd_off_shotgun"
+    },
+    "title": {
+      "translate": "advancements.antiqueshotgun.sawd_off_shotgun.title"
+    },
+    "description": {
+      "translate": "advancements.antiqueshotgun.sawd_off_shotgun.desc"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "obtain_paper": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "antiqueshotgun:sawd_off_shotgun"
+          }
+        ]
+      }
+    }
+  }
+}

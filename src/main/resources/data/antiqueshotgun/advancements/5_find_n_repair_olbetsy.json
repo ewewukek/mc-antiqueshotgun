@@ -1,0 +1,30 @@
+{
+  "parent": "antiqueshotgun:4_craft_sawd_off",
+  "display": {
+    "icon": {
+      "item": "antiqueshotgun:antique_shotgun"
+    },
+    "title": {
+      "translate": "advancements.antiqueshotgun.betsy.title"
+    },
+    "description": {
+      "translate": "advancements.antiqueshotgun.betsy.desc"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "obtain_paper": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "antiqueshotgun:antique_shotgun"
+          }
+        ]
+      }
+    }
+  }
+}

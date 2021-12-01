@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "antiqueshotgun:antique_shotgun"
+    },
+    "title": {
+      "translate": "advancements.antiqueshotgun.title"
+    },
+    "description": {
+      "translate": "advancements.antiqueshotgun.desc"
+    },
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false,
+    "background": "minecraft:textures/block/cartography_table_side3.png"
+  },
+  "criteria": {
+    "tick": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}
