@@ -32,7 +32,7 @@ public class ReloadAction {
         Minecraft mc = Minecraft.getInstance();
         PlayerEntity player = mc.player;
 
-        if (activeStack != null && player != null) {
+        if (activeStack != null && !activeStack.isEmpty() && player != null) {
             ShotgunItem shotgun = (ShotgunItem)activeStack.getItem();
 
             int magazineCount = ShotgunItem.getAmmoInMagazineCount(activeStack);
