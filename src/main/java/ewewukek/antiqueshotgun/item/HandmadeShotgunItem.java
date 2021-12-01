@@ -6,7 +6,7 @@ import net.minecraft.item.Items;
 
 public class HandmadeShotgunItem extends ShotgunItem {
     public HandmadeShotgunItem(Item.Properties properties) {
-        super(properties.defaultDurability(200));
+        super(properties.defaultDurability(250));
     }
 
     public static int magazineCapacity;

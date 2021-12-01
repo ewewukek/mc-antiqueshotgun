@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 
 public class SawdoffShotgunItem extends HandmadeShotgunItem {
     public SawdoffShotgunItem(Item.Properties properties) {
-        super(properties.defaultDurability(100));
+        super(properties.defaultDurability(125));
     }
 
     public static int magazineCapacity;

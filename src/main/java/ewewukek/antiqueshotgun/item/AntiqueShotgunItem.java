@@ -6,7 +6,7 @@ import net.minecraft.item.Items;
 
 public class AntiqueShotgunItem extends ShotgunItem {
     public AntiqueShotgunItem(Item.Properties properties) {
-        super(properties.defaultDurability(2000));
+        super(properties.defaultDurability(2031));
     }
 
     public static boolean enableCrafting;
