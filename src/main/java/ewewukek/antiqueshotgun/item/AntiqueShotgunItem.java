@@ -31,6 +31,11 @@ public class AntiqueShotgunItem extends ShotgunItem {
     }
 
     @Override
+    public boolean preventBreaking() {
+        return true;
+    }
+
+    @Override
     public int getEnchantmentValue() {
         return 50;
     }

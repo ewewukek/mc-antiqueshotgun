@@ -64,12 +64,24 @@ public abstract class ShotgunItem extends Item {
             && !(player.getItemInHand(Hand.MAIN_HAND).getItem() instanceof ShotgunItem);
     }
 
+    public boolean preventBreaking() {
+        return false;
+    }
+
+    public boolean almostBroken(ItemStack stack) {
+        return stack.getMaxDamage() - stack.getDamageValue() <= 1;
+    }
+
     @Override
     public ActionResult<ItemStack> use(World worldIn, PlayerEntity player, Hand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
         if (hand == Hand.OFF_HAND && !canBeUsedFromOffhand(player)) {
             return ActionResult.pass(stack);
+        }
+
+        if (almostBroken(stack) && preventBreaking()) {
+            return ActionResult.fail(stack);
         }
 
         if (!worldIn.isClientSide) {
@@ -127,7 +139,7 @@ public abstract class ShotgunItem extends Item {
 
         if (getId(stack) == 0) genId(stack);
 
-        if (isJammed(stack)) {
+        if (isJammed(stack) || (almostBroken(stack) && preventBreaking())) {
             return;
         }
 
