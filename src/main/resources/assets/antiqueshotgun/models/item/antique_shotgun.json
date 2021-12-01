@@ -34,10 +34,15 @@
     },
     {
       "predicate": {
-        "damaged": 1,
-        "damage": 1
+        "antiqueshotgun:durability_negative": -1
       },
       "model": "antiqueshotgun:item/antique_shotgun_damaged"
+    },
+    {
+      "predicate": {
+        "antiqueshotgun:durability_negative": 0
+      },
+      "model": "antiqueshotgun:item/antique_shotgun_parts"
     }
   ]
 }

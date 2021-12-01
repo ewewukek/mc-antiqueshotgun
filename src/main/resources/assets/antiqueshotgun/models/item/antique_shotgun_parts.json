@@ -1,0 +1,6 @@
+{
+  "parent": "antiqueshotgun:item/antique_shotgun",
+  "textures": {
+    "layer0": "antiqueshotgun:item/antique_shotgun_parts"
+  }
+}

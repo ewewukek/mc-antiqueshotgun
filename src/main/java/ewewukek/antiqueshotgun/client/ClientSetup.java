@@ -43,6 +43,10 @@ public class ClientSetup {
         ItemModelsProperties.register(AntiqueShotgunMod.HANDMADE_SHOTGUN, new ResourceLocation(AntiqueShotgunMod.MODID, "slide_back"), slideBackGetter);
         ItemModelsProperties.register(AntiqueShotgunMod.SAWD_OFF_SHOTGUN, new ResourceLocation(AntiqueShotgunMod.MODID, "slide_back"), slideBackGetter);
 
+        ItemModelsProperties.register(AntiqueShotgunMod.ANTIQUE_SHOTGUN, new ResourceLocation(AntiqueShotgunMod.MODID, "durability_negative"), (stack, world, player) -> {
+            return stack.getDamageValue() - stack.getMaxDamage();
+        });
+
         RenderingRegistry.registerEntityRenderingHandler(AntiqueShotgunMod.BULLET_ENTITY_TYPE, BulletRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(AntiqueShotgunMod.ELDER_HUNTER_ENTITY_TYPE, ElderHunterRenderer::new);
 
@@ -55,7 +59,7 @@ public class ClientSetup {
         if (!stack.isEmpty() && stack.getItem() instanceof ShotgunItem) {
             Minecraft mc = Minecraft.getInstance();
             ShotgunItem shotgun = (ShotgunItem)stack.getItem();
-            if (event.getHand() == Hand.MAIN_HAND || shotgun.canBeUsedFromOffhand(mc.player)) {
+            if ((event.getHand() == Hand.MAIN_HAND || shotgun.canBeUsedFromOffhand(mc.player)) && !shotgun.almostBroken(stack)) {
                 FirstPersonRenderHelper.renderFirstPersonShotgun(
                     mc.getItemInHandRenderer(), mc.player,
                     event.getHand(), event.getPartialTicks(), event.getInterpolatedPitch(),
