@@ -37,6 +37,7 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
     public static int reloadDuration;
     public static int shellInsertDuration;
     public static int magazineCapacity;
+    public static float villagerDamageMultiplier;
     public static float shotgunDropChance;
     public static float raidSpawnChance;
     public static float patrolSpawnChance;
@@ -150,8 +151,9 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
             target.getZ() - getZ()
         );
         AmmoType ammoType = ShotgunItem.getAmmoInChamber(stack);
+        float damageMultiplier = target.getType() == EntityType.VILLAGER ? villagerDamageMultiplier : 1;
 
-        ((ShotgunItem)stack.getItem()).fireBullets(level, this, direction, ammoType);
+        ((ShotgunItem)stack.getItem()).fireBullets(level, this, direction, ammoType, damageMultiplier);
         level.playSound(null, getX(), getY(), getZ(), AntiqueShotgunMod.SOUND_SHOTGUN_FIRE, SoundCategory.HOSTILE, 3.5f, 1);
 
         ShotgunItem.setAmmoInChamber(stack, AmmoType.NONE);

@@ -268,6 +268,10 @@ public abstract class ShotgunItem extends Item {
     }
 
     public void fireBullets(World world, LivingEntity shooter, Vector3d direction, AmmoType ammoType) {
+        fireBullets(world, shooter, direction, ammoType, 1);
+    }
+
+    public void fireBullets(World world, LivingEntity shooter, Vector3d direction, AmmoType ammoType, float damageMultiplier) {
         direction = direction.normalize();
         Vector3d pos = new Vector3d(shooter.getX(), shooter.getY() + shooter.getEyeHeight(), shooter.getZ());
         Vector3d playerMotion = shooter.getDeltaMovement();
@@ -301,7 +305,7 @@ public abstract class ShotgunItem extends Item {
             BulletEntity bullet = new BulletEntity(world);
             bullet.ammoType = ammoType;
             bullet.distanceLeft = ammoItem.range();
-            bullet.damageMultiplier = getDamageMultiplier();
+            bullet.damageMultiplier = damageMultiplier * getDamageMultiplier();
             bullet.setOwner(shooter);
             bullet.setPos(pos.x, pos.y, pos.z);
             bullet.setDeltaMovement(motion);
