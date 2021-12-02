@@ -6,6 +6,7 @@ import ewewukek.antiqueshotgun.item.HandmadeShotgunItem;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.SpecialRecipeSerializer;
 import net.minecraft.item.crafting.StonecuttingRecipe;
 import net.minecraft.util.ResourceLocation;
@@ -13,10 +14,11 @@ import net.minecraft.world.World;
 
 public class SawdoffShotgunRecipe extends StonecuttingRecipe {
     public static final SpecialRecipeSerializer<SawdoffShotgunRecipe> SERIALIZER = new SpecialRecipeSerializer<>(SawdoffShotgunRecipe::new);
-    public static final ItemStack RESULT = new ItemStack(AntiqueShotgunMod.SAWD_OFF_SHOTGUN);
 
     public SawdoffShotgunRecipe(ResourceLocation id) {
-        super(id, "", null, null);
+        super(id, "",
+            Ingredient.of(new ItemStack(AntiqueShotgunMod.HANDMADE_SHOTGUN)),
+            new ItemStack(AntiqueShotgunMod.SAWD_OFF_SHOTGUN));
     }
 
     @Override
@@ -29,14 +31,9 @@ public class SawdoffShotgunRecipe extends StonecuttingRecipe {
     }
 
     @Override
-    public ItemStack getResultItem() {
-        return RESULT;
-    }
-
-    @Override
     public ItemStack assemble(IInventory inv) {
         ItemStack input = inv.getItem(0);
-        ItemStack result = RESULT.copy();
+        ItemStack result = this.result.copy();
         double fraction = (float)input.getDamageValue() / input.getMaxDamage();
         result.setDamageValue((int)Math.ceil(fraction * result.getMaxDamage()));
         return result;
