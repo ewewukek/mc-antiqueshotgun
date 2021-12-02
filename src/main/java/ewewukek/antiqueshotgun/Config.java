@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 
 import ewewukek.antiqueshotgun.enchantment.BruteEnchantment;
 import ewewukek.antiqueshotgun.entity.ElderHunterEntity;
@@ -113,7 +114,11 @@ public class Config {
             save();
             LOGGER.info("Configuration file not found, default created");
         } catch (IOException e) {
+            instance = new Config();
             LOGGER.warn("Could not read configuration file: ", e);
+        } catch (JsonSyntaxException e) {
+            instance = new Config();
+            LOGGER.warn("Bad json in configuration file: ", e);
         }
         if (instance.version < VERSION) {
             LOGGER.info("Configuration file belongs to an older version, updating");
