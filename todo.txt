@@ -39,6 +39,8 @@
  ✔ anvil repairing (1 ingot fully repairs)
  ✔ loot table
   ✔ loot table overriding
+  . 1-5 buckshot 1-2 slug in bastion chests
+  . buckshot/slug piglin trade
   ✔ barrel
    ✔ found in bastion remnants treasure chest
   ✔ golden reload mechanism
