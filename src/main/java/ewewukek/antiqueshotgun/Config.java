@@ -99,6 +99,7 @@ public class Config {
         ElderHunterEntity.aimDuration = instance.elder_hunter.aimDuration;
         ElderHunterEntity.reloadDuration = instance.elder_hunter.reloadDuration;
         ElderHunterEntity.shellInsertDuration = instance.elder_hunter.shellInsertDuration;
+        ElderHunterEntity.meleeChance = instance.elder_hunter.meleeChance;
         ElderHunterEntity.villagerDamageMultiplier = instance.elder_hunter.villagerDamageMultiplier;
         ElderHunterEntity.shotgunDropChance = instance.elder_hunter.shotgunDropChance;
         ElderHunterEntity.raidSpawnChance = instance.elder_hunter.raidSpawnChance;
@@ -238,6 +239,7 @@ public class Config {
         public int aimDuration = 20;
         public int reloadDuration = 14;
         public int shellInsertDuration = 12;
+        public float meleeChance = 0.5f;
         public float villagerDamageMultiplier = 0.25f;
         public float shotgunDropChance = 0.001f;
         public float raidSpawnChance = 0.1f;

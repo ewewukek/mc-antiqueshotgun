@@ -37,6 +37,7 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
     public static int reloadDuration;
     public static int shellInsertDuration;
     public static int magazineCapacity;
+    public static float meleeChance;
     public static float villagerDamageMultiplier;
     public static float shotgunDropChance;
     public static float raidSpawnChance;
@@ -81,7 +82,8 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
         return MonsterEntity.createMonsterAttributes()
             .add(Attributes.MOVEMENT_SPEED, 0.35)
             .add(Attributes.FOLLOW_RANGE, 32.0)
-            .add(Attributes.ATTACK_DAMAGE, 10.0)
+            .add(Attributes.ATTACK_DAMAGE, 1.0)
+            .add(Attributes.ATTACK_KNOCKBACK, 1.0)
             .add(Attributes.MAX_HEALTH, 24.0)
             .build();
     }
