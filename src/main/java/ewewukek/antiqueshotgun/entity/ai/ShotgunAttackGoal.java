@@ -14,15 +14,17 @@ public class ShotgunAttackGoal extends Goal {
     private final Random random = new Random();
     private ElderHunterEntity shooter;
     private float speed;
+    private float minRange;
     private float attackRange;
     private boolean isAiming;
     private int aimTime;
     private boolean doMeleeAttack;
     private int meleeTimer;
 
-    public ShotgunAttackGoal(ElderHunterEntity shooter, float speed, float attackRange) {
+    public ShotgunAttackGoal(ElderHunterEntity shooter, float speed, float minRange, float attackRange) {
         this.shooter = shooter;
         this.speed = speed;
+        this.minRange = minRange;
         this.attackRange = attackRange;
         setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
@@ -52,8 +54,9 @@ public class ShotgunAttackGoal extends Goal {
         if (target == null || !target.isAlive()) return;
 
         boolean seesEnemy = shooter.getSensing().canSee(target);
-        boolean inAttackRange = shooter.distanceToSqr(target) < attackRange * attackRange;
-        boolean inMeleeRange = shooter.distanceToSqr(target) < getMeleeRangeSqr(target);
+        double distanceSqr = shooter.distanceToSqr(target);
+        boolean inAttackRange = distanceSqr < attackRange * attackRange;
+        boolean inMeleeRange = distanceSqr < getMeleeRangeSqr(target);
 
         if (seesEnemy) {
             shooter.getLookControl().setLookAt(target, 30, 30);
@@ -82,6 +85,8 @@ public class ShotgunAttackGoal extends Goal {
                 aimTime = 0;
                 isAiming = true;
                 doMeleeAttack = random.nextFloat() < ElderHunterEntity.meleeChance;
+            } else if (seesEnemy && distanceSqr < minRange * minRange) {
+                shooter.getNavigation().stop();
             } else {
                 shooter.getNavigation().moveTo(target, shooter.isWeaponReady() ? speed : speed * 0.5f);
             }
