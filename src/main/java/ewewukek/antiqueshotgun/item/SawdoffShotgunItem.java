@@ -16,7 +16,7 @@ public class SawdoffShotgunItem extends HandmadeShotgunItem {
     @Override
     public boolean isAmmo(ItemStack stack) {
         AmmoType type = ammoTypeFromStack(stack);
-        return type != AmmoType.NONE && type != AmmoType.SLUG && type != AmmoType.RUBBER;
+        return type == AmmoType.HANDMADE || type == AmmoType.BUCKSHOT;
     }
 
     @Override

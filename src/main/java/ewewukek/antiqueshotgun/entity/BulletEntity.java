@@ -8,6 +8,7 @@ import ewewukek.antiqueshotgun.AntiqueShotgunMod;
 import ewewukek.antiqueshotgun.DamageQueue;
 import ewewukek.antiqueshotgun.item.AmmoItem;
 import ewewukek.antiqueshotgun.item.RubberAmmoItem;
+import ewewukek.antiqueshotgun.item.ThermiteAmmoItem;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -157,10 +158,9 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
         float damage = damageMultiplier * ammoItem.damage() / ammoItem.pelletCount();
 
         if (ammoItem.pelletCount() == 1) {
-            if (target.hurt(damagesource, damage)) {
-                if (ammoType == AmmoType.RUBBER && target instanceof LivingEntity) {
-                    LivingEntity livingEntity = (LivingEntity)target;
-
+            if (target.hurt(damagesource, damage) && target instanceof LivingEntity) {
+                LivingEntity livingEntity = (LivingEntity)target;
+                if (ammoType == AmmoType.RUBBER) {
                     Vector3d knockback = getDeltaMovement().multiply(1, 0, 1).normalize().scale(RubberAmmoItem.knockbackForce);
                     if (knockback.lengthSqr() > 0) {
                         livingEntity.push(knockback.x, 0.1, knockback.z);
@@ -169,6 +169,8 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
                     livingEntity.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, (int)(RubberAmmoItem.slownessDuration * 20), RubberAmmoItem.slownessLevel));
                     livingEntity.addEffect(new EffectInstance(Effects.WEAKNESS, (int)(RubberAmmoItem.weaknessDuration * 20)));
                     livingEntity.addEffect(new EffectInstance(Effects.CONFUSION, (int)(RubberAmmoItem.nauseaDuration * 20)));
+                } else if (ammoType == AmmoType.THERMITE) {
+                    livingEntity.setSecondsOnFire(ThermiteAmmoItem.secondsOnFire);
                 }
             }
         } else {

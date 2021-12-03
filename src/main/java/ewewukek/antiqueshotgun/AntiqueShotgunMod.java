@@ -15,6 +15,7 @@ import ewewukek.antiqueshotgun.item.RubberAmmoItem;
 import ewewukek.antiqueshotgun.item.SawdoffShotgunItem;
 import ewewukek.antiqueshotgun.item.ShotgunItem;
 import ewewukek.antiqueshotgun.item.SlugAmmoItem;
+import ewewukek.antiqueshotgun.item.ThermiteAmmoItem;
 import ewewukek.antiqueshotgun.item.crafting.SawdoffShotgunRecipe;
 import ewewukek.antiqueshotgun.item.crafting.UnloadShotgunRecipe;
 import ewewukek.antiqueshotgun.item.crafting.conditions.CraftingEnabled;
@@ -94,6 +95,8 @@ public class AntiqueShotgunMod {
     public static AmmoItem SLUG_SHELL;
     @ObjectHolder(MODID + ":rubber_shell")
     public static AmmoItem RUBBER_SHELL;
+    @ObjectHolder(MODID + ":thermite_shell")
+    public static AmmoItem THERMITE_SHELL;
 
     @ObjectHolder(MODID + ":shotgun_fire")
     public static SoundEvent SOUND_SHOTGUN_FIRE;
@@ -150,7 +153,8 @@ public class AntiqueShotgunMod {
                 new SlugAmmoItem(new Item.Properties().tab(ItemGroup.TAB_COMBAT)).setRegistryName(MODID, "slug_shell"),
                 new HandmadeAmmoItem(new Item.Properties().tab(ItemGroup.TAB_COMBAT)).setRegistryName(MODID, "handmade_shell"),
                 new Item(new Item.Properties().tab(ItemGroup.TAB_MISC)).setRegistryName(MODID, "rubber"),
-                new RubberAmmoItem(new Item.Properties().tab(ItemGroup.TAB_COMBAT)).setRegistryName(MODID, "rubber_shell")
+                new RubberAmmoItem(new Item.Properties().tab(ItemGroup.TAB_COMBAT)).setRegistryName(MODID, "rubber_shell"),
+                new ThermiteAmmoItem(new Item.Properties().tab(ItemGroup.TAB_COMBAT)).setRegistryName(MODID, "thermite_shell")
             );
         }
 

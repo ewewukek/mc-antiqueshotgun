@@ -24,6 +24,7 @@ import ewewukek.antiqueshotgun.item.RubberAmmoItem;
 import ewewukek.antiqueshotgun.item.SawdoffShotgunItem;
 import ewewukek.antiqueshotgun.item.ShotgunItem;
 import ewewukek.antiqueshotgun.item.SlugAmmoItem;
+import ewewukek.antiqueshotgun.item.ThermiteAmmoItem;
 import net.minecraftforge.fml.loading.FMLPaths;
 
 public class Config {
@@ -91,6 +92,13 @@ public class Config {
         RubberAmmoItem.weaknessDuration = instance.rubber_shell.weaknessDuration;
         RubberAmmoItem.nauseaDuration = instance.rubber_shell.nauseaDuration;
 
+        ThermiteAmmoItem.spreadStdDev = (float)Math.toRadians(instance.thermite_shell.spreadStdDev);
+        ThermiteAmmoItem.speed = instance.thermite_shell.speed / 20;
+        ThermiteAmmoItem.range = instance.thermite_shell.range;
+        ThermiteAmmoItem.damage = instance.thermite_shell.damage;
+        ThermiteAmmoItem.durabilityDamage = instance.thermite_shell.durabilityDamage;
+        ThermiteAmmoItem.secondsOnFire = instance.thermite_shell.secondsOnFire;
+
         BruteEnchantment.extraDamageBase = instance.brute_enchantment.extraDamageBase;
         BruteEnchantment.extraDamagePerLevel = instance.brute_enchantment.extraDamagePerLevel;
         BruteEnchantment.knockbackForcePerLevel = instance.brute_enchantment.knockbackForcePerLevel;
@@ -150,6 +158,7 @@ public class Config {
     private BuckshotShell buckshot_shell = new BuckshotShell();
     private SlugShell slug_shell = new SlugShell();
     private RubberShell rubber_shell = new RubberShell();
+    private ThermiteShell thermite_shell = new ThermiteShell();
 
     private BruteEnchantmentConfig brute_enchantment = new BruteEnchantmentConfig();
 
@@ -226,6 +235,15 @@ public class Config {
         public int slownessLevel = 1;
         public float weaknessDuration = 10;
         public float nauseaDuration = 5;
+    }
+
+    public static class ThermiteShell {
+        public float spreadStdDev = 0.5f;
+        public float speed = 80;
+        public float range = 20;
+        public float damage = 2;
+        public int durabilityDamage = 2;
+        public int secondsOnFire = 10;
     }
 
     public static class BruteEnchantmentConfig {

@@ -8,7 +8,8 @@ public enum AmmoType {
     HANDMADE,
     BUCKSHOT,
     SLUG,
-    RUBBER;
+    RUBBER,
+    THERMITE;
 
     public byte toByte() {
         switch(this) {
@@ -20,6 +21,8 @@ public enum AmmoType {
             return 3;
         case RUBBER:
             return 4;
+        case THERMITE:
+            return 5;
         default:
             return 0;
         }
@@ -35,6 +38,8 @@ public enum AmmoType {
             return AntiqueShotgunMod.SLUG_SHELL;
         case RUBBER:
             return AntiqueShotgunMod.RUBBER_SHELL;
+        case THERMITE:
+            return AntiqueShotgunMod.THERMITE_SHELL;
         default:
             return null;
         }
@@ -50,6 +55,8 @@ public enum AmmoType {
             return SLUG;
         case 4:
             return RUBBER;
+        case 5:
+            return THERMITE;
         default:
             return NONE;
         }
@@ -64,6 +71,8 @@ public enum AmmoType {
             return SLUG;
         } else if (item == AntiqueShotgunMod.RUBBER_SHELL) {
             return RUBBER;
+        } else if (item == AntiqueShotgunMod.THERMITE_SHELL) {
+            return THERMITE;
         }
         return NONE;
     }

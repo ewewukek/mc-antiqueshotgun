@@ -1,0 +1,20 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "antiqueshotgun:item/thermite_shell"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "count": 2
+      },
+      "model": "antiqueshotgun:item/thermite_shell_2"
+    },
+    {
+      "predicate": {
+        "count": 21
+      },
+      "model": "antiqueshotgun:item/thermite_shell_3"
+    }
+  ]
+}
