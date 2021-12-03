@@ -4,6 +4,7 @@ import java.util.EnumSet;
 import java.util.Random;
 
 import ewewukek.antiqueshotgun.entity.ElderHunterEntity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.Hand;
@@ -87,7 +88,7 @@ public class ShotgunAttackGoal extends Goal {
                 doMeleeAttack = random.nextFloat() < ElderHunterEntity.meleeChance;
             } else if (seesEnemy && distanceSqr < minRange * minRange) {
                 shooter.getNavigation().stop();
-            } else {
+            } else if (target.getType() != EntityType.IRON_GOLEM) {
                 shooter.getNavigation().moveTo(target, shooter.isWeaponReady() ? speed : speed * 0.5f);
             }
         }
