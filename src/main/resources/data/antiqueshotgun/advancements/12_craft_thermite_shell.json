@@ -1,14 +1,14 @@
 {
-  "parent": "antiqueshotgun:root",
+  "parent": "antiqueshotgun:10_craft_rubber_shell",
   "display": {
     "icon": {
-      "item": "antiqueshotgun:handmade_shell"
+      "item": "antiqueshotgun:thermite_shell"
     },
     "title": {
-      "translate": "advancements.antiqueshotgun.handmade_shell.title"
+      "translate": "advancements.antiqueshotgun.thermite.title"
     },
     "description": {
-      "translate": "advancements.antiqueshotgun.handmade_shell.desc"
+      "translate": "advancements.antiqueshotgun.thermite.desc"
     },
     "frame": "task",
     "show_toast": true,
@@ -21,7 +21,7 @@
       "conditions": {
         "items": [
           {
-            "item": "antiqueshotgun:handmade_shell"
+            "item": "antiqueshotgun:thermite_shell"
           }
         ]
       }

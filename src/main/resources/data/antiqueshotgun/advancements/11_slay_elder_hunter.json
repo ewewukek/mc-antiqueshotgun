@@ -1,5 +1,5 @@
 {
-  "parent": "antiqueshotgun:8_craft_slug",
+  "parent": "antiqueshotgun:root",
   "display": {
     "icon": {
       "item": "minecraft:iron_axe"

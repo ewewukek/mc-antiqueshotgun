@@ -1,16 +1,16 @@
 {
-  "parent": "antiqueshotgun:root",
+  "parent": "antiqueshotgun:12_craft_thermite_shell",
   "display": {
     "icon": {
-      "item": "antiqueshotgun:handmade_shell"
+      "item": "antiqueshotgun:wither_shell"
     },
     "title": {
-      "translate": "advancements.antiqueshotgun.handmade_shell.title"
+      "translate": "advancements.antiqueshotgun.withering.title"
     },
     "description": {
-      "translate": "advancements.antiqueshotgun.handmade_shell.desc"
+      "translate": "advancements.antiqueshotgun.withering.desc"
     },
-    "frame": "task",
+    "frame": "goal",
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false
@@ -21,7 +21,7 @@
       "conditions": {
         "items": [
           {
-            "item": "antiqueshotgun:handmade_shell"
+            "item": "antiqueshotgun:wither_shell"
           }
         ]
       }
