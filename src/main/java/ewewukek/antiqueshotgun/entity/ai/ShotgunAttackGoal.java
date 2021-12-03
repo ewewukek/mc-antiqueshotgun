@@ -57,9 +57,10 @@ public class ShotgunAttackGoal extends Goal {
         boolean seesEnemy = shooter.getSensing().canSee(target);
         double distanceSqr = shooter.distanceToSqr(target);
         boolean inAttackRange = distanceSqr < attackRange * attackRange;
+        boolean inMaxAttackRange = distanceSqr < attackRange * attackRange * 2.25f;
         boolean inMeleeRange = distanceSqr < getMeleeRangeSqr(target);
 
-        if (seesEnemy) {
+        if (seesEnemy && inMaxAttackRange) {
             shooter.getLookControl().setLookAt(target, 30, 30);
             if (doMeleeAttack && inMeleeRange && meleeTimer <= 0) {
                 shooter.lookAt(target, 30, 30);
