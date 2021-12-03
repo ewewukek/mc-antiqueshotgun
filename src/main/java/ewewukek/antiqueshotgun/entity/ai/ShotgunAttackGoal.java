@@ -57,8 +57,8 @@ public class ShotgunAttackGoal extends Goal {
 
         if (seesEnemy) {
             shooter.getLookControl().setLookAt(target, 30, 30);
-            shooter.yRot = shooter.yRot;
             if (doMeleeAttack && inMeleeRange && meleeTimer <= 0) {
+                shooter.lookAt(target, 30, 30);
                 shooter.swing(Hand.MAIN_HAND);
                 shooter.doHurtTarget(target);
                 isAiming = false;
