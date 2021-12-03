@@ -2,7 +2,13 @@
   "type": "crafting_shapeless",
   "ingredients": [
     {
-      "item": "antiqueshotgun:rubber_shell"
+      "item": "antiqueshotgun:rubber"
+    },
+    {
+      "item": "minecraft:paper"
+    },
+    {
+      "item": "minecraft:gunpowder"
     },
     {
       "item": "minecraft:fire_charge"
@@ -10,6 +16,6 @@
   ],
   "result": {
     "item": "antiqueshotgun:thermite_shell",
-    "count": 4
+    "count": 10
   }
 }

@@ -2,7 +2,13 @@
   "type": "crafting_shapeless",
   "ingredients": [
     {
-      "item": "antiqueshotgun:rubber_shell"
+      "item": "antiqueshotgun:rubber"
+    },
+    {
+      "item": "minecraft:paper"
+    },
+    {
+      "item": "minecraft:gunpowder"
     },
     {
       "item": "minecraft:wither_rose"
