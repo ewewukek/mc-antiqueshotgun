@@ -121,7 +121,28 @@ public class ElderHunterModel<T extends ElderHunterEntity> extends EntityModel<T
             arms_folded.visible = true;
             right_arm.visible = left_arm.visible = false;
         }
+        setupMeleeAnimation(entityIn);
     }
+
+    public void setupMeleeAnimation(T entityIn) {
+        if (attackTime > 0) {
+            float t = attackTime;
+            float r = MathHelper.sin(MathHelper.sqrt(t) * (float)Math.PI * 2) * 0.25f;
+            body.yRot = r;
+            right_arm.z = MathHelper.sin(r) * 5;
+            right_arm.x = -MathHelper.cos(r) * 5;
+            left_arm.z = -MathHelper.sin(r) * 5;
+            left_arm.x = MathHelper.cos(r) * 5;
+            right_arm.yRot += r;
+            left_arm.yRot += r;
+            left_arm.xRot += r;
+            float f1 = MathHelper.sin((1 - (1 - t) * (1 - t)) * (float)Math.PI);
+            float f2 = MathHelper.sin(t * (float)Math.PI) * (head.xRot - 0.7f) * -0.75f;
+            right_arm.xRot -= f1 + f2;
+            right_arm.yRot += r * 2;
+            right_arm.zRot += MathHelper.sin(t * (float)Math.PI) * -0.4f;
+        }
+     }
 
     @Override
     public void renderToBuffer(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
