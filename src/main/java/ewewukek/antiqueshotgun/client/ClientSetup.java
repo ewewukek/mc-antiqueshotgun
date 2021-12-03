@@ -36,6 +36,7 @@ public class ClientSetup {
         ItemModelsProperties.register(AntiqueShotgunMod.SLUG_SHELL, new ResourceLocation("count"), countGetter);
         ItemModelsProperties.register(AntiqueShotgunMod.RUBBER_SHELL, new ResourceLocation("count"), countGetter);
         ItemModelsProperties.register(AntiqueShotgunMod.THERMITE_SHELL, new ResourceLocation("count"), countGetter);
+        ItemModelsProperties.register(AntiqueShotgunMod.WITHER_SHELL, new ResourceLocation("count"), countGetter);
 
         IItemPropertyGetter slideBackGetter = (stack, world, player) -> {
             return ShotgunItem.isSlideBack(stack) ? 1 : 0;

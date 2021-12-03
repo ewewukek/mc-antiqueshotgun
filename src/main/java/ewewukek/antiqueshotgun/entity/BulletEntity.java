@@ -9,6 +9,7 @@ import ewewukek.antiqueshotgun.DamageQueue;
 import ewewukek.antiqueshotgun.item.AmmoItem;
 import ewewukek.antiqueshotgun.item.RubberAmmoItem;
 import ewewukek.antiqueshotgun.item.ThermiteAmmoItem;
+import ewewukek.antiqueshotgun.item.WitherAmmoItem;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -169,8 +170,13 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
                     livingEntity.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, (int)(RubberAmmoItem.slownessDuration * 20), RubberAmmoItem.slownessLevel));
                     livingEntity.addEffect(new EffectInstance(Effects.WEAKNESS, (int)(RubberAmmoItem.weaknessDuration * 20)));
                     livingEntity.addEffect(new EffectInstance(Effects.CONFUSION, (int)(RubberAmmoItem.nauseaDuration * 20)));
+
                 } else if (ammoType == AmmoType.THERMITE) {
                     livingEntity.setSecondsOnFire(ThermiteAmmoItem.secondsOnFire);
+
+                } else if (ammoType == AmmoType.WITHER) {
+
+                    livingEntity.addEffect(new EffectInstance(Effects.WITHER, (int)(WitherAmmoItem.effectDuration * 20), WitherAmmoItem.effectLevel));
                 }
             }
         } else {

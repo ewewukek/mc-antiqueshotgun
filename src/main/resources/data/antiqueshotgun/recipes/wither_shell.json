@@ -1,0 +1,18 @@
+{
+  "type": "crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "antiqueshotgun:rubber_shell"
+    },
+    {
+      "item": "minecraft:wither_rose"
+    },
+    {
+      "item": "minecraft:netherite_scrap"
+    }
+  ],
+  "result": {
+    "item": "antiqueshotgun:wither_shell",
+    "count": 25
+  }
+}
