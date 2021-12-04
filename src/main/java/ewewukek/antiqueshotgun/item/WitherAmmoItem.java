@@ -5,6 +5,7 @@ public class WitherAmmoItem extends AmmoItem {
         super(properties);
     }
 
+    public static int pelletCount;
     public static float spreadStdDev;
     public static float speed;
     public static float range;
@@ -13,6 +14,11 @@ public class WitherAmmoItem extends AmmoItem {
 
     public static int effectLevel;
     public static int effectDuration;
+
+    @Override
+    public int pelletCount() {
+        return pelletCount;
+    }
 
     @Override
     public float spreadStdDev() {

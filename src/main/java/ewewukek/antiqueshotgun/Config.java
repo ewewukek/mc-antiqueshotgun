@@ -93,6 +93,7 @@ public class Config {
         RubberAmmoItem.weaknessDuration = instance.rubber_shell.weaknessDuration;
         RubberAmmoItem.nauseaDuration = instance.rubber_shell.nauseaDuration;
 
+        ThermiteAmmoItem.pelletCount = instance.thermite_shell.pelletCount;
         ThermiteAmmoItem.spreadStdDev = (float)Math.toRadians(instance.thermite_shell.spreadStdDev);
         ThermiteAmmoItem.speed = instance.thermite_shell.speed / 20;
         ThermiteAmmoItem.range = instance.thermite_shell.range;
@@ -100,6 +101,7 @@ public class Config {
         ThermiteAmmoItem.durabilityDamage = instance.thermite_shell.durabilityDamage;
         ThermiteAmmoItem.secondsOnFire = instance.thermite_shell.secondsOnFire;
 
+        WitherAmmoItem.pelletCount = instance.wither_shell.pelletCount;
         WitherAmmoItem.spreadStdDev = (float)Math.toRadians(instance.wither_shell.spreadStdDev);
         WitherAmmoItem.speed = instance.wither_shell.speed / 20;
         WitherAmmoItem.range = instance.wither_shell.range;
@@ -248,21 +250,23 @@ public class Config {
     }
 
     public static class ThermiteShell {
+        public int pelletCount = 3;
         public float spreadStdDev = 0.3f;
         public float speed = 60;
         public float range = 20;
         public float damage = 4;
         public int durabilityDamage = 2;
-        public int secondsOnFire = 5;
+        public int secondsOnFire = 2;
     }
 
     public static class WitherShell {
+        public int pelletCount = 3;
         public float spreadStdDev = 0.3f;
         public float speed = 80;
         public float range = 20;
         public float damage = 6;
         public int durabilityDamage = 2;
-        public int effectLevel = 2;
+        public int effectLevel = 1;
         public int effectDuration = 7;
     }
 

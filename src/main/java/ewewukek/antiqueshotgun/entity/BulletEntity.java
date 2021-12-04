@@ -11,6 +11,7 @@ import ewewukek.antiqueshotgun.item.RubberAmmoItem;
 import ewewukek.antiqueshotgun.item.ThermiteAmmoItem;
 import ewewukek.antiqueshotgun.item.WitherAmmoItem;
 import net.minecraft.block.BlockState;
+import net.minecraft.enchantment.ProtectionEnchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -177,11 +178,22 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
                 livingEntity.addEffect(new EffectInstance(Effects.CONFUSION, (int)(RubberAmmoItem.nauseaDuration * 20)));
 
             } else if (ammoType == AmmoType.THERMITE) {
-                livingEntity.setSecondsOnFire(ThermiteAmmoItem.secondsOnFire);
+                int fireTicks = ProtectionEnchantment.getFireAfterDampener(livingEntity, ThermiteAmmoItem.secondsOnFire * 20);
+                int maxFireTicks = fireTicks * ThermiteAmmoItem.pelletCount;
+                int prevFireTicks = livingEntity.getRemainingFireTicks();
+                fireTicks = Math.min(prevFireTicks + fireTicks, maxFireTicks);
+                if (prevFireTicks < fireTicks) {
+                    livingEntity.setRemainingFireTicks(fireTicks);
+                }
 
             } else if (ammoType == AmmoType.WITHER) {
-
-                livingEntity.addEffect(new EffectInstance(Effects.WITHER, WitherAmmoItem.effectDuration * 20, WitherAmmoItem.effectLevel - 1));
+                int level = WitherAmmoItem.effectLevel;
+                int maxLevel = level * WitherAmmoItem.pelletCount;
+                EffectInstance effect = livingEntity.getEffect(Effects.WITHER);
+                if (effect != null) {
+                    level = Math.min(level + effect.getAmplifier() + 1, maxLevel);
+                }
+                livingEntity.addEffect(new EffectInstance(Effects.WITHER, WitherAmmoItem.effectDuration * 20, level - 1));
             }
         }
     }

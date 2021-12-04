@@ -5,6 +5,7 @@ public class ThermiteAmmoItem extends AmmoItem {
         super(properties);
     }
 
+    public static int pelletCount;
     public static float spreadStdDev;
     public static float speed;
     public static float range;
@@ -12,6 +13,11 @@ public class ThermiteAmmoItem extends AmmoItem {
     public static int durabilityDamage;
 
     public static int secondsOnFire;
+
+    @Override
+    public int pelletCount() {
+        return pelletCount;
+    }
 
     @Override
     public float spreadStdDev() {
