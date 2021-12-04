@@ -172,7 +172,7 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
                     livingEntity.push(knockback.x, 0.1, knockback.z);
                 }
 
-                livingEntity.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, (int)(RubberAmmoItem.slownessDuration * 20), RubberAmmoItem.slownessLevel));
+                livingEntity.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, (int)(RubberAmmoItem.slownessDuration * 20), RubberAmmoItem.slownessLevel - 1));
                 livingEntity.addEffect(new EffectInstance(Effects.WEAKNESS, (int)(RubberAmmoItem.weaknessDuration * 20)));
                 livingEntity.addEffect(new EffectInstance(Effects.CONFUSION, (int)(RubberAmmoItem.nauseaDuration * 20)));
 
@@ -181,7 +181,7 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
 
             } else if (ammoType == AmmoType.WITHER) {
 
-                livingEntity.addEffect(new EffectInstance(Effects.WITHER, WitherAmmoItem.effectDuration * 20, WitherAmmoItem.effectLevel));
+                livingEntity.addEffect(new EffectInstance(Effects.WITHER, WitherAmmoItem.effectDuration * 20, WitherAmmoItem.effectLevel - 1));
             }
         }
     }
