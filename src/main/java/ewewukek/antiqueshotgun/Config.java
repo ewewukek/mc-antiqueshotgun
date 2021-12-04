@@ -185,13 +185,13 @@ public class Config {
 
     private static class AntiqueShotgun {
         public boolean enableCrafting = false;
-        public int magazineCapacity = 7;
+        public int magazineCapacity = 6;
         public int reloadDuration = 13;
         public int shellInsertDuration = 11;
     }
 
     private static class HandmadeShotgun {
-        public int magazineCapacity = 5;
+        public int magazineCapacity = 4;
         public int reloadDuration = 17;
         public int shellInsertDuration = 15;
         public float misfireChance = 0.045f;
@@ -260,10 +260,10 @@ public class Config {
         public float spreadStdDev = 0.3f;
         public float speed = 80;
         public float range = 20;
-        public float damage = 5;
+        public float damage = 6;
         public int durabilityDamage = 2;
         public int effectLevel = 2;
-        public int effectDuration = 4;
+        public int effectDuration = 7;
     }
 
     public static class BruteEnchantmentConfig {
