@@ -256,7 +256,7 @@ public class Config {
         public float range = 20;
         public float damage = 4;
         public int durabilityDamage = 2;
-        public int secondsOnFire = 2;
+        public float secondsOnFire = 2;
     }
 
     public static class WitherShell {
@@ -267,7 +267,7 @@ public class Config {
         public float damage = 6;
         public int durabilityDamage = 2;
         public int effectLevel = 1;
-        public int effectDuration = 7;
+        public float effectDuration = 7;
     }
 
     public static class BruteEnchantmentConfig {

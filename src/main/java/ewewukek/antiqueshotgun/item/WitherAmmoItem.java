@@ -13,7 +13,7 @@ public class WitherAmmoItem extends AmmoItem {
     public static int durabilityDamage;
 
     public static int effectLevel;
-    public static int effectDuration;
+    public static float effectDuration;
 
     @Override
     public int pelletCount() {

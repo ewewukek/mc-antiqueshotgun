@@ -12,7 +12,7 @@ public class ThermiteAmmoItem extends AmmoItem {
     public static float damage;
     public static int durabilityDamage;
 
-    public static int secondsOnFire;
+    public static float secondsOnFire;
 
     @Override
     public int pelletCount() {
