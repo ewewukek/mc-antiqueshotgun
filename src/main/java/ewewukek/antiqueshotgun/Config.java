@@ -186,84 +186,84 @@ public class Config {
     private static class AntiqueShotgun {
         public boolean enableCrafting = false;
         public int magazineCapacity = 7;
-        public int reloadDuration = 12;
-        public int shellInsertDuration = 10;
+        public int reloadDuration = 13;
+        public int shellInsertDuration = 11;
     }
 
     private static class HandmadeShotgun {
-        public int magazineCapacity = 4;
-        public int reloadDuration = 16;
-        public int shellInsertDuration = 14;
-        public float misfireChance = 0.025f;
-        public float spreadStdDevAdd = 0.5f;
+        public int magazineCapacity = 5;
+        public int reloadDuration = 17;
+        public int shellInsertDuration = 15;
+        public float misfireChance = 0.045f;
+        public float spreadStdDevAdd = 0.3f;
         public float damageMultiplier = 0.9f;
     }
 
     private static class SawdoffShotgun {
         public int magazineCapacity = 1;
-        public float spreadStdDevAdd = 1;
+        public float spreadStdDevAdd = 1.3f;
         public float damageMultiplier = 0.8f;
     }
 
     private static class HandmadeShell {
-        public int pelletCount = 9;
-        public float spreadStdDev = 2;
-        public float speed = 400;
-        public float range = 15;
-        public float damage = 20;
+        public int pelletCount = 10;
+        public float spreadStdDev = 3.8f;
+        public float speed = 150;
+        public float range = 17;
+        public float damage = 10;
         public int durabilityDamage = 3;
-        public float misfireChance = 0.025f;
+        public float misfireChance = 0.085f;
         public float jamChance = 0.005f;
     }
 
     private static class BuckshotShell {
-        public int pelletCount = 9;
-        public float spreadStdDev = 1.5f;
-        public float speed = 400;
-        public float range = 15;
-        public float damage = 25;
+        public int pelletCount = 7;
+        public float spreadStdDev = 3f;
+        public float speed = 250;
+        public float range = 25;
+        public float damage = 20;
         public int durabilityDamage = 1;
     }
 
     private static class SlugShell {
         public float spreadStdDev = 0;
         public float speed = 400;
-        public float range = 25;
+        public float range = 50;
         public float damage = 25;
         public int durabilityDamage = 1;
-        public int postFireDelay = 3;
+        public int postFireDelay = 5;
     }
 
     public static class RubberShell {
-        public float spreadStdDev = 0.5f;
-        public float speed = 200;
+        public float spreadStdDev = 0.3f;
+        public float speed = 100;
         public float range = 20;
-        public float damage = 1;
+        public float damage = 3;
         public int durabilityDamage = 2;
         public float knockbackForce = 0.6f;
-        public float slownessDuration = 10;
+        public float slownessDuration = 3;
         public int slownessLevel = 1;
-        public float weaknessDuration = 10;
-        public float nauseaDuration = 5;
+        public float weaknessDuration = 8;
+        public float nauseaDuration = 2;
     }
 
     public static class ThermiteShell {
-        public float spreadStdDev = 0.5f;
-        public float speed = 80;
+        public float spreadStdDev = 0.3f;
+        public float speed = 60;
         public float range = 20;
-        public float damage = 2;
+        public float damage = 4;
         public int durabilityDamage = 2;
-        public int secondsOnFire = 10;
+        public int secondsOnFire = 5;
     }
 
     public static class WitherShell {
-        public float spreadStdDev = 0.5f;
+        public float spreadStdDev = 0.3f;
         public float speed = 80;
         public float range = 20;
-        public float damage = 2;
+        public float damage = 5;
         public int durabilityDamage = 2;
-        public int effectLevel = 1;
-        public int effectDuration = 10;
+        public int effectLevel = 2;
+        public int effectDuration = 4;
     }
 
     public static class BruteEnchantmentConfig {
@@ -277,7 +277,7 @@ public class Config {
         public int aimDuration = 20;
         public int reloadDuration = 14;
         public int shellInsertDuration = 12;
-        public float meleeChance = 0.5f;
+        public float meleeChance = 0.9f;
         public float villagerDamageMultiplier = 0.25f;
         public float shotgunDropChance = 0.001f;
         public float raidSpawnChance = 0.1f;
