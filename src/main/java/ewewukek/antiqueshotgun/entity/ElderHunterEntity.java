@@ -33,6 +33,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 public class ElderHunterEntity extends AbstractIllagerEntity {
+    public static final AmmoType AMMO_TYPE = AmmoType.BUCKSHOT;
     public static int aimDuration;
     public static int reloadDuration;
     public static int shellInsertDuration;
@@ -49,7 +50,7 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
         super(type, worldIn);
         ItemStack stack = new ItemStack(AntiqueShotgunMod.ANTIQUE_SHOTGUN);
         for (int i = 0; i < magazineCapacity; ++i) {
-            ShotgunItem.addAmmoToMagazine(stack, AmmoType.BUCKSHOT);
+            ShotgunItem.addAmmoToMagazine(stack, AMMO_TYPE);
         }
         setItemSlot(EquipmentSlotType.MAINHAND, stack);
         setDropChance(EquipmentSlotType.MAINHAND, shotgunDropChance);
@@ -208,7 +209,7 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
                 } else {
                     level.playSound(null, getX(), getY(), getZ(), AntiqueShotgunMod.SOUND_SHOTGUN_INSERTING_SHELL, SoundCategory.HOSTILE, 0.8f, 1);
 
-                    ShotgunItem.addAmmoToMagazine(stack, AmmoType.BUCKSHOT);
+                    ShotgunItem.addAmmoToMagazine(stack, AMMO_TYPE);
                     ShotgunItem.setInsertingShell(stack, false);
                     ShotgunItem.setTimerExpiryTime(stack, currentTime + shellPostInsertDelay());
 
