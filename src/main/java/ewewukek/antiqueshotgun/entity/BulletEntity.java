@@ -159,28 +159,30 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
         float damage = damageMultiplier * ammoItem.damage() / ammoItem.pelletCount();
 
         if (ammoItem.pelletCount() == 1) {
-            if (target.hurt(damagesource, damage) && target instanceof LivingEntity) {
-                LivingEntity livingEntity = (LivingEntity)target;
-                if (ammoType == AmmoType.RUBBER) {
-                    Vector3d knockback = getDeltaMovement().multiply(1, 0, 1).normalize().scale(RubberAmmoItem.knockbackForce);
-                    if (knockback.lengthSqr() > 0) {
-                        livingEntity.push(knockback.x, 0.1, knockback.z);
-                    }
-
-                    livingEntity.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, (int)(RubberAmmoItem.slownessDuration * 20), RubberAmmoItem.slownessLevel));
-                    livingEntity.addEffect(new EffectInstance(Effects.WEAKNESS, (int)(RubberAmmoItem.weaknessDuration * 20)));
-                    livingEntity.addEffect(new EffectInstance(Effects.CONFUSION, (int)(RubberAmmoItem.nauseaDuration * 20)));
-
-                } else if (ammoType == AmmoType.THERMITE) {
-                    livingEntity.setSecondsOnFire(ThermiteAmmoItem.secondsOnFire);
-
-                } else if (ammoType == AmmoType.WITHER) {
-
-                    livingEntity.addEffect(new EffectInstance(Effects.WITHER, (int)(WitherAmmoItem.effectDuration * 20), WitherAmmoItem.effectLevel));
-                }
-            }
+            target.hurt(damagesource, damage);
         } else {
             DamageQueue.add(target, damagesource, damage);
+        }
+
+        if (target instanceof LivingEntity) {
+            LivingEntity livingEntity = (LivingEntity)target;
+            if (ammoType == AmmoType.RUBBER) {
+                Vector3d knockback = getDeltaMovement().multiply(1, 0, 1).normalize().scale(RubberAmmoItem.knockbackForce);
+                if (knockback.lengthSqr() > 0) {
+                    livingEntity.push(knockback.x, 0.1, knockback.z);
+                }
+
+                livingEntity.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, (int)(RubberAmmoItem.slownessDuration * 20), RubberAmmoItem.slownessLevel));
+                livingEntity.addEffect(new EffectInstance(Effects.WEAKNESS, (int)(RubberAmmoItem.weaknessDuration * 20)));
+                livingEntity.addEffect(new EffectInstance(Effects.CONFUSION, (int)(RubberAmmoItem.nauseaDuration * 20)));
+
+            } else if (ammoType == AmmoType.THERMITE) {
+                livingEntity.setSecondsOnFire(ThermiteAmmoItem.secondsOnFire);
+
+            } else if (ammoType == AmmoType.WITHER) {
+
+                livingEntity.addEffect(new EffectInstance(Effects.WITHER, WitherAmmoItem.effectDuration * 20, WitherAmmoItem.effectLevel));
+            }
         }
     }
 
