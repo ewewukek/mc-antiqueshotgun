@@ -178,8 +178,8 @@ public class BulletEntity extends ThrowableEntity implements IEntityAdditionalSp
                 livingEntity.addEffect(new EffectInstance(Effects.CONFUSION, (int)(RubberAmmoItem.nauseaDuration * 20)));
 
             } else if (ammoType == AmmoType.THERMITE) {
-                int fireTicks = ProtectionEnchantment.getFireAfterDampener(livingEntity, (int)(ThermiteAmmoItem.secondsOnFire * 20));
-                int maxFireTicks = fireTicks * ThermiteAmmoItem.pelletCount;
+                int maxFireTicks = ProtectionEnchantment.getFireAfterDampener(livingEntity, (int)(ThermiteAmmoItem.fireDuration * 20));
+                int fireTicks = maxFireTicks / ThermiteAmmoItem.pelletCount + 1;
                 int prevFireTicks = livingEntity.getRemainingFireTicks();
                 fireTicks = Math.min(prevFireTicks + fireTicks, maxFireTicks);
                 if (prevFireTicks < fireTicks) {

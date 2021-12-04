@@ -99,7 +99,7 @@ public class Config {
         ThermiteAmmoItem.range = instance.thermite_shell.range;
         ThermiteAmmoItem.damage = instance.thermite_shell.damage;
         ThermiteAmmoItem.durabilityDamage = instance.thermite_shell.durabilityDamage;
-        ThermiteAmmoItem.secondsOnFire = instance.thermite_shell.secondsOnFire;
+        ThermiteAmmoItem.fireDuration = instance.thermite_shell.fireDuration;
 
         WitherAmmoItem.pelletCount = instance.wither_shell.pelletCount;
         WitherAmmoItem.spreadStdDev = (float)Math.toRadians(instance.wither_shell.spreadStdDev);
@@ -256,7 +256,7 @@ public class Config {
         public float range = 20;
         public float damage = 4;
         public int durabilityDamage = 2;
-        public float secondsOnFire = 2;
+        public float fireDuration = 5;
     }
 
     public static class WitherShell {
