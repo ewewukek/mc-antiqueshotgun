@@ -234,7 +234,7 @@ public class AntiqueShotgunMod {
                     if (offhandStack.getItem() instanceof ShotgunItem) {
                         ShotgunItem shotgun = (ShotgunItem)offhandStack.getItem();
                         if (shotgun.canBeUsedFromOffhand(event.player)) {
-                            ReloadAction.activeStack = stack;
+                            ReloadAction.activeStack = offhandStack;
                             shotgun.update(event.player, offhandStack);
                         }
                     }
