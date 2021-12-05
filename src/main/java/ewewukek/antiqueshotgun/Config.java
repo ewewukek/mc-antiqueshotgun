@@ -250,8 +250,8 @@ public class Config {
     }
 
     public static class ThermiteShell {
-        public int pelletCount = 3;
-        public float spreadStdDev = 0.3f;
+        public int pelletCount = 4;
+        public float spreadStdDev = 1.5f;
         public float speed = 60;
         public float range = 20;
         public float damage = 4;
@@ -260,14 +260,14 @@ public class Config {
     }
 
     public static class WitherShell {
-        public int pelletCount = 3;
-        public float spreadStdDev = 0.3f;
+        public int pelletCount = 4;
+        public float spreadStdDev = 1.2f;
         public float speed = 80;
-        public float range = 20;
+        public float range = 25;
         public float damage = 6;
         public int durabilityDamage = 2;
         public int effectLevel = 1;
-        public float effectDuration = 7;
+        public float effectDuration = 5;
     }
 
     public static class BruteEnchantmentConfig {
