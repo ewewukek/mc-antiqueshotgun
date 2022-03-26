@@ -149,19 +149,21 @@ public class ElderHunterEntity extends AbstractIllagerEntity {
     public void fireWeapon(LivingEntity target) {
         ItemStack stack = getItemBySlot(EquipmentSlotType.MAINHAND);
 
-        Vector3d direction = new Vector3d(
-            target.getX() - getX(),
-            target.getBoundingBox().minY + target.getBbHeight() * 0.7f - getY() - getEyeHeight(),
-            target.getZ() - getZ()
-        );
-        AmmoType ammoType = ShotgunItem.getAmmoInChamber(stack);
-        float damageMultiplier = target.getType() == EntityType.VILLAGER ? villagerDamageMultiplier : 1;
+        if(stack.getItem() instanceof ShotGunItem){
+            Vector3d direction = new Vector3d(
+                target.getX() - getX(),
+                target.getBoundingBox().minY + target.getBbHeight() * 0.7f - getY() - getEyeHeight(),
+                target.getZ() - getZ()
+            );
+            AmmoType ammoType = ShotgunItem.getAmmoInChamber(stack);
+            float damageMultiplier = target.getType() == EntityType.VILLAGER ? villagerDamageMultiplier : 1;
 
-        ((ShotgunItem)stack.getItem()).fireBullets(level, this, direction, ammoType, damageMultiplier);
-        level.playSound(null, getX(), getY(), getZ(), AntiqueShotgunMod.SOUND_SHOTGUN_FIRE, SoundCategory.HOSTILE, 3.5f, 1);
+            ((ShotgunItem)stack.getItem()).fireBullets(level, this, direction, ammoType, damageMultiplier);
+            level.playSound(null, getX(), getY(), getZ(), AntiqueShotgunMod.SOUND_SHOTGUN_FIRE, SoundCategory.HOSTILE, 3.5f, 1);
 
-        ShotgunItem.setAmmoInChamber(stack, AmmoType.NONE);
-        ShotgunItem.setTimerExpiryTime(stack, level.getGameTime() + postFireDelay());
+            ShotgunItem.setAmmoInChamber(stack, AmmoType.NONE);
+            ShotgunItem.setTimerExpiryTime(stack, level.getGameTime() + postFireDelay());
+        }
     }
 
     @Override
